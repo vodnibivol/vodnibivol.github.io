@@ -204,6 +204,12 @@ header input {
   right: -10px;
 }
 
+@media (orientation: landscape) and (min-width: 1300px) {
+  .board {
+    grid-gap: 35px;
+  }
+}
+
 @media (orientation: landscape) and (max-width: 1024px) {
   .board {
     -ms-grid-columns: (90px)[6];
