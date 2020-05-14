@@ -3,7 +3,7 @@
   margin: 0;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
-  font-family: 'consolas', monospace;
+  font-family: "consolas", monospace;
   font-size: 15px;
 }
 
@@ -28,21 +28,21 @@ header img {
   width: 16px;
   cursor: pointer;
   opacity: 20%;
-  -webkit-transition: opacity .2s;
-  transition: opacity .2s;
+  -webkit-transition: opacity 0.2s;
+  transition: opacity 0.2s;
   /*
-        &.checked {
-            opacity: 50%;
-        
-            &:hover {
-                opacity: 60%;
-            }
-        
-            &:active {
-                opacity: 80%;
-            }
-        }
-        */
+		&.checked {
+				opacity: 50%;
+		
+				&:hover {
+						opacity: 60%;
+				}
+		
+				&:active {
+						opacity: 80%;
+				}
+		}
+		*/
 }
 
 header img:hover {
@@ -70,14 +70,16 @@ header input {
 
 /* --------- Main board --------- */
 .board {
-  width: 720px;
-  height: 480px;
+  max-width: 820px;
   margin: auto;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   /*perspective: 1000px;*/
 }
 
@@ -85,13 +87,14 @@ header input {
   position: relative;
   width: 100px;
   height: 100px;
-  margin: 10px;
+  margin: 15px;
   -webkit-transform: scale(1);
           transform: scale(1);
   -webkit-transform-style: preserve-3d;
           transform-style: preserve-3d;
-  -webkit-transition: .5s;
-  transition: .5s;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+  border-radius: 3px;
   -webkit-box-shadow: 5px 7px #00000011;
           box-shadow: 5px 7px #00000011;
 }
@@ -103,10 +106,6 @@ header input {
 .memory-card:active {
   -webkit-transform: scale(0.97);
           transform: scale(0.97);
-  -webkit-transition: -webkit-transform .1s;
-  transition: -webkit-transform .1s;
-  transition: transform .1s;
-  transition: transform .1s, -webkit-transform .1s;
 }
 
 .memory-card.flipped {
@@ -153,8 +152,8 @@ header input {
   border-radius: 4px;
   color: #ffffff;
   background-color: #000000b0;
-  -webkit-transition: .5s;
-  transition: .5s;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
 }
 
 .winning-message {
@@ -207,4 +206,75 @@ header input {
 .timer.show {
   right: -10px;
 }
-/*# sourceMappingURL=main.css.map */
+
+@media (max-width: 570px) and (orientation: landscape) {
+  .board {
+    margin: 10px 40px;
+  }
+  .memory-card {
+    width: 60px;
+    height: 60px;
+    margin: 7px;
+  }
+  .back-face, .front-face {
+    width: 60px;
+    height: 60px;
+  }
+  .timer {
+    top: 45%;
+    right: -60px;
+    -webkit-transform: rotate(-90deg);
+            transform: rotate(-90deg);
+    padding: 7px 10px 17px 10px;
+  }
+  .timer.show {
+    right: -30px;
+  }
+  .winning-message {
+    top: -50px;
+    padding: 20px 25px 10px 25px;
+  }
+  .winning-message.show {
+    top: -10px;
+  }
+}
+
+@media (max-width: 330px) and (orientation: portrait) {
+  .board {
+    margin-top: 50px;
+  }
+  .memory-card {
+    width: 60px;
+    height: 60px;
+    margin: 10px 7px;
+  }
+  .back-face, .front-face {
+    width: 60px;
+    height: 60px;
+  }
+  .timer {
+    top: -50px;
+    right: unset;
+    padding: 17px 10px 7px 10px;
+  }
+  .timer.show {
+    right: unset;
+    top: -10px;
+  }
+  .winning-message {
+    width: 100%;
+    top: unset;
+    bottom: -90px;
+    left: 0;
+    -webkit-transform: translateY(-50%);
+            transform: translateY(-50%);
+    padding: 20px 25px;
+    border-radius: 0;
+    -webkit-transition: bottom 1s;
+    transition: bottom 1s;
+  }
+  .winning-message.show {
+    top: unset;
+    bottom: 55%;
+  }
+}

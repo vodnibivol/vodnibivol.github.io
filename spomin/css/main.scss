@@ -1,213 +1,311 @@
 * {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    
-    font-family: 'consolas', monospace;
-    font-size: 15px;
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+
+	font-family: "consolas", monospace;
+	font-size: 15px;
 }
 
 body {
-    height: 100vh;
-    display: flex;
-    
-    background-color: hsl(35, 90%, 92%);
-    // background ..?
+	height: 100vh;
+	display: flex;
+
+	background-color: hsl(35, 90%, 92%);
+	// background ..?
 }
 
 /* --------- Header --------- */
 
 header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
 
-    // background-color: tomato;
-    
-    img {
-        margin: 18px 24px;
-        width: 16px;
+	// background-color: tomato;
 
-        cursor: pointer;
+	img {
+		margin: 18px 24px;
+		width: 16px;
 
-        opacity: 20%;
+		cursor: pointer;
 
-        transition: opacity .2s;
+		opacity: 20%;
 
-        &:hover {
-            opacity: 30%;
-        }
+		transition: opacity 0.2s;
 
-        &:active {
-            opacity: 50%;  // 80% when checked
-        }
+		&:hover {
+			opacity: 30%;
+		}
 
-        /*
-        &.checked {
-            opacity: 50%;
-        
-            &:hover {
-                opacity: 60%;
-            }
-        
-            &:active {
-                opacity: 80%;
-            }
-        }
-        */
-    }
+		&:active {
+			opacity: 50%; // 80% when checked
+		}
 
-    .restart-button {
-        float: left;
-        transform: rotateY(180deg);
-    }
+		/*
+		&.checked {
+				opacity: 50%;
+		
+				&:hover {
+						opacity: 60%;
+				}
+		
+				&:active {
+						opacity: 80%;
+				}
+		}
+		*/
+	}
 
-    .timer-button {
-        float: right;
-    }
+	.restart-button {
+		float: left;
+		transform: rotateY(180deg);
+	}
 
-    input {
-        position: absolute;
-        opacity: 1;
-    }
+	.timer-button {
+		float: right;
+	}
+
+	input {
+		position: absolute;
+		opacity: 1;
+	}
 }
-
 
 /* --------- Main board --------- */
 
-.board {
-    width: 720px;
-    height: 480px;
-    margin: auto;
-    display: flex;
-    flex-wrap: wrap;
+$card-size: 100px;
 
-    /*perspective: 1000px;*/
+.board {
+	max-width: 820px;
+	// max-height: 480px;
+	margin: auto;
+	display: flex;
+	flex-wrap: wrap;
+
+	justify-content: center;
+
+	// background-color: rgba(255, 0, 0, 0.137);
+
+	/*perspective: 1000px;*/
 }
 
 .memory-card {
-    position: relative;
-    
-    width: 100px;
-    height: 100px;
-    margin: 10px;
+	position: relative;
 
-    transform: scale(1);
-    transform-style: preserve-3d;
-    transition: .5s;
+	width: $card-size;
+	height: $card-size;
+	margin: 15px;
 
-    box-shadow: 5px 7px #00000011;
+	transform: scale(1);
+	transform-style: preserve-3d;
+	transition: 0.5s;
 
-    &:hover {
-        cursor: pointer;
-    }
+	border-radius: 3px;
+	box-shadow: 5px 7px #00000011;
 
-    &:active {
-        transform: scale(.97);
-        transition: transform .1s;
-    }
-    
-    &.flipped {
-        transform: rotateY(180deg);
+	&:hover {
+		cursor: pointer;
+	}
 
-        box-shadow: -5px 7px #00000011;
+	&:active {
+		transform: scale(0.97);
+		// transition: transform 0.1s;
+	}
 
-        cursor: default;
-    }
+	&.flipped {
+		transform: rotateY(180deg);
 
-    &.found {
-        transform: rotateY(180deg) translate(-3px, 4px);  /* ali (-3px, 3px) */
-        box-shadow: none;
-    }
+		box-shadow: -5px 7px #00000011;
+
+		cursor: default;
+	}
+
+	&.found {
+		transform: rotateY(180deg) translate(-3px, 4px); /* ali (-3px, 3px) */
+		box-shadow: none;
+	}
 }
 
 %faces {
-    position: absolute;
+	position: absolute;
 
-    width: 100px;
-    height: 100px;
-    padding: 0px;
+	width: $card-size;
+	height: $card-size;
+	padding: 0px;
 
-    border-radius: 3px;
+	border-radius: 3px;
 
-    backface-visibility: hidden;
+	backface-visibility: hidden;
 }
 
 .back-face {
-    @extend %faces;
+	@extend %faces;
 }
 
 .front-face {
-    @extend %faces;
+	@extend %faces;
 
-    transform: rotateY(180deg);
-    
-    filter: grayscale(0);
-    transition: filter 2s;
+	transform: rotateY(180deg);
+
+	filter: grayscale(0);
+	transition: filter 2s;
 }
 
 /* --------- Floating messages --------- */
 
 %messages {
-    position: fixed;
-    z-index: 3;
-    
-    border-radius: 4px;
+	position: fixed;
+	z-index: 3;
 
-    color: #ffffff;
-    background-color: #000000b0;
-    
-    transition: .5s;
+	border-radius: 4px;
+
+	color: #ffffff;
+	background-color: #000000b0;
+
+	transition: 0.5s;
 }
 
 .winning-message {
-    @extend %messages;
-    
-    top: -50px;  // top: -50px;
-    left: 50%;
-    transform: translate(-50%);
-    
-    display: flex;
-    align-items: center;
-    justify-content: center; 
-    padding: 20px 25px 10px 25px;
+	@extend %messages;
 
-    &.show {
-        top: -10px;
-    }
+	top: -50px; // top: -50px;
+	left: 50%;
+	transform: translate(-50%);
 
-    button {
-        margin-left: 20px;
-    
-        background-color: #ffffff;
-        border: none;
-        outline: none;
-        border-bottom: 2px solid #9c9c9c;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 20px 25px 10px 25px;
 
-        &:hover {
-            background-color: hsl(33, 50%, 97%);
-            cursor: pointer;
-        }
+	&.show {
+		top: -10px;
+	}
 
-        &:active {
-            background-color: hsl(33, 30%, 90%);
-            border: none;
-            outline: none;
-            border-top: 2px solid #9c9c9c;
-        }
-    }
+	button {
+		margin-left: 20px;
+
+		background-color: #ffffff;
+		border: none;
+		outline: none;
+		border-bottom: 2px solid #9c9c9c;
+
+		&:hover {
+			background-color: hsl(33, 50%, 97%);
+			cursor: pointer;
+		}
+
+		&:active {
+			background-color: hsl(33, 30%, 90%);
+			border: none;
+			outline: none;
+			border-top: 2px solid #9c9c9c;
+		}
+	}
 }
 
 .timer {
-    @extend %messages;
-    
-    top: 40%;
-    right: -90px;  // -90px
+	@extend %messages;
 
-    padding: 7px 20px 7px 10px;
+	top: 40%;
+	right: -90px; // -90px
 
-    &.show {  // .ended
-        right: -10px;
-    }
+	padding: 7px 20px 7px 10px;
+
+	&.show {
+		// .ended
+		right: -10px;
+	}
+}
+
+@media (max-width: 570px) and (orientation: landscape) {
+	.board {
+		margin: 10px 40px;
+	}
+	
+	$card-size: 60px;
+
+	.memory-card {
+		width: $card-size;
+		height: $card-size;
+		margin: 7px;
+	}
+
+	%faces {
+		width: $card-size;
+		height: $card-size;
+	}
+
+	.timer {
+		top: 45%;
+		right: -60px;
+		transform: rotate(-90deg);
+	
+		padding: 7px 10px 17px 10px;
+	
+		&.show {
+			right: -30px;
+		}
+	}
+
+	.winning-message {
+		top: -50px; // top: -50px;
+	
+		padding: 20px 25px 10px 25px;
+
+		&.show {
+			top: -10px;
+		}
+	}
+}
+
+@media (max-width: 330px) and (orientation: portrait) {
+	.board {
+		margin-top: 50px;
+	}
+	
+	$card-size: 60px;
+
+	.memory-card {
+		width: $card-size;
+		height: $card-size;
+		margin: 10px 7px;
+	}
+
+	%faces {
+		width: $card-size;
+		height: $card-size;
+	}
+
+	.timer {
+		top: -50px;
+		right: unset;
+	
+		padding: 17px 10px 7px 10px;
+	
+		&.show {
+			right: unset;
+			top: -10px;
+		}
+	}
+
+	.winning-message {
+		width: 100%;
+
+		top: unset; // top: -50px;
+		bottom: -90px;
+		left: 0;
+		transform: translateY(-50%);
+	
+		padding: 20px 25px;
+		border-radius: 0;
+
+		transition: bottom 1s;
+	
+		&.show {
+			top: unset;
+			bottom: 55%;
+		}
+	}
 }
