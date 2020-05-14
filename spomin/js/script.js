@@ -54,6 +54,7 @@ function initialize() {
     cards.forEach(card => card.classList.remove('flipped', 'found'));
     frontFaces.forEach(face => face.style.filter = 'grayscale(0)');
     winningMessageElement.classList.remove('show');
+    timer.classList.remove('playing');
 
     /* --- Functions --- */
 
@@ -105,10 +106,10 @@ function flipCard() {
     if (!gamePlay) {
         gamePlay = true;
         startTimer();
-    }
 
-    // hide counter during the game
-    // setTimeout(() => {timer.classList.remove('ended');}, 2500);
+        // hide counter during gameplay
+        setTimeout(() => {timer.classList.toggle('playing')}, 500);
+    }
         
     if (lockBoard) return;
     if (this === firstCard) return;
@@ -174,6 +175,7 @@ function endGame() {
     stopTimer();
     
     winningMessageElement.classList.add('show');
+    timer.classList.toggle('playing');
     
     frontFaces.forEach(face => face.style.filter = 'grayscale(.2)');
 

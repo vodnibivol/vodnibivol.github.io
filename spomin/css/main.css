@@ -70,33 +70,32 @@ header input {
 
 /* --------- Main board --------- */
 .board {
-  max-width: 820px;
   margin: auto;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  /*perspective: 1000px;*/
+  justify-items: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -ms-grid;
+  display: grid;
+  grid-gap: 25px;
+  -ms-grid-columns: (100px)[6];
+      grid-template-columns: repeat(6, 100px);
+  -ms-grid-rows: (100px)[4];
+      grid-template-rows: repeat(4, 100px);
 }
 
 .memory-card {
-  position: relative;
   width: 100px;
   height: 100px;
-  margin: 15px;
-  -webkit-transform: scale(1);
-          transform: scale(1);
-  -webkit-transform-style: preserve-3d;
-          transform-style: preserve-3d;
-  -webkit-transition: 0.5s;
-  transition: 0.5s;
   border-radius: 3px;
   -webkit-box-shadow: 5px 7px #00000011;
           box-shadow: 5px 7px #00000011;
+  -webkit-transform-style: preserve-3d;
+          transform-style: preserve-3d;
+  -webkit-transition: -webkit-transform 0.5s;
+  transition: -webkit-transform 0.5s;
+  transition: transform 0.5s;
+  transition: transform 0.5s, -webkit-transform 0.5s;
 }
 
 .memory-card:hover {
@@ -128,7 +127,6 @@ header input {
   position: absolute;
   width: 100px;
   height: 100px;
-  padding: 0px;
   border-radius: 3px;
   -webkit-backface-visibility: hidden;
           backface-visibility: hidden;
@@ -137,8 +135,6 @@ header input {
 .front-face {
   -webkit-transform: rotateY(180deg);
           transform: rotateY(180deg);
-  -webkit-filter: grayscale(0);
-          filter: grayscale(0);
   -webkit-transition: -webkit-filter 2s;
   transition: -webkit-filter 2s;
   transition: filter 2s;
@@ -159,8 +155,8 @@ header input {
 .winning-message {
   top: -50px;
   left: 50%;
-  -webkit-transform: translate(-50%);
-          transform: translate(-50%);
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -170,6 +166,9 @@ header input {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
   padding: 20px 25px 10px 25px;
 }
 
@@ -207,74 +206,176 @@ header input {
   right: -10px;
 }
 
-@media (max-width: 570px) and (orientation: landscape) {
+@media (orientation: landscape) and (max-width: 1024px) {
   .board {
-    margin: 10px 40px;
+    -ms-grid-columns: (90px)[6];
+        grid-template-columns: repeat(6, 90px);
+    -ms-grid-rows: (90px)[4];
+        grid-template-rows: repeat(4, 90px);
   }
   .memory-card {
-    width: 60px;
-    height: 60px;
-    margin: 7px;
+    width: 90px;
+    height: 90px;
   }
   .back-face, .front-face {
-    width: 60px;
-    height: 60px;
-  }
-  .timer {
-    top: 45%;
-    right: -60px;
-    -webkit-transform: rotate(-90deg);
-            transform: rotate(-90deg);
-    padding: 7px 10px 17px 10px;
-  }
-  .timer.show {
-    right: -30px;
-  }
-  .winning-message {
-    top: -50px;
-    padding: 20px 25px 10px 25px;
-  }
-  .winning-message.show {
-    top: -10px;
+    width: 90px;
+    height: 90px;
   }
 }
 
-@media (max-width: 330px) and (orientation: portrait) {
-  .board {
-    margin-top: 50px;
+@media (orientation: landscape) and (max-width: 850px) {
+  .winning-message {
+    top: unset;
+    bottom: -55px;
+    padding: 10px 25px 20px 25px;
   }
-  .memory-card {
-    width: 60px;
-    height: 60px;
-    margin: 10px 7px;
-  }
-  .back-face, .front-face {
-    width: 60px;
-    height: 60px;
+  .winning-message.show {
+    top: unset;
+    bottom: -10px;
   }
   .timer {
-    top: -50px;
     right: unset;
+    top: -50px;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+            transform: translateX(-50%);
     padding: 17px 10px 7px 10px;
   }
   .timer.show {
     right: unset;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+            transform: translateX(-50%);
+    top: -10px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 570px) {
+  .board {
+    -ms-grid-columns: (14vw)[6];
+        grid-template-columns: repeat(6, 14vw);
+    -ms-grid-rows: (23vh)[4];
+        grid-template-rows: repeat(4, 23vh);
+    grid-gap: unset;
+  }
+  .memory-card {
+    width: 75px;
+    height: 75px;
+  }
+  .back-face, .front-face {
+    width: 75px;
+    height: 75px;
+  }
+  * {
+    font-size: 18px;
+  }
+  .winning-message, .timer {
+    background-color: #0000007e;
+  }
+  .timer.playing {
+    top: -50px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 360px) {
+  .memory-card {
+    width: 65px;
+    height: 65px;
+  }
+  .back-face, .front-face {
+    width: 65px;
+    height: 65px;
+  }
+  header img {
+    margin: 17px;
+  }
+}
+
+@media (orientation: portrait) {
+  * {
+    font-size: 20px;
+  }
+  .board {
+    -ms-grid-columns: (100px)[4];
+        grid-template-columns: repeat(4, 100px);
+    -ms-grid-rows: (100px)[6];
+        grid-template-rows: repeat(6, 100px);
+  }
+  .timer {
+    right: unset;
+    top: -50px;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+            transform: translateX(-50%);
+    padding: 17px 10px 7px 10px;
+  }
+  .timer.show {
+    right: unset;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+            transform: translateX(-50%);
     top: -10px;
   }
   .winning-message {
-    width: 100%;
     top: unset;
-    bottom: -90px;
-    left: 0;
-    -webkit-transform: translateY(-50%);
-            transform: translateY(-50%);
-    padding: 20px 25px;
-    border-radius: 0;
-    -webkit-transition: bottom 1s;
-    transition: bottom 1s;
+    bottom: -55px;
+    padding: 10px 25px 20px 25px;
   }
   .winning-message.show {
     top: unset;
-    bottom: 55%;
+    bottom: -10px;
+  }
+}
+
+@media (orientation: portrait) and (max-height: 850px) {
+  .memory-card {
+    width: 90px;
+    height: 90px;
+  }
+  .back-face, .front-face {
+    width: 90px;
+    height: 90px;
+  }
+}
+
+@media (orientation: portrait) and (max-width: 570px) {
+  .board {
+    -ms-grid-columns: (23vw)[4];
+        grid-template-columns: repeat(4, 23vw);
+    -ms-grid-rows: (14vh)[6];
+        grid-template-rows: repeat(6, 14vh);
+    grid-gap: unset;
+  }
+  .memory-card {
+    width: 75px;
+    height: 75px;
+  }
+  .back-face, .front-face {
+    width: 75px;
+    height: 75px;
+  }
+  * {
+    font-size: 18px;
+  }
+  .winning-message, .timer {
+    background-color: #0000007e;
+  }
+}
+
+@media (orientation: portrait) and (max-width: 360px) {
+  .memory-card {
+    width: 65px;
+    height: 65px;
+  }
+  .back-face, .front-face {
+    width: 65px;
+    height: 65px;
+  }
+  header img {
+    margin: 17px;
+  }
+  .winning-message {
+    border-radius: unset;
+    width: 100vw;
   }
 }

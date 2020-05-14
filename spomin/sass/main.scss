@@ -1,0 +1,420 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+
+  font-family: "consolas", monospace;
+  font-size: 15px;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+
+  background-color: hsl(35, 90%, 92%);
+  // background ..?
+}
+
+/* --------- Header --------- */
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+
+  // background-color: tomato;
+
+  img {
+    margin: 18px 24px;
+    width: 16px;
+
+    cursor: pointer;
+
+    opacity: 20%;
+
+    transition: opacity 0.2s;
+
+    &:hover {
+      opacity: 30%;
+    }
+
+    &:active {
+      opacity: 50%; // 80% when checked
+    }
+
+    /*
+		&.checked {
+				opacity: 50%;
+		
+				&:hover {
+						opacity: 60%;
+				}
+		
+				&:active {
+						opacity: 80%;
+				}
+		}
+		*/
+  }
+
+  .restart-button {
+    float: left;
+    transform: rotateY(180deg);
+  }
+
+  .timer-button {
+    float: right;
+  }
+
+  input {
+    position: absolute;
+    opacity: 1;
+  }
+}
+
+/* --------- Main board --------- */
+
+$card-size: 100px;
+
+.board {
+  margin: auto;
+  justify-items: center;
+  align-items: center;
+
+  display: grid;
+  grid-gap: 25px;
+  grid-template-columns: repeat(6, $card-size);
+  grid-template-rows: repeat(4, $card-size);
+
+  // background-color: rgba(255, 0, 0, 0.137);
+
+  // perspective: 1000px;
+}
+
+.memory-card {
+  width: $card-size;
+  height: $card-size;
+
+  border-radius: 3px;
+  box-shadow: 5px 7px #00000011;
+
+  transform-style: preserve-3d;
+  transition: transform 0.5s;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &:active {
+    transform: scale(0.97);
+    // transition: transform 0.1s;
+  }
+
+  &.flipped {
+    transform: rotateY(180deg);
+
+    box-shadow: -5px 7px #00000011;
+
+    cursor: default;
+  }
+
+  &.found {
+    transform: rotateY(180deg) translate(-3px, 4px); /* ali (-3px, 3px) */
+    box-shadow: none;
+  }
+}
+
+%faces {
+  position: absolute;
+
+  width: $card-size;
+  height: $card-size;
+
+  border-radius: 3px;
+
+  backface-visibility: hidden;
+}
+
+.back-face {
+  @extend %faces;
+}
+
+.front-face {
+  @extend %faces;
+
+  transform: rotateY(180deg);
+
+  // filter: grayscale(0);
+  transition: filter 2s;
+}
+
+/* --------- Floating messages --------- */
+
+%messages {
+  position: fixed;
+  z-index: 3;
+
+  border-radius: 4px;
+  color: #ffffff;
+  background-color: #000000b0;
+
+  transition: 0.5s;
+}
+
+.winning-message {
+  @extend %messages;
+
+  top: -50px; // top: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  padding: 20px 25px 10px 25px;
+
+  &.show {
+    top: -10px;
+  }
+
+  button {
+    margin-left: 20px;
+
+    background-color: #ffffff;
+    border: none;
+    outline: none;
+    border-bottom: 2px solid #9c9c9c;
+
+    &:hover {
+      background-color: hsl(33, 50%, 97%);
+      cursor: pointer;
+    }
+
+    &:active {
+      background-color: hsl(33, 30%, 90%);
+      border: none;
+      outline: none;
+      border-top: 2px solid #9c9c9c;
+    }
+  }
+}
+
+.timer {
+  @extend %messages;
+
+  top: 40%;
+  right: -90px; // -90px
+
+  padding: 7px 20px 7px 10px;
+
+  &.show {
+    // .ended
+    right: -10px;
+  }
+}
+@media (orientation: landscape) {
+  @media (max-width: 1024px) {
+    $card-size: 90px;
+
+    .board {
+      grid-template-columns: repeat(6, $card-size);
+      grid-template-rows: repeat(4, $card-size);
+    }
+
+    .memory-card {
+      width: $card-size;
+      height: $card-size;
+    }
+
+    %faces {
+      width: $card-size;
+      height: $card-size;
+    }
+  }
+
+  @media (max-width: 850px) {
+    .winning-message {
+      top: unset;
+      bottom: -55px; // -55px
+
+      padding: 10px 25px 20px 25px;
+
+      &.show {
+        top: unset;
+        bottom: -10px;
+      }
+    }
+
+    .timer {
+      right: unset;
+      top: -50px;
+      left: 50%;
+      transform: translateX(-50%);
+
+      padding: 17px 10px 7px 10px;
+
+      &.show {
+        right: unset;
+        left: 50%;
+        transform: translateX(-50%);
+        top: -10px;
+      }
+    }
+  }
+
+  @media (max-height: 570px) {
+    $card-size: 75px;
+
+    .board {
+      grid-template-columns: repeat(6, 14vw);
+      grid-template-rows: repeat(4, 23vh);
+      grid-gap: unset;
+    }
+
+    .memory-card {
+      width: $card-size;
+      height: $card-size;
+    }
+
+    %faces {
+      width: $card-size;
+      height: $card-size;
+    }
+
+    * {
+      font-size: 18px;
+    }
+
+    %messages {
+      background-color: #0000007e;
+    }
+
+    .timer.playing {
+      top: -50px;
+    }
+  }
+
+  @media (max-height: 360px) {
+    $card-size: 65px;
+
+    .memory-card {
+      width: $card-size;
+      height: $card-size;
+    }
+
+    %faces {
+      width: $card-size;
+      height: $card-size;
+    }
+
+    header img {
+      margin: 17px;
+    }
+  }
+}
+
+@media (orientation: portrait) {
+  * {
+    font-size: 20px;
+  }
+
+  .board {
+    grid-template-columns: repeat(4, $card-size);
+    grid-template-rows: repeat(6, $card-size);
+  }
+
+  .timer {
+    right: unset;
+    top: -50px; // -45px
+    left: 50%;
+    transform: translateX(-50%);
+
+    padding: 17px 10px 7px 10px;
+
+    &.show {
+      right: unset;
+      left: 50%;
+      transform: translateX(-50%);
+      top: -10px;
+    }
+  }
+
+  .winning-message {
+    top: unset;
+    bottom: -55px; // -55px
+
+    padding: 10px 25px 20px 25px;
+
+    &.show {
+      top: unset;
+      bottom: -10px;
+    }
+  }
+
+  @media (max-height: 850px) {
+    $card-size: 90px;
+
+    .memory-card {
+      width: $card-size;
+      height: $card-size;
+    }
+
+    %faces {
+      width: $card-size;
+      height: $card-size;
+    }
+  }
+
+  @media (max-width: 570px) {
+    $card-size: 75px;
+
+    .board {
+      grid-template-columns: repeat(4, 23vw);
+      grid-template-rows: repeat(6, 14vh);
+      grid-gap: unset;
+    }
+
+    .memory-card {
+      width: $card-size;
+      height: $card-size;
+    }
+
+    %faces {
+      width: $card-size;
+      height: $card-size;
+    }
+
+    * {
+      font-size: 18px;
+    }
+
+    %messages {
+      background-color: #0000007e;
+    }
+  }
+
+  @media (max-width: 360px) {
+    $card-size: 65px;
+
+    .memory-card {
+      width: $card-size;
+      height: $card-size;
+    }
+
+    %faces {
+      width: $card-size;
+      height: $card-size;
+    }
+
+    header img {
+      margin: 17px;
+    }
+
+    .winning-message {
+      border-radius: unset;
+      width: 100vw;
+    }
+  }
+}
