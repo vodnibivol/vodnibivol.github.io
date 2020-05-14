@@ -92,10 +92,8 @@ header input {
           box-shadow: 5px 7px #00000011;
   -webkit-transform-style: preserve-3d;
           transform-style: preserve-3d;
-  -webkit-transition: -webkit-transform 0.5s;
-  transition: -webkit-transform 0.5s;
-  transition: transform 0.5s;
-  transition: transform 0.5s, -webkit-transform 0.5s;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
 }
 
 .memory-card:hover {
