@@ -1,0 +1,135 @@
+@import url("https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap");
+body {
+  background-color: #f7f7f7;
+  margin: 0;
+  padding: 0;
+  font-family: 'Merriweather';
+}
+
+.bgnd {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background-image: url(../img/bgnd_1.png);
+  background-size: 40px;
+  opacity: .1;
+}
+
+.main {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  width: 550px;
+  padding: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+h3 {
+  text-align: center;
+  font-size: 18px;
+  margin-left: auto;
+  display: none;
+}
+
+.contents {
+  margin: auto;
+  border-radius: 3px;
+  padding: 20px;
+  background-color: #f7f7f7;
+  text-align: justify;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-box-shadow: 0 0 25px 6px #0000001c;
+          box-shadow: 0 0 25px 6px #0000001c;
+}
+
+.contents .font_xlarge {
+  font-size: 110%;
+  line-height: 2;
+}
+
+.contents a {
+  pointer-events: none;
+  cursor: pointer;
+  text-decoration: none;
+  color: #2b2b2b;
+  font-weight: bold;
+}
+
+.contents ol.manual {
+  list-style-type: none;
+  list-style-position: inside;
+  padding: 0;
+}
+
+.contents ol.manual.collapsed {
+  margin-bottom: 0px;
+}
+
+.contents h4 {
+  float: left;
+  color: #009ed8;
+  margin: 0;
+}
+
+.contents strong {
+  color: #000000;
+  font-weight: bold;
+}
+
+.contents .color_dark {
+  color: #333;
+}
+
+.contents .color_lightdark {
+  color: #888;
+}
+
+.contents .color_orange {
+  color: #2c2c2c;
+}
+
+.contents .color_green {
+  color: #3c763d;
+}
+
+.contents .font_large {
+  font-size: 16px;
+}
+
+.contents .font_normal {
+  font-size: 100px;
+}
+
+.contents .font_small {
+  font-size: 90%;
+}
+
+.contents .font_xsmall {
+  font-size: 80%;
+}
+
+.contents .sub, .contents .sup {
+  font-size: 75%;
+}
+
+.contents .sub {
+  vertical-align: sub;
+}
+
+.contents .sup {
+  vertical-align: super;
+}
+
+.contents .italic {
+  font-style: italic;
+}
+
+.contents .strong {
+  font-weight: bold;
+}
