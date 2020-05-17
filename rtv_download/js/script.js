@@ -24,7 +24,7 @@ form.addEventListener("submit", (e) => {
 
 (function randomBackground() {
   var randInt = Math.floor(Math.random() * 8);
-  background.style["background-image"] = `url(../img/bg/bgnd_${randInt}.jpg)`;
+  background.style["background-image"] = `url(img/bg/bgnd_${randInt}.jpg)`;
   setTimeout(() => {
     background.style.opacity = 0.6;
   }, 100);
