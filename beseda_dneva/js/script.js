@@ -1,8 +1,10 @@
 contentsDiv = document.getElementById("contents");
-infoButton = document.getElementById('info');
-message = document.getElementById('message');
+infoButton = document.getElementById("info");
+message = document.getElementById("message");
 
-infoButton.addEventListener('click', () => {message.classList.toggle('show')});
+infoButton.addEventListener("click", () => {
+  message.classList.toggle("show");
+});
 
 function gabi_content(element) {
   // var element = document.getElementById('txt');
@@ -21,9 +23,12 @@ function displayText(obj) {
   randomEntry = Object.values(obj)[randInt(objLength) - 1];
 
   console.log(randomEntry.length);
-  gabi_content(randomEntry);
 
   if (randomEntry.length < 2000) {
+    randomEntry = randomEntry.replace(
+      'href="/133/',
+      'target="_blank" href="https://fran.si/133/'
+    );
     contentsDiv.innerHTML = randomEntry;
   } else {
     displayText(obj);
