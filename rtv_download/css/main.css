@@ -15,7 +15,7 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  opacity: 1;
+  opacity: .6;
   -webkit-filter: contrast(90%);
           filter: contrast(90%);
   -webkit-transition: opacity 3s;

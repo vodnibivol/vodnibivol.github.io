@@ -26,7 +26,8 @@ form.addEventListener("submit", (e) => {
 (function randomBackground() {
   var randInt = Math.floor(Math.random() * 8);
 
-  backgroundImage.src = `img/bg/bgnd_${randInt}.jpg`;
+  // -- image preload for displaying as a background
+  backgroundImage.setAttribute("src", `img/bg/bgnd_${randInt}.jpg`);
 
   backgroundImage.onload = function () {
     background.style["background-image"] = `url(img/bg/bgnd_${randInt}.jpg)`;
