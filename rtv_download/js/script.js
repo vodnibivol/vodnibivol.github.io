@@ -51,6 +51,7 @@ function getLink(rtvUrl) {
 function parser(response) {
   var parsedResponse = JSON.parse(response.responseText);
   console.log(parsedResponse);
+  console.log('response ok');
 
   /* ----- FIND LARGEST FILE ----- */
 
@@ -74,9 +75,9 @@ function parser(response) {
 
   /* ----- REDIRECT ----- */
 
-  urlFound =
-    "https://videoweb2.rtvslo.si/" + archive + filename + "?keylockhash=null";
+  urlFound = "https://videoweb2.rtvslo.si/" + archive + filename + "?keylockhash=null";
 
+  console.log(urlFound);
   window.open(urlFound, "_blank");
 }
 
@@ -85,7 +86,7 @@ function jsonRequest(inputUrl) {
   var url = getLink(inputUrl);
   const proxy = "https://cors-anywhere.herokuapp.com/";
 
-  console.log(url + proxy);
+  console.log(url);
 
   /* ----- MAKE AN XML REQUEST ----- */
 
