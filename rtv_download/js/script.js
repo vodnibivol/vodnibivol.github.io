@@ -1,15 +1,15 @@
 const form = document.getElementById("search");
 const inputField = document.getElementById("inputField");
 const link = document.getElementById("link");
-const tip = document.getElementById('tip');
-const background = document.getElementById('bgnd');
+const tip = document.getElementById("tip");
+const background = document.getElementById("bgnd");
 
 /* ----- EVENT LISTENERS ----- */
 
-search.addEventListener('keydown', () => {
-    tip.style.visibility = 'visible';
-    tip.style.opacity = '.5';
-})
+search.addEventListener("keydown", () => {
+  tip.style.visibility = "visible";
+  tip.style.opacity = ".5";
+});
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -22,9 +22,13 @@ form.addEventListener("submit", (e) => {
 
 /* ----- FUNCTIONS ----- */
 
-(function () {
-  background.style.opacity = .6
-}());
+(function randomBackground() {
+  var randInt = Math.floor(Math.random() * 8);
+  background.style["background-image"] = `url(../img/bg/bgnd_${randInt}.jpg)`;
+  setTimeout(() => {
+    background.style.opacity = 0.6;
+  }, 100);
+})();
 
 inputField.select();
 
@@ -40,7 +44,6 @@ function getLink(rtvUrl) {
 }
 
 function parser(response) {
-
   var parsedResponse = JSON.parse(response.responseText);
   console.log(parsedResponse);
 
@@ -58,7 +61,7 @@ function parser(response) {
 
   var http = parsedResponse.response.mediaFiles[0].streamers.http;
   var archive = http.split("/");
-      archive = archive[archive.length - 1];
+  archive = archive[archive.length - 1];
   var filename = parsedResponse.response.mediaFiles[largest].filename;
   if (filename[0] != "/") {
     filename = "/" + filename;
@@ -66,9 +69,10 @@ function parser(response) {
 
   /* ----- REDIRECT ----- */
 
-  urlFound = "https://videoweb2.rtvslo.si/" + archive + filename + "?keylockhash=0";
+  urlFound =
+    "https://videoweb2.rtvslo.si/" + archive + filename + "?keylockhash=null";
 
-  window.open(urlFound,'_blank');
+  window.open(urlFound, "_blank");
 }
 
 function jsonRequest(inputUrl) {
@@ -79,7 +83,7 @@ function jsonRequest(inputUrl) {
   console.log(url + proxy);
 
   /* ----- MAKE AN XML REQUEST ----- */
-  
+
   xmlhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       var response = this;
