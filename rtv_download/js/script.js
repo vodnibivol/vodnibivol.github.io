@@ -83,7 +83,7 @@ function parser(response) {
 function jsonRequest(inputUrl) {
   var xmlhttp = new XMLHttpRequest();
   var url = getLink(inputUrl);
-  const proxy = "http://cors-anywhere.herokuapp.com/";
+  const proxy = "https://cors-anywhere.herokuapp.com/";
 
   console.log(url + proxy);
 
