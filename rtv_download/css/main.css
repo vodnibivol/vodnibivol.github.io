@@ -15,11 +15,19 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  opacity: 0;
+  opacity: 1;
   -webkit-filter: contrast(90%);
           filter: contrast(90%);
   -webkit-transition: opacity 3s;
   transition: opacity 3s;
+}
+
+.bgnd.hidden {
+  opacity: 0;
+}
+
+.bgnd img {
+  display: none;
 }
 
 .input-div {
@@ -75,8 +83,8 @@ body {
   width: 18px;
   opacity: 25%;
   outline: none;
-  -webkit-transition: opacity .3s;
-  transition: opacity .3s;
+  -webkit-transition: opacity 0.3s;
+  transition: opacity 0.3s;
 }
 
 .input-div .dl-button:hover {

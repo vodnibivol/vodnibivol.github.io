@@ -3,6 +3,7 @@ const inputField = document.getElementById("inputField");
 const link = document.getElementById("link");
 const tip = document.getElementById("tip");
 const background = document.getElementById("bgnd");
+const backgroundImage = document.getElementById("bgndImg");
 
 /* ----- EVENT LISTENERS ----- */
 
@@ -24,10 +25,13 @@ form.addEventListener("submit", (e) => {
 
 (function randomBackground() {
   var randInt = Math.floor(Math.random() * 8);
-  background.style["background-image"] = `url(img/bg/bgnd_${randInt}.jpg)`;
-  setTimeout(() => {
-    background.style.opacity = 0.6;
-  }, 100);
+
+  backgroundImage.src = `img/bg/bgnd_${randInt}.jpg`;
+
+  backgroundImage.onload = function () {
+    background.style["background-image"] = `url(img/bg/bgnd_${randInt}.jpg)`;
+    background.classList.remove("hidden");
+  };
 })();
 
 inputField.select();
