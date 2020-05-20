@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RTV 4D - Downloader</title>
+    <link rel="shortcut icon" href="img/favicon.ico" />
+    <link rel="stylesheet" href="css/main.css" />
+    <script src="js/site.js" defer></script>
+    <script src="js/animations.js" defer></script>
+    <script src="js/getlink.js" defer></script>
+  </head>
+  <body>
+    <a
+      type="video"
+      href="will-be-set"
+      target="_blank"
+      download="will-be-set"
+      id="anchor"
+      hidden
+    ></a>
+    <div class="bgnd hidden" id="bgnd">
+      <img id="bgndImg" hidden />
+    </div>
+    <div class="input-div">
+      <div class="bounce-div" id="bounceDiv">
+        <form id="search" class="search">
+          <input
+            class="input-field"
+            type="text"
+            placeholder="https://4d.rtvslo.si/arhiv/lahko-noc-otroci/174689123"
+            autocomplete="off"
+            spellcheck="false"
+            name="inputUrl"
+            id="inputField"
+          />
+          <input
+            class="dl-button"
+            type="image"
+            src="img/download.ico"
+            alt="submit"
+            id="dlButton"
+          />
+        </form>
+        <svg class="progress-ring" id="circleDiv" width="60" height="60">
+          <circle
+            class="progress-circle"
+            id="progressCircle"
+            stroke="white"
+            stroke-width="3"
+            fill="transparent"
+            r="22"
+            cx="30"
+            cy="30"
+          />
+        </svg>
+      </div>
+      <p class="tip" id="tip">Press enter to download</p>
+    </div>
+    <footer>
+      <div class="buttons" hidden>
+        <button type="button" id="startButton">start animation</button>
+        <button type="button" id="stopButton">stop animation</button>
+      </div>
+      <div>
+        <span class="info"
+          >&copy; 2020 | vodnibivol |
+          <a href="https://www.rtvslo.si/">rtvslo.si</a></span
+        >
+      </div>
+    </footer>
+  </body>
+</html>
