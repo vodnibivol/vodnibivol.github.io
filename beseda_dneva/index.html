@@ -1,24 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Beseda dneva</title>
-  <link rel="shortcut icon" href="img/favicon.png" type="image/x-icon">
-  <link rel="stylesheet" href="css/main.css">
-  <script type="text/javascript" src="js/script.js" defer></script>
-</head>
-<body>
-  <div class="bgnd"></div>
-  <h3 class="main-title">Beseda dneva:</h3>
-  <div class="main">
-    <div class="contents" id="contents"></div>
-  </div>
-  <div class="info-bar">
-    <div class="message" id="message">
-      <img src="img/i.png" alt="info" id="info">
-      <span class="text">copyright 2020 | vodnibivol | <a href="https://fran.si/" target="_blank">fran.si</a></span>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Beseda dneva</title>
+    <link
+      rel="shortcut icon"
+      href="img/favicon_small.png"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="css/main.css" />
+    <script type="text/javascript" src="js/SITE.js" defer></script>
+    <script type="text/javascript" src="js/PRNG.js" defer></script>
+  </head>
+  <body>
+    <div class="bgnd"></div>
+    <div class="main">
+      <h1 class="main-title" hidden>Beseda dneva:</h1>
+      <div class="contents hidden" id="contents"></div>
     </div>
-  </div>
-</body>
+    <footer class="info-bar">
+      <div class="message" id="message">
+        <svg class="circle" height="18" width="18">
+          <circle cx="9" cy="9" r="9" fill="#f7f7f7" />
+        </svg>
+        <img src="img/info_2_small.png" alt="info" id="info" />
+        <span class="text"
+          >copyright 2020 | vodnibivol |
+          <a href="https://fran.si/" target="_blank">fran.si</a></span
+        >
+      </div>
+    </footer>
+  </body>
 </html>
