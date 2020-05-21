@@ -26,7 +26,7 @@ indexRequest();
 
 function indexRequest() {
   var xmlhttp = new XMLHttpRequest();
-  xmlhttp.open("GET", "CHUNKS/_index.json", true);
+  xmlhttp.open("GET", "CHUNKS/_indexes.json", true);
   xmlhttp.send();
 
   xmlhttp.onreadystatechange = function () {
