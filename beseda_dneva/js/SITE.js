@@ -4,7 +4,7 @@ footer = document.querySelector("footer");
 message = document.getElementById("message");
 
 var ENTRY;
-var _INDEX;
+var INDEX;
 var entries_no;
 
 infoButton.addEventListener("click", () => {
@@ -26,14 +26,14 @@ indexRequest();
 
 function indexRequest() {
   var xmlhttp = new XMLHttpRequest();
-  xmlhttp.open("GET", "CHUNKS/file_index.json", true);
+  xmlhttp.open("GET", "CHUNKS/index.json", true);
   xmlhttp.send();
 
   xmlhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
-      _INDEX = JSON.parse(this.responseText);
+      INDEX = JSON.parse(this.responseText);
 
-      entries_no = _INDEX.size;
+      entries_no = INDEX.size;
       console.log("no. of entries : " + entries_no);
 
       entryRequest();
@@ -42,7 +42,7 @@ function indexRequest() {
 }
 
 function entryRequest() {
-  var randEntry = _INDEX.entries[getRand()];
+  var randEntry = INDEX.entries[getRand()];
 
   console.log("random entry:");
   console.log(randEntry);
