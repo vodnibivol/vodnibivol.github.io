@@ -26,7 +26,7 @@ indexRequest();
 
 function indexRequest() {
   var xmlhttp = new XMLHttpRequest();
-  xmlhttp.open("GET", "../CHUNKS/_index.json", true);
+  xmlhttp.open("GET", "CHUNKS/_index.json", true);
   xmlhttp.send();
 
   xmlhttp.onreadystatechange = function () {
@@ -48,7 +48,7 @@ function entryRequest() {
   console.log(randEntry);
 
   var filename = randEntry.filename;
-  var url = `../CHUNKS/${filename}`;
+  var url = `CHUNKS/${filename}`;
 
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.open("GET", url, true);
