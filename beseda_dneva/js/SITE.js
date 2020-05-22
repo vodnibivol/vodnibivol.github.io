@@ -60,7 +60,7 @@ function entryRequest() {
 
       ENTRY = filename[randEntry.ID];
 
-      console.log(ENTRY);
+      // console.log(ENTRY);
       displayText(ENTRY);
     }
   };
