@@ -1,5 +1,4 @@
 @import url("https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=PT+Sans:ital@0;1&display=swap");
 body {
   background-color: #f7f7f7;
   margin: 0;
@@ -33,25 +32,18 @@ body {
           flex-direction: column;
 }
 
-h1 {
-  text-align: left;
-  margin: 0 10px 10px;
-  font-weight: 100;
-}
-
 .contents {
-  margin: auto;
   border-radius: 5px;
   padding: 20px;
   background-color: #f7f7f7;
   text-align: justify;
   font-size: 16px;
   line-height: 1.6;
+  -webkit-box-shadow: 0 0 25px 6px #88776622;
+          box-shadow: 0 0 25px 6px #88776622;
   opacity: 1;
   -webkit-transform: none;
           transform: none;
-  -webkit-box-shadow: 0 0 25px 6px #88776622;
-          box-shadow: 0 0 25px 6px #88776622;
   -webkit-transition: opacity 1s, -webkit-transform 1s;
   transition: opacity 1s, -webkit-transform 1s;
   transition: opacity 1s, transform 1s;
@@ -156,7 +148,7 @@ h1 {
   text-align: right;
 }
 
-.info-bar .message {
+.info-bar .bubble {
   float: right;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -169,11 +161,11 @@ h1 {
   background-color: rgba(250, 250, 250, 0.8);
 }
 
-.info-bar .message.show span.text {
+.info-bar .bubble.open .copyright {
   width: 270px;
 }
 
-.info-bar .message img {
+.info-bar .bubble img {
   position: absolute;
   width: 18px;
   -webkit-transform: translateX(-4px);
@@ -184,21 +176,21 @@ h1 {
   transition: opacity 0.3s;
 }
 
-.info-bar .message img:hover {
+.info-bar .bubble img:hover {
   opacity: 0.4;
 }
 
-.info-bar .message img:active {
+.info-bar .bubble img:active {
   opacity: 0.5;
 }
 
-.info-bar .message .circle {
+.info-bar .bubble svg {
   position: absolute;
   -webkit-transform: translateX(-4px);
           transform: translateX(-4px);
 }
 
-.info-bar .message span.text {
+.info-bar .bubble .copyright {
   width: 10px;
   direction: rtl;
   float: right;
@@ -210,7 +202,7 @@ h1 {
   transition: 0.5s;
 }
 
-a {
+.info-bar .bubble a {
   text-decoration: none;
   color: #a17e31;
 }

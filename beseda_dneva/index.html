@@ -3,15 +3,36 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="manifest" href="/site.webmanifest">
-    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
-    <meta name="apple-mobile-web-app-title" content="Beseda dneva">
-    <meta name="application-name" content="Beseda dneva">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="theme-color" content="#ffffff">
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="img/icons/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="img/icons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="img/icons/favicon-16x16.png"
+    />
+    <link rel="manifest" href="./site.webmanifest" />
+    <link
+      rel="mask-icon"
+      href="img/icons/safari-pinned-tab.svg"
+      color="#5bbad5"
+    />
+    <link rel="shortcut icon" href="img/icons/favicon.ico" />
+    <meta name="apple-mobile-web-app-title" content="Beseda dneva" />
+    <meta name="application-name" content="Beseda dneva" />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="msapplication-config" content="./browserconfig.xml" />
+    <meta name="theme-color" content="#ffffff" />
+    <title>Beseda dneva</title>
     <link rel="stylesheet" href="css/main.css" />
     <script type="text/javascript" src="js/SITE.js" defer></script>
     <script type="text/javascript" src="js/PRNG.js" defer></script>
@@ -19,16 +40,16 @@
   <body>
     <div class="bgnd"></div>
     <div class="main">
-      <h1 class="main-title" hidden>Beseda dneva:</h1>
+      <!-- <h1 class="main-title" hidden>Beseda dneva:</h1> -->
       <div class="contents hidden" id="contents"></div>
     </div>
     <footer class="info-bar">
-      <div class="message" id="message">
-        <svg class="circle" height="18" width="18">
+      <div class="bubble" id="bubble">
+        <svg height="18" width="18">
           <circle cx="9" cy="9" r="9" fill="#f7f7f7" />
         </svg>
-        <img src="img/info_2_small.png" alt="info" id="info" />
-        <span class="text"
+        <img src="img/info.png" alt="info" id="info" />
+        <span class="copyright"
           >copyright 2020 | vodnibivol |
           <a href="https://fran.si/" target="_blank">fran.si</a></span
         >

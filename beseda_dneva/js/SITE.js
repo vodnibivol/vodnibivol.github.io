@@ -1,32 +1,41 @@
 contentsDiv = document.getElementById("contents");
-infoButton = document.getElementById("info");
 footer = document.querySelector("footer");
-message = document.getElementById("message");
+bubble = document.getElementById("bubble");
+infoButton = document.getElementById("info");
 
-var ENTRY;
-var INDEX;
-var entries_no;
+let ENTRY;
+let INDEX;
+let entries_no;
 
 infoButton.addEventListener("click", () => {
-  message.classList.toggle("show");
+  bubble.classList.toggle("open");
+
+  if (bubble.classList.contains("open")) {
+    countdown = setTimeout(() => {
+      bubble.classList.remove("open");
+    }, 5000);
+  } else {
+    clearTimeout(countdown);
+  }
 });
 
-function displayText(obj) {
-  obj = obj.replace(
+function displayText(entry) {
+  entry = entry.replace(
     'href="/133/',
     'target="_blank" href="https://fran.si/133/'
   );
-  contentsDiv.innerHTML = obj;
+
+  contentsDiv.innerHTML = entry;
   contentsDiv.classList.remove("hidden");
 }
 
-/* ------ HTTP Request ------- */
+/* ------ HTTP Requests ------- */
 
 indexRequest();
 
 function indexRequest() {
   var xmlhttp = new XMLHttpRequest();
-  xmlhttp.open("GET", "CHUNKS/index.json", true);
+  xmlhttp.open("GET", "./WORDS/index.json", true);
   xmlhttp.send();
 
   xmlhttp.onreadystatechange = function () {
@@ -42,13 +51,14 @@ function indexRequest() {
 }
 
 function entryRequest() {
-  var randEntry = INDEX.entries[getRand()];
+  var randEntry = INDEX.indexes[getRand()]; // random object with id & filename
 
   console.log("random entry:");
   console.log(randEntry);
 
-  var filename = randEntry.filename;
-  var url = `CHUNKS/${filename}`;
+  var r_filename = randEntry.file; // where to look for the id
+  var r_id = randEntry.ID;
+  var url = `./WORDS/${r_filename}`;
 
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.open("GET", url, true);
@@ -56,11 +66,10 @@ function entryRequest() {
 
   xmlhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
-      filename = JSON.parse(this.responseText);
+      file = JSON.parse(this.responseText);
 
-      ENTRY = filename[randEntry.ID];
+      ENTRY = file[r_id];
 
-      // console.log(ENTRY);
       displayText(ENTRY);
     }
   };
