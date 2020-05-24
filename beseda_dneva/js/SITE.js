@@ -1,3 +1,5 @@
+/* ----- Variables ----- */
+
 contentsDiv = document.getElementById("contents");
 footer = document.querySelector("footer");
 bubble = document.getElementById("bubble");
@@ -6,6 +8,13 @@ infoButton = document.getElementById("info");
 let ENTRY;
 let INDEX;
 let entries_no;
+
+/* ----- Event listeners ----- */
+
+window.addEventListener("DOMContentLoaded", () => {
+  console.log("DOM framework loaded");
+  document.querySelector("body").classList.remove("preload");
+});
 
 infoButton.addEventListener("click", () => {
   bubble.classList.toggle("open");
@@ -19,6 +28,8 @@ infoButton.addEventListener("click", () => {
   }
 });
 
+/* ----- Functions ----- */
+
 function displayText(entry) {
   entry = entry.replace(
     'href="/133/',
@@ -28,10 +39,6 @@ function displayText(entry) {
   contentsDiv.innerHTML = entry;
   contentsDiv.classList.remove("hidden");
 }
-
-/* ------ HTTP Requests ------- */
-
-indexRequest();
 
 function indexRequest() {
   var xmlhttp = new XMLHttpRequest();
@@ -74,3 +81,5 @@ function entryRequest() {
     }
   };
 }
+
+indexRequest();

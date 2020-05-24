@@ -4,16 +4,16 @@ function getRand() {
     var start = new Date(2020, 0, 0);
     var diff = now - start;
     var oneDay = 1000 * 60 * 60 * 24;
-    var day_no = Math.floor(diff / oneDay) + 32727;
+    var day_no = Math.floor(diff / oneDay);
 
     return day_no;
   }
 
   // values from Numerical recipes
   var a = 1664525,
-    c = 1013904233,
+    c = 1013904223,
     m = Math.pow(2, 32),
-    seed = 12234;
+    seed = 240520;
 
   for (i = 0; i <= today(); i++) {
     seed = (a * seed + c) % m;

@@ -6,6 +6,11 @@ body {
   font-family: "Merriweather";
 }
 
+.preload * {
+  -webkit-transition: none !important;
+  transition: none !important;
+}
+
 .bgnd {
   position: fixed;
   width: 100vw;
@@ -33,6 +38,7 @@ body {
 }
 
 .contents {
+  margin: auto;
   border-radius: 5px;
   padding: 20px;
   background-color: #f7f7f7;
