@@ -6,13 +6,8 @@
 }
 
 body {
-  background-color: #000000;
+  background-color: black;
   height: 100vh;
-}
-
-.preload * {
-  -webkit-transition: none !important;
-  transition: none !important;
 }
 
 .bgnd {
@@ -173,7 +168,7 @@ footer a {
 .input-div .tip.show {
   -webkit-transition-delay: 1s;
           transition-delay: 1s;
-  opacity: .5;
+  opacity: 0.5;
 }
 
 .bounce-div {
@@ -282,14 +277,14 @@ footer a {
           transform: translateX(-50%);
   opacity: 0;
   visibility: hidden;
-  -webkit-transition: opacity .5s, visibility .5s;
-  transition: opacity .5s, visibility .5s;
+  -webkit-transition: opacity 0.5s, visibility 0.5s;
+  transition: opacity 0.5s, visibility 0.5s;
 }
 
 .progress-ring.animated {
-  -webkit-transition-delay: .5s;
-          transition-delay: .5s;
-  opacity: .5;
+  -webkit-transition-delay: 0.5s;
+          transition-delay: 0.5s;
+  opacity: 0.5;
   visibility: visible;
 }
 
@@ -301,4 +296,16 @@ footer a {
   stroke-linecap: round;
   -webkit-transition: 0.35s stroke-dashoffset;
   transition: 0.35s stroke-dashoffset;
+}
+
+@media (max-width: 640px) {
+  .bgnd {
+    height: 100vh;
+  }
+  .input-div .input-field {
+    width: 60vw;
+  }
+  .input-div .tip {
+    visibility: hidden;
+  }
 }
