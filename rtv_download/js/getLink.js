@@ -149,7 +149,7 @@ function downloadOnSite(urlFound, filename) {
   var ajax = new XMLHttpRequest();
   ajax.responseType = "blob";
   ajax.open("GET", proxy + urlFound, true); // proxy + urlFound
-  ajax.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+  ajax.setRequestHeader("x-requested-with", "XMLHttpRequest");
   ajax.send();
 
   ajax.onreadystatechange = function () {
