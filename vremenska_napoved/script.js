@@ -1,3 +1,8 @@
+let date;
+let text;
+
+let audioSequence = [];
+
 function parseResponse(data) {
   const dateText = document.getElementById("dateText");
   const paraText = document.getElementById("paraText");
@@ -7,6 +12,8 @@ function parseResponse(data) {
 
   dateText.innerHTML = toMorse(date);
   paraText.innerHTML = toMorse(text);
+
+  playSound();
 }
 
 function jsonRequest() {
@@ -80,8 +87,71 @@ function toMorse(string) {
     list.push(morse[char.toLowerCase()]);
   }
 
+  for (var char = 0; char < list.length; char++) {
+    for (var sym = 0; sym < list[char].length; sym++) {
+      audioSequence.push(list[char][sym]);
+    }
+    audioSequence.push(" ");
+  }
+
   morseString = list.join(" ");
   return morseString;
 }
 
+function toPlain() {
+  dateText.innerHTML = date;
+  paraText.innerHTML = text;
+}
+
 jsonRequest();
+
+/* ---- audio ---- */
+
+function playSound() {
+  console.log(audioSequence);
+
+  var ctx = new AudioContext();
+
+  var i = 0;
+  var duration;
+
+  function beep() {
+    function sound(duration) {
+      len = duration / 1000;
+
+      var osc = ctx.createOscillator();
+      var g = ctx.createGain();
+      osc.connect(g);
+      g.connect(ctx.destination);
+      g.gain.value = 0.2;
+
+      osc.start();
+      // g.gain.setValueAtTime(0, ctx.currentTime);
+      // g.gain.linearRampToValueAtTime(.1, ctx.currentTime + len / 2);  // in sec
+      // g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + len);  // in sec
+      osc.stop(ctx.currentTime + len);
+    }
+    if (audioSequence[i] == ".") {
+      duration = 100; // in ms
+      sound(duration);
+    } else if (audioSequence[i] == "-") {
+      duration = 200; // in ms
+      sound(duration);
+    } else if (audioSequence[i] == " ") {
+      duration = 200;
+    } else if (audioSequence[i] == "/") {
+      duration = 300;
+    } else {
+      console.log("ended");
+    }
+
+    i++;
+
+    if (i != audioSequence.length) {
+      setTimeout(function () {
+        beep();
+      }, duration + 20);
+    }
+  }
+  beep();
+}
