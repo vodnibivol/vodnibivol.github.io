@@ -11,7 +11,7 @@ function parseResponse(data) {
 
 function jsonRequest() {
   ajax = new XMLHttpRequest();
-  url = "http://www.vreme.si/api/1.0/nonlocation/?lang=sl";
+  url = "//www.vreme.si/api/1.0/nonlocation/?lang=sl";
   ajax.open("GET", url); // true
   ajax.send();
 
