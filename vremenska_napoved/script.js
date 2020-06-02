@@ -13,7 +13,7 @@ function parseResponse(data) {
   dateText.innerHTML = toMorse(date);
   paraText.innerHTML = toMorse(text);
 
-  document.addEventListener("click", playSound);
+  // document.addEventListener("click", playSound);
 }
 
 function jsonRequest() {
