@@ -11,6 +11,15 @@ body {
   transform: translate(-50%, -50%);
 
   max-width: 400px;
+
+  cursor: pointer;
+
+  transition: opacity .2s;
+}
+
+.content:active {
+  opacity: .6;
+  outline: none;
 }
 
 p {
