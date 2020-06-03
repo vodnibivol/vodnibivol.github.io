@@ -34,9 +34,6 @@ function jsonRequest() {
 }
 
 function toMorse(string) {
-  const p = ".";
-  const c = "-";
-
   morse = {
     a: ".-",
     b: "-...",
@@ -63,7 +60,6 @@ function toMorse(string) {
     v: "...-",
     z: "--..",
     ž: "--..",
-    " ": "/",
     0: "-----",
     1: ".----",
     2: "..---",
@@ -76,23 +72,24 @@ function toMorse(string) {
     9: "----.",
     ".": ".-.-.-",
     ",": "--..--",
+    " ": "/",
   };
 
-  list = [];
+  morseList = [];
 
   for (var i = 0; i < string.length; i++) {
     char = string.charAt(i);
-    list.push(morse[char.toLowerCase()]);
+    morseList.push(morse[char.toLowerCase()]);
   }
 
-  for (var char = 0; char < list.length; char++) {
-    for (var sym = 0; sym < list[char].length; sym++) {
-      audioSequence.push(list[char][sym]);
+  for (var char = 0; char < morseList.length; char++) {
+    for (var sym = 0; sym < morseList[char].length; sym++) {
+      audioSequence.push(morseList[char][sym]);
     }
     audioSequence.push(" ");
   }
 
-  morseString = list.join(" ");
+  morseString = morseList.join(" ");
   return morseString;
 }
 
@@ -134,7 +131,7 @@ function playSound() {
       setTimeout(function () {
         g.gain.setTargetAtTime(0, ctx.currentTime, 0.01);
         osc.stop(ctx.currentTime + 0.1);
-      }, duration);
+      }, duration * 0.9);
     }
     if (audioSequence[i] == ".") {
       duration = 100; // in ms
@@ -152,9 +149,9 @@ function playSound() {
 
     i++;
 
-    if (i != audioSequence.length && playing) {
+    if (playing && i != audioSequence.length) {
       setTimeout(beep, duration + 20);
     }
   }
-  beep();
+  setTimeout(beep, 300);
 }

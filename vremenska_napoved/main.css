@@ -18,12 +18,14 @@ body {
 }
 
 .content:active {
-  opacity: .6;
+  opacity: .5;
   outline: none;
 }
 
 p {
   text-align: justify;
+  word-break: keep-all;
+
   font-size: 12px;
-  font-family: "Consolas", "Courier New", Courier, monospace;
+  font-family: monospace;
 }
