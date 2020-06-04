@@ -37,7 +37,7 @@ function getJSON(url) {
 
   var xmlhttp = new XMLHttpRequest();
 
-  xmlhttp.open("GET", proxy + url, true); // proxy + url
+  xmlhttp.open("GET", proxy + url); // proxy + url
   xmlhttp.send();
 
   xmlhttp.onreadystatechange = function () {
@@ -112,47 +112,14 @@ function safeName(string) {
     .replace(/[^a-z0-9]/gi, "_");
 }
 
-/*
-function download(urlFound, filename) {
-  dlAnchor.setAttribute("href", urlFound); // urlFound
-  dlAnchor.setAttribute("download", filename);
-
-  inputField.value = "";
-  inputField.select();
-  tip.innerHTML = "Press enter to download";
-
-  if (bounceTime >= 2) {
-    endAnim();
-    console.log(bounceTime);
-  } else {
-    setTimeout(() => {
-      endAnim();
-      console.log(bounceTime);
-    }, 1000);
-
-    bounceTime = 0;
-  }
-
-  bounceDiv.addEventListener("animationend", openUrl);
-}
-
-function openUrl() {
-  setTimeout(() => {
-    dlAnchor.click();
-  }, 1000);
-
-  bounceDiv.removeEventListener("animationend", openUrl);
-}
-*/
-
 function downloadOnSite(urlFound, filename) {
-  var ajax = new XMLHttpRequest();
-  ajax.responseType = "blob";
-  ajax.open("GET", proxy + urlFound, true); // proxy + urlFound
-  ajax.setRequestHeader("x-requested-with", "XMLHttpRequest");
-  ajax.send();
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.open("GET", proxy + urlFound); // proxy + urlFound
+  xmlhttp.responseType = "blob";
+  // xmlhttp.setRequestHeader("x-requested-with", "XMLHttpRequest");
+  xmlhttp.send();
 
-  ajax.onreadystatechange = function () {
+  xmlhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       var obj = window.URL.createObjectURL(this.response);
       dlAnchor.setAttribute("href", obj);
@@ -169,7 +136,7 @@ function downloadOnSite(urlFound, filename) {
       tip.innerHTML = "Press enter to download";
     }
   };
-  ajax.onprogress = function (e) {
+  xmlhttp.onprogress = function (e) {
     setProgress((e.loaded / e.total) * 100);
   };
 }
