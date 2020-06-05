@@ -1,10 +1,27 @@
+/* --- variables --- */
+
 let date;
 let text;
 let playing = false;
 
 let audioSequence = [];
 
+/* --- set cookies --- */
+
+if (document.cookie == "") {
+  document.cookie = "visited";
+  greeting();
+}
+
+/* --- event listeners --- */
+
 document.getElementById("content").addEventListener("click", playSound);
+
+/* --- functions --- */
+
+function greeting() {
+  //
+}
 
 function parseResponse(data) {
   const dateText = document.getElementById("dateText");
@@ -107,6 +124,8 @@ function playSound() {
     // initialize
     playing = true;
 
+    var AudioContext = window.AudioContext || window.webkitAudioContext;
+    
     var ctx = new AudioContext(),
       i = 0,
       duration;
