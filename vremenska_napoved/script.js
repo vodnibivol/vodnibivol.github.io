@@ -124,8 +124,15 @@ function playSound() {
     // initialize
     playing = true;
 
-    var AudioContext = window.AudioContext || window.webkitAudioContext;
-    
+    var AudioContext =
+      window.AudioContext || window.webkitAudioContext || false;
+
+    if (!AudioContext) {
+      alert(
+        "Sorry, but the Web Audio API is not supported by your browser. Please, consider upgrading to the latest version or downloading Google Chrome or Mozilla Firefox"
+      );
+    }
+
     var ctx = new AudioContext(),
       i = 0,
       duration;
@@ -172,5 +179,5 @@ function playSound() {
       setTimeout(beep, duration + 20);
     }
   }
-  setTimeout(beep, 300);
+  setTimeout(beep, 500);
 }
