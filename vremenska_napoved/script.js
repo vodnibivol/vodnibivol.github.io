@@ -122,10 +122,10 @@ jsonRequest();
 function playSound() {
   if (!playing) {
     // initialize
+    console.log(audioSequence);
     playing = true;
 
-    var AudioContext =
-      window.AudioContext || window.webkitAudioContext || false;
+    var AudioContext = window.AudioContext || window.webkitAudioContext || false;
 
     if (!AudioContext) {
       alert(
@@ -153,10 +153,10 @@ function playSound() {
 
       osc.start();
 
-      g.gain.setTargetAtTime(0.2, ctx.currentTime, 0.01); // in sec
+      g.gain.setTargetAtTime(0.2, ctx.currentTime, 0.02); // in sec
       setTimeout(function () {
-        g.gain.setTargetAtTime(0, ctx.currentTime, 0.01);
-        osc.stop(ctx.currentTime + 0.1);
+        g.gain.setTargetAtTime(0, ctx.currentTime, 0.02);
+        osc.stop(ctx.currentTime + 0.2);
       }, duration * 0.9);
     }
     if (audioSequence[i] == ".") {
@@ -168,7 +168,7 @@ function playSound() {
     } else if (audioSequence[i] == " ") {
       duration = 200;
     } else if (audioSequence[i] == "/") {
-      duration = 300;
+      duration = 100; // already " " on both sides
     } else {
       console.log("ended");
     }
@@ -176,8 +176,8 @@ function playSound() {
     i++;
 
     if (playing && i != audioSequence.length) {
-      setTimeout(beep, duration + 20);
+      setTimeout(beep, duration + 30);
     }
   }
-  setTimeout(beep, 500);
+  setTimeout(beep, 300); // 500
 }
