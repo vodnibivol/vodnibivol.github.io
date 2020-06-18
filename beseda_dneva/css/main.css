@@ -1,14 +1,40 @@
-@import url("https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap");
+@font-face {
+  font-family: "Merriweather";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Merriweather Regular"), local("Merriweather-Regular"), url("../fonts/merriweather-v21-latin-ext_latin-regular.woff2") format("woff2"), url("../fonts/merriweather-v21-latin-ext_latin-regular.woff") format("woff");
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+@font-face {
+  font-family: "Merriweather";
+  font-style: italic;
+  font-weight: 400;
+  src: local("Merriweather Italic"), local("Merriweather-Italic"), url("../fonts/merriweather-v21-latin-ext_latin-italic.woff2") format("woff2"), url("../fonts/merriweather-v21-latin-ext_latin-italic.woff") format("woff");
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+@font-face {
+  font-family: "Merriweather";
+  font-style: normal;
+  font-weight: 700;
+  src: local("Merriweather Bold"), local("Merriweather-Bold"), url("../fonts/merriweather-v21-latin-ext_latin-700.woff2") format("woff2"), url("../fonts/merriweather-v21-latin-ext_latin-700.woff") format("woff");
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+@font-face {
+  font-family: "Merriweather";
+  font-style: italic;
+  font-weight: 700;
+  src: local("Merriweather Bold Italic"), local("Merriweather-BoldItalic"), url("../fonts/merriweather-v21-latin-ext_latin-700italic.woff2") format("woff2"), url("../fonts/merriweather-v21-latin-ext_latin-700italic.woff") format("woff");
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
 body {
   background-color: #f7f7f7;
   margin: 0;
   padding: 0;
-  font-family: "Merriweather";
-}
-
-.preload * {
-  -webkit-transition: none !important;
-  transition: none !important;
+  font-family: "Merriweather", serif;
 }
 
 .bgnd {
@@ -37,8 +63,75 @@ body {
           flex-direction: column;
 }
 
+.loader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  opacity: 0.2;
+  -webkit-transition: opacity 0.5s;
+  transition: opacity 0.5s;
+}
+
+.loader.hidden {
+  opacity: 0;
+}
+
+.loader .dot {
+  display: inline-block;
+  margin: 2px;
+  height: 5px;
+  width: 5px;
+  border-radius: 50%;
+  background-color: #000000;
+  -webkit-animation: bounce 1.2s infinite both cubic-bezier(0.62, 0.28, 0.23, 0.99);
+          animation: bounce 1.2s infinite both cubic-bezier(0.62, 0.28, 0.23, 0.99);
+}
+
+.loader .dot2 {
+  -webkit-animation-delay: 0.12s;
+          animation-delay: 0.12s;
+}
+
+.loader .dot3 {
+  -webkit-animation-delay: 0.24s;
+          animation-delay: 0.24s;
+}
+
+@-webkit-keyframes bounce {
+  0% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+  50% {
+    -webkit-transform: translateY(-10px);
+            transform: translateY(-10px);
+  }
+  100% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+}
+
+@keyframes bounce {
+  0% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+  50% {
+    -webkit-transform: translateY(-10px);
+            transform: translateY(-10px);
+  }
+  100% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+}
+
 .contents {
   margin: auto;
+  z-index: 2;
   border-radius: 5px;
   padding: 20px;
   background-color: #f7f7f7;

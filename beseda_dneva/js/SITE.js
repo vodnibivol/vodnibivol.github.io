@@ -1,20 +1,16 @@
 /* ----- Variables ----- */
 
-contentsDiv = document.getElementById("contents");
-footer = document.querySelector("footer");
-bubble = document.getElementById("bubble");
-infoButton = document.getElementById("info");
+const loader = document.getElementById("loader");
+const contentDiv = document.getElementById("contents");
+const footer = document.querySelector("footer");
+const bubble = document.getElementById("bubble");
+const infoButton = document.getElementById("info");
 
 let ENTRY;
 let INDEX;
 let entries_no;
 
 /* ----- Event listeners ----- */
-
-window.addEventListener("DOMContentLoaded", () => {
-  console.log("DOM framework loaded");
-  document.querySelector("body").classList.remove("preload");
-});
 
 infoButton.addEventListener("click", () => {
   bubble.classList.toggle("open");
@@ -31,13 +27,13 @@ infoButton.addEventListener("click", () => {
 /* ----- Functions ----- */
 
 function displayText(entry) {
-  entry = entry.replace(
-    'href="/133/',
-    'target="_blank" href="https://fran.si/133/'
-  );
+  loader.classList.add("hidden");
 
-  contentsDiv.innerHTML = entry;
-  contentsDiv.classList.remove("hidden");
+  contentDiv.innerHTML = entry;
+
+  setTimeout(function () {
+    contentDiv.classList.remove("hidden");
+  }, 400);
 }
 
 function indexRequest() {
@@ -49,22 +45,23 @@ function indexRequest() {
     if (this.readyState == 4 && this.status == 200) {
       INDEX = JSON.parse(this.responseText);
 
-      entries_no = INDEX.size;
+      entries_no = INDEX.entries;
       console.log("no. of entries : " + entries_no);
 
-      entryRequest();
+      rand = getRand();
+
+      var quotient = Math.floor(rand / INDEX.filesize);
+      var remainder = rand % INDEX.filesize;
+
+      entryRequest(quotient, remainder);
     }
   };
 }
 
-function entryRequest() {
-  var randEntry = INDEX.indexes[getRand()]; // random object with id & filename
+function entryRequest(q, r) {
+  r_filename = INDEX.files[q];
+  console.log("filename : " + r_filename);
 
-  console.log("random entry:");
-  console.log(randEntry);
-
-  var r_filename = randEntry.file; // where to look for the id
-  var r_id = randEntry.ID;
   var url = `./WORDS/${r_filename}`;
 
   var xmlhttp = new XMLHttpRequest();
@@ -75,6 +72,11 @@ function entryRequest() {
     if (this.readyState == 4 && this.status == 200) {
       file = JSON.parse(this.responseText);
 
+      ids = Object.keys(file);
+      r_id = ids[r];
+
+      console.log("random id : " + r_id);
+
       ENTRY = file[r_id];
 
       displayText(ENTRY);
@@ -83,3 +85,5 @@ function entryRequest() {
 }
 
 indexRequest();
+
+loader.classList.remove("hidden");
