@@ -1,11 +1,13 @@
 const proxy = "https://cors-anywhere.herokuapp.com/";
-const keyl = "?keylockhash=null";
 const dlAnchor = document.getElementById("anchor");
 
 let inputLink;
 let apiLink;
 let JSONFile;
 let urlFound;
+
+var filename = "download";
+var extension = ".mp4";
 
 function findUrl(input) {
   inputLink = input;
@@ -22,9 +24,14 @@ function getApi(rtvUrl) {
     if (rtvUrl.substring(0, 21) != "https://4d.rtvslo.si/") throw "Wrong url";
     if (isNaN(videoId)) throw "Wrong url";
 
-    apiLink = `https://api.rtvslo.si/ava/getRecording/${videoId}?client_id=82013fb3a531d5414f478747c1aca622`;
+    var header = `https://api.rtvslo.si/ava/getMedia/${videoId}?`;
+    var c_id = "client_id=82013fb3a531d5414f478747c1aca622";
+    var jwt = "&jwt=NnDuw0UUson3dQ3wP0zwqy0P-hjil-8U0opfPNYcYAc";
+
+    var apiLink = header + c_id + jwt;
 
     getJSON(apiLink);
+    getFilename(videoId);
   } catch (err) {
     console.error(err);
     headShake();
@@ -70,7 +77,7 @@ function parseJSON(response) {
 
   /* ----- FIND LARGEST FILE ----- */
 
-  bitrates = [];
+  var bitrates = [];
 
   for (i = 0; i < parsedResponse.response.mediaFiles.length; i++) {
     bitrates.push(parsedResponse.response.mediaFiles[i].bitrate);
@@ -78,30 +85,14 @@ function parseJSON(response) {
 
   largest = bitrates.indexOf(Math.max(...bitrates));
 
-  /* ----- FIND OTHER PROPERTIES ----- */
+  /* ----- FIND URL ----- */
 
-  var http = parsedResponse.response.mediaFiles[0].streamers.http;
+  streams = parsedResponse.response.mediaFiles[largest].streams;
+  urlFound = streams.https || streams.http;
 
-  var archive = http.split("/");
-  archive = archive[archive.length - 1];
-
-  var filename = parsedResponse.response.mediaFiles[largest].filename;
-  if (filename[0] != "/") {
-    filename = "/" + filename;
-  }
-
-  urlFound = "https://videoweb2.rtvslo.si/" + archive + filename + keyl;
-  console.log("url found :");
   console.log(urlFound);
 
-  var extension = filename.slice(filename.lastIndexOf("."));
-  var showName = parsedResponse.response.showName;
-  var title = parsedResponse.response.title;
-  var source = parsedResponse.response.source;
-
-  var dlFilename = source + "_" + safeName(title.toLowerCase()) + extension;
-
-  downloadOnSite(urlFound, dlFilename);
+  downloadOnSite(urlFound);
 }
 
 function safeName(string) {
@@ -112,18 +103,47 @@ function safeName(string) {
     .replace(/[^a-z0-9]/gi, "_");
 }
 
-function downloadOnSite(urlFound, filename) {
-  var xmlhttp = new XMLHttpRequest();
-  xmlhttp.open("GET", proxy + urlFound); // proxy + urlFound
-  xmlhttp.responseType = "blob";
-  // xmlhttp.setRequestHeader("x-requested-with", "XMLHttpRequest");
-  xmlhttp.send();
+function getFilename(mediaID) {
+  var apiUrl = `https://api.rtvslo.si/ava/getRecordingDrm/${mediaID}?client_id=82013fb3a531d5414f478747c1aca622`;
 
-  xmlhttp.onreadystatechange = function () {
+  var metaRequest = new XMLHttpRequest();
+  metaRequest.open("GET", proxy + apiUrl);
+  metaRequest.send();
+
+  metaRequest.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      var metaJSON = JSON.parse(this.responseText);
+      console.log(metaJSON);
+
+      var response = metaJSON.response;
+
+      if (response.mediaType == "video") {
+        extension = ".mp4";
+      } else {
+        extension = ".mp3";
+      }
+
+      var title = response.title;
+      var source = response.source;
+
+      filename = source + "_" + safeName(title.toLowerCase());
+      console.log(filename);
+    }
+  };
+}
+
+function downloadOnSite(urlFound) {
+  var mediaRequest = new XMLHttpRequest();
+  mediaRequest.open("GET", proxy + urlFound); // proxy + urlFound
+  mediaRequest.responseType = "blob";
+  // xmlhttp.setRequestHeader("x-requested-with", "XMLHttpRequest");
+  mediaRequest.send();
+
+  mediaRequest.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       var obj = window.URL.createObjectURL(this.response);
       dlAnchor.setAttribute("href", obj);
-      dlAnchor.setAttribute("download", filename);
+      dlAnchor.setAttribute("download", filename + extension);
       dlAnchor.click();
 
       setTimeout(function () {
@@ -136,7 +156,7 @@ function downloadOnSite(urlFound, filename) {
       tip.innerHTML = "Press enter to download";
     }
   };
-  xmlhttp.onprogress = function (e) {
+  mediaRequest.onprogress = function (e) {
     setProgress((e.loaded / e.total) * 100);
   };
 }
