@@ -17,7 +17,6 @@ search.addEventListener("keydown", () => {
 form.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  console.log("submitted");
   var inputUrl = form.inputUrl.value;
 
   findUrl(inputUrl);
@@ -25,8 +24,8 @@ form.addEventListener("submit", (e) => {
 
 /* ----- FUNCTIONS ----- */
 
-(function randomBackground() {
-  var randInt = Math.floor(Math.random() * 8);
+function randomBackgroundImage() {
+  var randInt = getRand() % 23;
 
   // -- background image preload
 
@@ -36,13 +35,17 @@ form.addEventListener("submit", (e) => {
     background.style["background-image"] = `url(img/bg/bgnd_${randInt}.jpg)`;
     background.classList.remove("hidden");
   };
-})();
+}
+
+function randomBackgroundColor() {
+  flatColors = ["#fad390", "#2ecc71"];
+
+  var randInt = getRand() % flatColors.length;
+
+  background.style.background = flatColors[randInt];
+  background.classList.remove("hidden");
+}
+
+randomBackgroundImage();
 
 inputField.select();
-
-function getLink(rtvUrl) {
-  arr = rtvUrl.split("/");
-  videoId = arr[arr.length - 1];
-
-  return "http://api.rtvslo.si/ava/getRecording/" + videoId + "?client_id=82013fb3a531d5414f478747c1aca622";
-}

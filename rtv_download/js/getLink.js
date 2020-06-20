@@ -6,11 +6,11 @@ const dlAnchor = document.getElementById("anchor");
 const clientID = "82013fb3a531d5414f478747c1aca622";
 const proxy = "https://cors-anywhere.herokuapp.com/";
 
-let jwt;
 let mediaID;
 let dlFilename;
 
-let geoblocked = false;
+let jwt;
+let geoblocked;
 
 /* -------- FUNCTIONS -------- */
 
@@ -28,12 +28,11 @@ function getID(inputUrl) {
     mediaID = arr[arr.length - 1];
 
     if (inputUrl.substring(0, 21) != "https://4d.rtvslo.si/") throw "wrong url";
-    if (isNaN(mediaID)) throw "wrong url";
+    if (isNaN(mediaID) || mediaID == 0) throw "wrong url";
 
     startAnim();
     getMeta();
   } catch (err) {
-    console.error(err);
     tip.innerHTML = err;
     headShake();
   }
@@ -53,22 +52,30 @@ function getMeta() {
       console.log("metadata JSON:");
       console.log(metaJSON);
 
-      var response = metaJSON.response;
-      var ext;
+      try {
+        if (Object.keys(metaJSON).includes("error")) throw "Error 404: File not found.";
 
-      response.mediaType == "video" ? (ext = "mp4") : (ext = "mp3");
+        /* --- FIND METADATA --- */
 
-      var title = response.title;
-      var source = response.source;
+        var response = metaJSON.response;
+        var ext;
 
-      dlFilename = `${source}_${safeName(title.toLowerCase())}.${ext}`;
-      console.log(dlFilename);
+        response.mediaType == "video" ? (ext = "mp4") : (ext = "mp3");
 
-      jwt = response.jwt;
+        var title = response.title;
+        var source = response.source;
 
-      Object.keys(response).includes("geoblocked") ? (geoblocked = true) : (geoblocked = false);
+        dlFilename = `${source}_${safeName(title.toLowerCase())}.${ext}`;
+        console.log("filename : " + dlFilename);
 
-      getJSON();
+        jwt = response.jwt;
+
+        Object.keys(response).includes("geoblocked") ? (geoblocked = true) : (geoblocked = false);
+
+        getJSON();
+      } catch (err) {
+        catchError(err);
+      }
     }
   };
 }
@@ -82,23 +89,9 @@ function getJSON() {
   xmlhttp.send();
 
   xmlhttp.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
-      var JSONFile = this;
-
-      try {
-        parseJSON(JSONFile);
-      } catch (err) {
-        console.error(err);
-        tip.innerHTML = err;
-        tip.classList.add("show");
-        endAnim();
-      }
-    }
-    if (this.status == 429) {
-      console.error("caught error 429 ...");
-      tip.innerHTML = "Too many requests. Try again later";
-      tip.classList.add("show");
-      endAnim();
+    if (this.readyState == 4) {
+      if (this.status == 200) parseJSON(this);
+      if (this.status == 429) catchError("Too many requests. Try again later"); // proxy error
     }
   };
 }
@@ -109,39 +102,39 @@ function parseJSON(response) {
   console.log("media JSON :");
   console.log(parsedResponse);
 
-  /* ---- FIND LARGEST FILE ---- */
+  try {
+    /* ---- FIND LARGEST FILE ---- */
 
-  var bitrates = [];
+    var bitrates = [];
 
-  for (var i = 0; i < parsedResponse.response.mediaFiles.length; i++) {
-    bitrates.push(parsedResponse.response.mediaFiles[i].bitrate);
+    for (var i = 0; i < parsedResponse.response.mediaFiles.length; i++) {
+      bitrates.push(parsedResponse.response.mediaFiles[i].bitrate);
+    }
+
+    var largest = bitrates.indexOf(Math.max(...bitrates));
+
+    /* ---- FIND MEDIA URL ---- */
+
+    var streams = parsedResponse.response.mediaFiles[largest].streams;
+    var mediaUrl = streams.https || streams.http;
+
+    console.log("url found : " + mediaUrl);
+
+    geoblocked ? openUrl(mediaUrl) : downloadOnSite(mediaUrl);
+  } catch (err) {
+    catchError(err);
   }
-
-  var largest = bitrates.indexOf(Math.max(...bitrates));
-
-  /* ---- FIND MEDIA URL ---- */
-
-  var streams = parsedResponse.response.mediaFiles[largest].streams;
-  var mediaUrl = streams.https || streams.http;
-
-  // mediaUrl = mediaUrl.replace("http", "https");
-
-  console.log("url found : " + mediaUrl);
-
-  geoblocked ? openUrl(mediaUrl) : downloadOnSite(mediaUrl);
 }
 
 function openUrl(mediaUrl) {
+  window.open(mediaUrl, "_blank");
+
   inputField.value = "";
-  inputField.select();
+  inputField.focus();
   tip.innerHTML = "Press enter to download";
 
   endAnim();
   setProgress(0);
-
-  setTimeout(function () {
-    window.open(mediaUrl, "_blank");
-  }, 500);
 }
 
 function downloadOnSite(mediaUrl) {
@@ -165,7 +158,7 @@ function downloadOnSite(mediaUrl) {
       }, 500);
 
       inputField.value = "";
-      inputField.select();
+      inputField.focus();
       tip.innerHTML = "Press enter to download";
     }
   };
@@ -180,4 +173,13 @@ function safeName(string) {
     .replace("š", "s")
     .replace("ž", "z")
     .replace(/[^a-z0-9]/gi, "_");
+}
+
+function catchError(message) {
+  tip.innerHTML = message;
+  console.error(message);
+
+  endAnim();
+  inputField.focus();
+  tip.classList.add("show");
 }
