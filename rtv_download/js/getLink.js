@@ -66,7 +66,7 @@ function getMeta() {
 
       jwt = response.jwt;
 
-      if (Object.keys(response).includes("geoblocked")) geoblocked = true;
+      Object.keys(response).includes("geoblocked") ? (geoblocked = true) : (geoblocked = false);
 
       getJSON();
     }
