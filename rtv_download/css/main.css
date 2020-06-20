@@ -1,6 +1,6 @@
 /* raleway-regular - latin-ext */
 @font-face {
-  font-family: 'Raleway';
+  font-family: "Raleway";
   font-style: normal;
   font-weight: 400;
   src: local(""), url("../fonts/raleway-v15-latin-ext-regular.woff2") format("woff2"), url("../fonts/raleway-v15-latin-ext-regular.woff") format("woff");
@@ -9,7 +9,7 @@
 
 /* raleway-700 - latin-ext */
 @font-face {
-  font-family: 'Raleway';
+  font-family: "Raleway";
   font-style: normal;
   font-weight: 700;
   src: local(""), url("../fonts/raleway-v15-latin-ext-700.woff2") format("woff2"), url("../fonts/raleway-v15-latin-ext-700.woff") format("woff");
