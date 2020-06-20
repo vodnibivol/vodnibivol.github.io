@@ -1,4 +1,4 @@
-/* ----- VARIABLES ----- */
+/* -------- VARIABLES -------- */
 
 const form = document.getElementById("search");
 const inputField = document.getElementById("inputField");
@@ -29,6 +29,7 @@ form.addEventListener("submit", (e) => {
   var randInt = Math.floor(Math.random() * 8);
 
   // -- background image preload
+
   backgroundImage.setAttribute("src", `img/bg/bgnd_${randInt}.jpg`);
 
   backgroundImage.onload = function () {
@@ -43,9 +44,5 @@ function getLink(rtvUrl) {
   arr = rtvUrl.split("/");
   videoId = arr[arr.length - 1];
 
-  return (
-    "http://api.rtvslo.si/ava/getRecording/" +
-    videoId +
-    "?client_id=82013fb3a531d5414f478747c1aca622"
-  );
+  return "http://api.rtvslo.si/ava/getRecording/" + videoId + "?client_id=82013fb3a531d5414f478747c1aca622";
 }
