@@ -10,7 +10,6 @@ function getRand() {
     return day_no;
   }
 
-  // values from Numerical recipes
   var a = 1664525,
     c = 1013904223,
     m = Math.pow(2, 32),
