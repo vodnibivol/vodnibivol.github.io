@@ -1,0 +1,143 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,200;0,300;0,400;1,200;1,300;1,400&display=swap");
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Montserrat", sans-serif;
+}
+
+p,
+ul {
+  font-size: 1em;
+  line-height: 1.6em;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+header {
+  height: 100vh;
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-image: url("/img/clouds.jpg");
+  background-size: cover;
+}
+
+header .content {
+  max-width: 500px;
+  margin: 10%;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+header .content h1 {
+  font-size: 36px;
+  font-weight: 200;
+  font-style: italic;
+  color: #ffffff;
+}
+
+header .content h2 {
+  font-size: 32px;
+  font-weight: 200;
+  float: right;
+  color: #ffffffcc;
+}
+
+@media screen and (min-width: 570px) {
+  header .content {
+    margin: auto auto 20vh auto;
+  }
+}
+
+section .tekst {
+  max-width: 700px;
+  margin: auto;
+  padding: 24px;
+  text-align: justify;
+}
+
+section h1 {
+  font-size: 2.5em;
+  font-weight: 300;
+  font-variant: small-caps;
+}
+
+section iframe {
+  margin: 36px auto;
+  width: 100%;
+}
+
+section img {
+  margin: 36px auto;
+  width: 100%;
+  max-width: 450px;
+}
+
+section.o-psihoterapiji {
+  background: url("/img/water2.jpg");
+  background-position: center;
+  color: #ffffff;
+}
+
+section.o-psihoterapiji .tekst {
+  padding-bottom: 50px;
+}
+
+section.o-meni .image, section.kontakt .image {
+  text-align: center;
+}
+
+footer {
+  height: 100px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  background: url("/img/armchair2.jpg");
+  background-size: cover;
+  background-position: center;
+  color: #ffffff;
+  font-weight: 400;
+}
+
+@media screen and (min-width: 700px) {
+  .kontakt {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
+  .kontakt .google-maps {
+    margin-left: 50px;
+  }
+  .kontakt .google-maps iframe {
+    margin: 70px 20px 20px 20px;
+    width: 45vw;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  .kontakt {
+    padding: 50px;
+  }
+  .kontakt .tekst {
+    max-width: 450px;
+  }
+}
