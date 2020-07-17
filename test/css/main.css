@@ -5,16 +5,22 @@ body {
   font-family: "Montserrat", sans-serif;
 }
 
-p,
-ul {
+p {
   font-size: 1em;
-  line-height: 1.6em;
+  line-height: 2em;
 }
 
 ul {
+  list-style-type: none;
   margin: 0;
   padding: 0;
-  list-style-type: none;
+  font-size: 1em;
+  line-height: 2em;
+}
+
+a {
+  text-decoration: none;
+  color: #738695;
 }
 
 header {
@@ -72,7 +78,6 @@ section .tekst {
 section h1 {
   font-size: 2.5em;
   font-weight: 300;
-  font-variant: small-caps;
 }
 
 section iframe {
@@ -87,13 +92,19 @@ section img {
 }
 
 section.o-psihoterapiji {
-  background: url("../img/water2.jpg");
+  background: url("../img/water3.jpg");
   background-position: center;
   color: #ffffff;
 }
 
 section.o-psihoterapiji .tekst {
   padding-bottom: 50px;
+}
+
+@media screen and (min-width: 1000px) {
+  section.o-psihoterapiji .o-psihoterapiji {
+    padding-top: 1300px;
+  }
 }
 
 section.o-meni .image, section.kontakt .image {
