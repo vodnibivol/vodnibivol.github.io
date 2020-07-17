@@ -5,19 +5,6 @@ body {
   font-family: "Montserrat", sans-serif;
 }
 
-p {
-  font-size: 1em;
-  line-height: 2em;
-}
-
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  font-size: 1em;
-  line-height: 2em;
-}
-
 a {
   text-decoration: none;
   color: #738695;
@@ -25,21 +12,24 @@ a {
 
 header {
   height: 100vh;
-  width: 100%;
+  background-image: url("../img/clouds.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+header .quote {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  height: 100%;
+  padding: 30px;
+  max-width: 500px;
+  margin: auto;
+  -webkit-transform: translateY(4%);
+          transform: translateY(4%);
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  background-image: url("../img/clouds.jpg");
-  background-position: center;
-  background-size: cover;
-}
-
-header .content {
-  max-width: 500px;
-  margin: 10%;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
@@ -47,70 +37,105 @@ header .content {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-weight: 200;
 }
 
-header .content h1 {
-  font-size: 36px;
-  font-weight: 200;
-  font-style: italic;
+header .quote h1 {
+  font-size: 2.2em;
   color: #ffffff;
+  font-weight: inherit;
+  font-style: italic;
 }
 
-header .content h2 {
-  font-size: 32px;
-  font-weight: 200;
-  float: right;
+header .quote h2 {
+  -ms-flex-item-align: end;
+      align-self: flex-end;
+  margin-right: 20px;
   color: #ffffffcc;
-}
-
-@media screen and (min-width: 570px) {
-  header .content {
-    margin: auto auto 20vh auto;
-  }
-}
-
-section .tekst {
-  max-width: 700px;
-  margin: auto;
-  padding: 24px;
-  text-align: justify;
+  font-weight: inherit;
 }
 
 section h1 {
-  font-size: 2.5em;
+  margin-top: 20px;
+  font-size: 2.2em;
   font-weight: 300;
 }
 
-section iframe {
-  margin: 36px auto;
-  width: 100%;
+section p {
+  text-align: justify;
+  line-height: 1.8em;
 }
 
-section img {
-  margin: 36px auto;
-  width: 100%;
-  max-width: 450px;
+.o-meni .tekst {
+  padding: 30px;
 }
 
-section.o-psihoterapiji {
-  background: url("../img/water3.jpg");
-  background-position: center;
+.o-meni .portret {
+  width: 100%;
+  min-height: 200px;
+  background-image: url("../img/portret2.jpg");
   background-size: cover;
-  color: #ffffff;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin-bottom: 50px;
 }
 
-section.o-psihoterapiji .tekst {
-  padding-bottom: 50px;
-}
-
-@media screen and (min-width: 1000px) {
-  section.o-psihoterapiji .o-psihoterapiji {
-    padding-top: 1300px;
+@media screen and (min-width: 450px) {
+  .o-meni .content {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    padding: 30px;
+  }
+  .o-meni .content .tekst {
+    padding: unset;
+  }
+  .o-meni .content .portret {
+    min-width: 200px;
+    margin-left: 30px;
+    -webkit-transform: translateY(20px);
+            transform: translateY(20px);
   }
 }
 
-section.o-meni .image, section.kontakt .image {
-  text-align: center;
+.o-psihoterapiji {
+  background-image: url("../img/water3.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.o-psihoterapiji .tekst {
+  max-width: 800px;
+  margin: auto;
+  padding: 10% 30px;
+  color: #ffffff;
+}
+
+.kontakt .tekst {
+  padding: 30px;
+  text-align: justify;
+}
+
+.kontakt .tekst ul {
+  list-style-type: none;
+  line-height: 1.8em;
+  padding: 0;
+}
+
+.kontakt .tekst ul .nowrap {
+  white-space: nowrap;
+}
+
+.kontakt .google-maps {
+  margin-bottom: 50px;
+}
+
+.kontakt .google-maps iframe {
+  width: 100%;
 }
 
 footer {
@@ -118,45 +143,15 @@ footer {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  background: url("../img/armchair2.jpg");
-  background-position: center;
-  background-size: cover;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   color: #ffffff;
-  font-weight: 400;
-}
-
-@media screen and (max-width: 350px) {
-  .o-psihoterapiji h1 {
-    font-size: 2.3em;
-  }
-}
-
-@media screen and (min-width: 700px) {
-  .kontakt {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-  }
-  .kontakt .google-maps {
-    margin-left: 50px;
-  }
-  .kontakt .google-maps iframe {
-    margin: 70px 20px 20px 20px;
-    width: 45vw;
-  }
-}
-
-@media screen and (min-width: 1000px) {
-  .kontakt {
-    padding: 50px;
-  }
-  .kontakt .tekst {
-    max-width: 450px;
-  }
+  background-image: url("../img/armchair2.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
