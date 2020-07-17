@@ -26,7 +26,7 @@ header {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  background-image: url("/img/clouds.jpg");
+  background-image: url("./img/clouds.jpg");
   background-size: cover;
 }
 
@@ -87,7 +87,7 @@ section img {
 }
 
 section.o-psihoterapiji {
-  background: url("/img/water2.jpg");
+  background: url("./img/water2.jpg");
   background-position: center;
   color: #ffffff;
 }
@@ -111,7 +111,7 @@ footer {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  background: url("/img/armchair2.jpg");
+  background: url("./img/armchair2.jpg");
   background-size: cover;
   background-position: center;
   color: #ffffff;
