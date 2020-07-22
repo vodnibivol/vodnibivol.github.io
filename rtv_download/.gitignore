@@ -3,5 +3,6 @@ fullsize/
 .history/
 references/
 
+old.*
 *.mp4
 convert.xbs

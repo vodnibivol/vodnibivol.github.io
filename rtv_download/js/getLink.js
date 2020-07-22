@@ -1,129 +1,127 @@
 "use strict";
 
-/* -------- VARIABLES -------- */
+/* ----- Variable declarations ----- */
 
 const dlAnchor = document.getElementById("anchor");
 const clientID = "82013fb3a531d5414f478747c1aca622";
 const proxy = "https://cors-anywhere.herokuapp.com/";
 
+const meta = "https://api.rtvslo.si/ava/getRecordingDrm/";
+const api = "https://api.rtvslo.si/ava/getMedia/";
+
 let mediaID;
 let dlFilename;
-
-let jwt;
+let ext;
 let geoblocked;
 
-/* -------- FUNCTIONS -------- */
+/* ----- Function declarations ----- */
 
-function findUrl(input) {
-  var inputUrl = input;
-
+function findUrl(inputUrl) {
   console.log("input URL : " + inputUrl);
 
   getID(inputUrl);
 }
 
 function getID(inputUrl) {
-  try {
-    var arr = inputUrl.split("/");
-    mediaID = arr[arr.length - 1];
+  mediaID = inputUrl.split("/").pop();
 
-    if (inputUrl.substring(0, 21) != "https://4d.rtvslo.si/") throw "wrong url";
-    if (isNaN(mediaID) || mediaID == 0) throw "wrong url";
+  function validID() {
+    if (isNaN(mediaID) || mediaID == 0) return;
+    if (inputUrl.substring(0, 21) != "https://4d.rtvslo.si/") return;
+    return true;
+  }
 
-    startAnim();
-    getMeta();
-  } catch (err) {
-    tip.innerHTML = err;
+  validID() ? getMeta() : error();
+
+  function error() {
+    tip.innerHTML = "wrong url";
+    tip.classList.add("show");
     headShake();
   }
 }
 
 function getMeta() {
-  var metaUrl = `https://api.rtvslo.si/ava/getRecordingDrm/${mediaID}?client_id=${clientID}`;
+  startAnim();
+
+  let metaUrl = meta + `${mediaID}?client_id=${clientID}`;
 
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.open("GET", proxy + metaUrl);
   xmlhttp.send();
 
   xmlhttp.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
-      var metaJSON = JSON.parse(this.responseText);
-
-      console.log("metadata JSON:");
-      console.log(metaJSON);
-
-      try {
-        if (Object.keys(metaJSON).includes("error")) throw "Error 404: File not found.";
-
-        /* --- FIND METADATA --- */
-
-        var response = metaJSON.response;
-        var ext;
-
-        response.mediaType == "video" ? (ext = "mp4") : (ext = "mp3");
-
-        var title = response.title;
-        var source = response.source;
-
-        dlFilename = `${source}_${safeName(title.toLowerCase())}.${ext}`;
-        console.log("filename : " + dlFilename);
-
-        jwt = response.jwt;
-
-        Object.keys(response).includes("geoblocked") ? (geoblocked = true) : (geoblocked = false);
-
-        getJSON();
-      } catch (err) {
-        catchError(err);
-      }
+    if (this.readyState == 4) {
+      if (this.status == 429) catchError("Too many requests. Try again later"); // proxy error
+      if (this.status == 200) parseMeta(this);
     }
   };
 }
 
-function getJSON() {
-  var apiUrl = `https://api.rtvslo.si/ava/getMedia/${mediaID}?client_id=${clientID}&jwt=${jwt}`;
+function parseMeta(response) {
+  var metaJSON = JSON.parse(response.responseText);
 
+  console.log("metadata JSON:");
+  console.log(metaJSON);
+
+  try {
+    if (Object.keys(metaJSON).includes("error")) throw "Error 404: File not found.";
+
+    /* --- Find metadata --- */
+
+    let response = metaJSON.response;
+
+    let source = response.source;
+    let title = response.title;
+    let jwt = response.jwt;
+
+    response.mediaType == "video" ? (ext = "mp4") : (ext = "mp3");
+    response.geoblocked == 1 ? (geoblocked = true) : (geoblocked = false);
+
+    dlFilename = `${source}_${safeName(title.toLowerCase())}.${ext}`;
+    console.log("filename : " + dlFilename);
+
+    let apiUrl = api + `${mediaID}?client_id=${clientID}&jwt=${jwt}`;
+
+    getMedia(apiUrl);
+  } catch (err) {
+    catchError(err);
+  }
+}
+
+function getMedia(url) {
   var xmlhttp = new XMLHttpRequest();
-
-  xmlhttp.open("GET", proxy + apiUrl);
+  xmlhttp.open("GET", proxy + url);
   xmlhttp.send();
 
   xmlhttp.onreadystatechange = function () {
     if (this.readyState == 4) {
-      if (this.status == 200) parseJSON(this);
       if (this.status == 429) catchError("Too many requests. Try again later"); // proxy error
+      if (this.status == 200) parseMedia(this);
     }
   };
 }
 
-function parseJSON(response) {
-  var parsedResponse = JSON.parse(response.responseText);
+function parseMedia(response) {
+  let mediaJSON = JSON.parse(response.responseText);
 
   console.log("media JSON :");
-  console.log(parsedResponse);
+  console.log(mediaJSON);
 
-  try {
-    /* ---- FIND LARGEST FILE ---- */
+  let mediaFiles = mediaJSON.response.mediaFiles;
 
-    var bitrates = [];
+  /* ---- Find largest file ---- */
 
-    for (var i = 0; i < parsedResponse.response.mediaFiles.length; i++) {
-      bitrates.push(parsedResponse.response.mediaFiles[i].bitrate);
-    }
+  let bitrates = mediaFiles.map((item) => item.bitrate);
+  let largest = bitrates.indexOf(Math.max(...bitrates));
 
-    var largest = bitrates.indexOf(Math.max(...bitrates));
+  /* ---- Find media URL ---- */
 
-    /* ---- FIND MEDIA URL ---- */
+  let streams = mediaFiles[largest].streams;
+  let mediaUrl = streams.https || streams.http.replace("http", "https");
 
-    var streams = parsedResponse.response.mediaFiles[largest].streams;
-    var mediaUrl = streams.https || streams.http;
+  console.log("url found : " + mediaUrl);
 
-    console.log("url found : " + mediaUrl);
-
-    geoblocked ? openUrl(mediaUrl) : downloadOnSite(mediaUrl);
-  } catch (err) {
-    catchError(err);
-  }
+  geoblocked ? openUrl(mediaUrl) : downloadOnSite(mediaUrl);
 }
 
 function openUrl(mediaUrl) {
@@ -145,25 +143,28 @@ function downloadOnSite(mediaUrl) {
   mediaRequest.send();
 
   mediaRequest.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
-      var obj = window.URL.createObjectURL(this.response);
+    if (this.readyState == 4) {
+      if (this.status == 429) catchError("Too many requests. Try again later"); // proxy error
+      if (this.status == 200) {
+        var obj = window.URL.createObjectURL(this.response);
 
-      dlAnchor.setAttribute("href", obj);
-      dlAnchor.setAttribute("download", dlFilename);
-      dlAnchor.click();
+        dlAnchor.setAttribute("href", obj);
+        dlAnchor.setAttribute("download", dlFilename);
+        dlAnchor.click();
 
-      setTimeout(function () {
-        endAnim();
-        setProgress(0);
-      }, 500);
+        setTimeout(function () {
+          endAnim();
+          setProgress(0);
+        }, 500);
 
-      inputField.value = "";
-      inputField.focus();
-      tip.innerHTML = "Press enter to download";
+        inputField.value = "";
+        inputField.focus();
+        tip.innerHTML = "Press enter to download";
+      }
     }
-  };
-  mediaRequest.onprogress = function (e) {
-    setProgress((e.loaded / e.total) * 100);
+    mediaRequest.onprogress = function (e) {
+      setProgress((e.loaded / e.total) * 100);
+    };
   };
 }
 

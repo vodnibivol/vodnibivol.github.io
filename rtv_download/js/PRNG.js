@@ -10,14 +10,26 @@ function getRand() {
     return day_no;
   }
 
-  // values from Numerical recipes
-  var a = 1664525,
+  let a = 1664525,
     c = 1013904223,
     m = Math.pow(2, 32),
     seed = 11;
 
-  for (i = 0; i <= today(); i++) {
-    seed = (a * seed + c) % m;
+  function nextRand() {
+    return (seed = (a * seed + c) % m);
   }
-  return seed;
+
+  let population = 23; // no. of images
+
+  let arr = [...Array(population).keys()];
+  let quarantine = 11; // repeat interval (min.)
+  let sample = population - quarantine;
+
+  for (var i = 0; i < today(); i++) {
+    var randIndex = nextRand() % sample;
+    var randPick = arr[randIndex];
+
+    arr.push(...arr.splice(randIndex, 1));
+  }
+  return randPick;
 }

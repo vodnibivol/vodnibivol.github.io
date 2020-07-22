@@ -1,4 +1,4 @@
-/* -------- VARIABLES -------- */
+/* -------- Variable declarations -------- */
 
 const form = document.getElementById("search");
 const inputField = document.getElementById("inputField");
@@ -8,7 +8,7 @@ const tip = document.getElementById("tip");
 const background = document.getElementById("bgnd");
 const backgroundImage = document.getElementById("bgndImg");
 
-/* ----- EVENT LISTENERS ----- */
+/* ----- Event listeners ----- */
 
 search.addEventListener("keydown", () => {
   tip.classList.add("show");
@@ -22,17 +22,17 @@ form.addEventListener("submit", (e) => {
   findUrl(inputUrl);
 });
 
-/* ----- FUNCTIONS ----- */
+/* ----- Function declarations ----- */
 
 function randomBackgroundImage() {
-  var randInt = getRand() % 23;
+  var imageUrl = `img/bg/bgnd_${getRand()}.jpg`;
 
   // -- background image preload
 
-  backgroundImage.setAttribute("src", `img/bg/bgnd_${randInt}.jpg`);
+  backgroundImage.setAttribute("src", imageUrl);
 
   backgroundImage.onload = function () {
-    background.style["background-image"] = `url(img/bg/bgnd_${randInt}.jpg)`;
+    background.style["background-image"] = `url(${imageUrl})`;
     background.classList.remove("hidden");
   };
 }

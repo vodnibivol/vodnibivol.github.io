@@ -1,4 +1,4 @@
-/* ----- Declare variables ----- */
+/* ----- Variable declarations ----- */
 
 const bounceDiv = document.getElementById("bounceDiv");
 const circleDiv = document.getElementById("circleDiv");
