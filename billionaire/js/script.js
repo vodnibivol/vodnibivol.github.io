@@ -9,7 +9,7 @@ const back = document.getElementById("back");
 
 back.addEventListener("click", function () {
   localStorage.removeItem("db");
-  location.href = "/";
+  location.href = "/billionaire/";
 });
 
 form.addEventListener("submit", function (e) {
@@ -44,11 +44,16 @@ function getParameterByName(name, url) {
 }
 
 function calculate(m) {
-  var toBillion = new Date((m * 60 + 10 ** 9) * 1000);
+  var d = moment((m * 60 + 10 ** 9) * 1000);
 
-  d = moment(toBillion).format("dddd, MMMM Do YYYY, h:mm:ss A");
-
-  para.innerHTML = `On <b>${d}</b> you will be exactly 1.000.000.000 seconds old.`;
+  if (d.isBefore(moment())) {
+    para.innerHTML = `You were already 1.000.000.000 seconds old on
+    <b>${d.format("MMMM Do YYYY, h:mm:ss A")}</b>.`;
+  } else {
+    para.innerHTML = `On
+    <b>${d.format("dddd, MMMM Do YYYY, h:mm:ss A")}</b>
+    you will be exactly 1.000.000.000 seconds old.`;
+  }
 
   para.style.display = "block";
   back.style.display = "block";
