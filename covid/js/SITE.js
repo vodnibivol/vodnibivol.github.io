@@ -1,3 +1,4 @@
+const chartDiv = document.getElementById("chartDiv");
 const spinner = document.getElementById("spinner");
 
 const url = "https://www.gov.si/assets/vlada/Koronavirus-podatki/COVID-19-vsi-podatki.xlsx";
@@ -8,7 +9,7 @@ const filename = "COVID-19-vsi-podatki.xlsx";
 function getFile() {
   /* set up async GET request */
   var req = new XMLHttpRequest();
-  req.open("GET", proxy + url, true); // proxy + url
+  req.open("GET", filename, true); // proxy + url
   req.responseType = "arraybuffer";
 
   req.onload = function (e) {
@@ -20,6 +21,7 @@ function getFile() {
 
     parseData(worksheet);
     spinner.classList.add("hidden");
+    chartDiv.classList.remove("hidden");
   };
 
   req.send();
@@ -45,8 +47,8 @@ function parseData(worksheet) {
   };
 
   let dates = getColumn(worksheet, 0);
-  let daily_tested = getColumn(worksheet, 2); // 2
-  let daily_positive = getColumn(worksheet, 4);
+  let daily_tested = getColumn(worksheet, 2); // column 2
+  let daily_positive = getColumn(worksheet, 4); // column 4
 
   dates = dates.map((date) => date.replaceAll("/", "."));
   dates = dates.map((date) => date.replace(" 2020", ""));
@@ -75,7 +77,7 @@ function draw(dates, daily_tested, daily_positive) {
       labels: dates,
       datasets: [
         {
-          label: "Odstotek pozitivnih oseb v sorazmerju s testiranimi",
+          label: "Pozitivne osebe v sorazmerju s testiranimi",
           data: daily_percent,
           backgroundColor: "#6ccefc44",
           borderColor: "#6ccefc",
@@ -91,6 +93,9 @@ function draw(dates, daily_tested, daily_positive) {
           {
             ticks: {
               beginAtZero: true,
+              callback: function (value) {
+                return value + " %";
+              },
             },
           },
         ],
@@ -102,8 +107,21 @@ function draw(dates, daily_tested, daily_positive) {
           },
         ],
       },
+      tooltips: {
+        callbacks: {
+          label: (item) => `${item.yLabel} %`,
+        },
+      },
     },
   });
 }
+
+(function chartSize() {
+  if (chartDiv.offsetWidth < 550) {
+    Chart.defaults.global.elements.point.radius = 0;
+  } else {
+    Chart.defaults.global.elements.point.radius = 2;
+  }
+})();
 
 getFile();

@@ -13,20 +13,44 @@ body {
   align-items: center;
 }
 
-.chart {
+.chart_div {
   width: 70vw;
-  height: 400px;
+  height: 25vw;
+  opacity: 1;
 
-  /* background-color: red; */
+  transition: opacity 0.8s;
+}
+
+.chart_div.hidden {
+  opacity: 0;
 }
 
 .spinner {
   width: 100px;
   position: absolute;
   z-index: -1;
+
+  transition: opacity 0.8s;
 }
 
 .spinner.hidden {
   opacity: 0;
-  transition: opacity .8s;
+}
+
+@media (orientation: portrait) {
+  @media (max-width: 800px) {
+    .chart_div {
+      width: 95vw;
+      height: 60vw;
+    }
+  }
+}
+
+@media (orientation: landscape) {
+  @media (max-width: 700px) {
+    .chart_div {
+      width: 95vw;
+      height: 85vh;
+    }
+  }
 }
