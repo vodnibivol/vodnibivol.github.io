@@ -4,6 +4,23 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <meta property="og:title" content="Graf Covid-19" />
+    <meta property="og:site_name" content="Graf Covid-19" />
+    <meta property="og:url" content="https://vodnibivol.github.io/covid/" />
+    <meta property="og:description" content="Zadnji podatki o razvoju koronavirusa." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="img/preview.png" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="img/icons/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="img/icons/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="img/icons/favicon-16x16.png" />
+    <link rel="manifest" href="img/icons/site.webmanifest" />
+    <link rel="mask-icon" href="img/icons/safari-pinned-tab.svg" color="#5bbad5" />
+    <link rel="shortcut icon" href="img/icons/favicon.ico" />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="msapplication-config" content="img/icons/browserconfig.xml" />
+    <meta name="theme-color" content="#ffffff" />
+
     <script src="js/xlsx.core.min.js"></script>
     <script src="js/Chart.min.js"></script>
     <script src="js/SITE.js" defer></script>
@@ -12,14 +29,21 @@
 
     <link rel="stylesheet" href="css/main.css" />
     <link rel="stylesheet" href="css/card.css" />
-    <link rel="shortcut icon" href="img/virus_2.png" type="image/x-icon" />
     <title>covid-19</title>
   </head>
   <body>
+    <header class="info-bar">
+      <div class="bubble" id="infoBubble">
+        <svg height="18" width="18">
+          <circle cx="9" cy="9" r="9" fill="#f7f7f7" />
+        </svg>
+        <img src="img/info.png" alt="info" id="infoButton" />
+        <span class="copyright">2020 | Filip Kokol | <a href="//www.gov.si/teme/koronavirus-sars-cov-2/" target="_blank">gov.si</a></span>
+      </div>
+    </header>
     <div class="slider">
       <img class="nav-arrow nav-arrow-left" src="img/arrow_left.svg" alt="" />
       <div class="slider-track-container">
-
         <div class="slide slide-1">
           <img class="spinner" src="img/spinner_3.gif" id="spinner" />
           <div class="chart-div hidden" id="chartDiv1">

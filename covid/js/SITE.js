@@ -1,3 +1,7 @@
+/* -------- variable declarations -------- */
+
+const infoButton = document.getElementById("infoButton");
+const infoBubble = document.getElementById("infoBubble");
 const chartDiv1 = document.getElementById("chartDiv1");
 const chartDiv2 = document.getElementById("chartDiv2");
 const spinner = document.getElementById("spinner");
@@ -7,10 +11,18 @@ const proxy = "https://cors-anywhere.herokuapp.com/";
 
 const filename = "COVID-19-vsi-podatki.xlsx";
 
+/* ----------- event listeners ----------- */
+
+infoButton.addEventListener("click", function() {
+  infoBubble.classList.toggle("open")
+})
+
+/* -------- function declarations -------- */
+
 function getFile() {
   /* set up async GET request */
   var req = new XMLHttpRequest();
-  req.open("GET", proxy + url, true); // proxy + url
+  req.open("GET", filename, true); // proxy + url
   req.responseType = "arraybuffer";
 
   req.onload = function (e) {
@@ -51,15 +63,15 @@ function parseData(worksheet) {
   };
 
   let dates = getColumn(worksheet, 0);
-  let daily_tested = getColumn(worksheet, 2); // column 2
-  let daily_positive = getColumn(worksheet, 4); // column 4
+  let daily_tested = getColumn(worksheet, 2);
+  let daily_positive = getColumn(worksheet, 4);
 
   dates = dates.map((date) => date.replaceAll("/", "."));
   dates = dates.map((date) => date.replace(" 2020", ""));
 
-  console.log(dates)
-  console.log(daily_tested)
-  console.log(daily_positive)
+  // console.log(dates)
+  // console.log(daily_tested)
+  // console.log(daily_positive)
 
   draw(dates, daily_tested, daily_positive);
   setCard(dates, daily_positive);
@@ -72,11 +84,11 @@ function setCard(dates, daily_positive) {
   const lastPositive = document.querySelector(".last-positive");
 
   function writeDate() {
-    date = dates[dates.length - 1].replace(".", "").split(" ");
+    let date = dates[dates.length - 1].replace(".", "").split(" ");
 
-    lastDay = date[0];
+    let lastDay = date[0];
 
-    months = [
+    let months = [
       "januar",
       "februar",
       "marec",
@@ -91,9 +103,9 @@ function setCard(dates, daily_positive) {
       "december",
     ];
 
-    lastMonth = months[date[1] - 1];
+    let lastMonth = months[date[1] - 1];
 
-    lastDateText = `${lastDay}. ${lastMonth}`;
+    let lastDateText = `${lastDay}. ${lastMonth}`;
 
     lastDate.innerHTML = lastDateText;
   }

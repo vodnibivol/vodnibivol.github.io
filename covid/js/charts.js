@@ -1,8 +1,9 @@
 function draw(dates, daily_tested, daily_positive) {
-  daily_percent = [];
+  let daily_percent = [];
+  let title1;
 
   for (var i = 0; i < daily_tested.length; i++) {
-    percent = (daily_positive[i] / daily_tested[i]) * 100;
+    let percent = (daily_positive[i] / daily_tested[i]) * 100;
     percent = percent.toFixed(2);
 
     daily_percent.push(percent);
@@ -12,6 +13,10 @@ function draw(dates, daily_tested, daily_positive) {
     dates = dates.slice(-50);
     daily_percent = daily_percent.slice(-50);
     daily_positive = daily_positive.slice(-50);
+
+    title1 = "Pozitivni glede na št. testov"
+  } else {
+    title1 = "Pozitivne osebe v sorazmerju s testiranimi"
   }
 
   var ctx1 = document.getElementById("chart1").getContext("2d");
@@ -21,7 +26,7 @@ function draw(dates, daily_tested, daily_positive) {
       labels: dates,
       datasets: [
         {
-          label: "Pozitivne osebe v sorazmerju s testiranimi",
+          label: title1,
           data: daily_percent,
           backgroundColor: "#6ccefc44",
           borderColor: "#6ccefc",
@@ -100,7 +105,7 @@ function draw(dates, daily_tested, daily_positive) {
 }
 
 (function chartSize() {
-  if (chartDiv1.offsetWidth < 550) {
+  if (chartDiv1.offsetWidth < 450) {
     Chart.defaults.global.elements.point.radius = 0;
   } else {
     Chart.defaults.global.elements.point.radius = 2;

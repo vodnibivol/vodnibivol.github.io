@@ -60,7 +60,7 @@ function setSlidesPosition(transition = false) {
   }
 
   // set transition on/off
-  
+
   if (transition) {
     slides.forEach((slide) => (slide.style.transition = ".8s cubic-bezier(0.19, 1, 0.22, 1)"));
   } else {
@@ -68,7 +68,7 @@ function setSlidesPosition(transition = false) {
   }
 
   // move slides
-  
+
   let slideWidth = slider.getBoundingClientRect().width;
   slides.forEach((slide, index) => (slide.style.transform = `translateX(${(-position + index) * slideWidth}px)`));
 }

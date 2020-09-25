@@ -51,3 +51,16 @@ body {
     }
   }
 }
+
+@media (max-height: 350px) {
+  .card {
+    height: 280px;
+
+    .card-upper {
+      .last-positive {
+        font-size: 90px;
+      }
+    }
+
+  }
+}

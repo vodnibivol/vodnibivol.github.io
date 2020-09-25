@@ -4,6 +4,80 @@ body {
   height: 100vh;
 }
 
+.info-bar {
+  position: absolute;
+  top: 0;
+  z-index: 2;
+  width: 100%;
+  font-family: "Lato", sans-serif;
+}
+
+.info-bar .bubble {
+  position: relative;
+  float: right;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 9px;
+  margin: 15px;
+  padding: 4px 8px;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  background-color: #fafafa;
+  -webkit-box-shadow: 0px 5px 20px 0px #88888844;
+          box-shadow: 0px 5px 20px 0px #88888844;
+  border-radius: 50px;
+  -webkit-transition: width .5s;
+  transition: width .5s;
+}
+
+.info-bar .bubble.open {
+  width: 170px;
+}
+
+.info-bar .bubble img {
+  position: absolute;
+  left: 4px;
+  height: 18px;
+  -webkit-transform: translate(-0.4px, -0.2px);
+          transform: translate(-0.4px, -0.2px);
+  opacity: 0.3;
+  -webkit-transition: opacity 0.3s;
+  transition: opacity 0.3s;
+  cursor: pointer;
+}
+
+.info-bar .bubble img:hover {
+  opacity: 0.4;
+}
+
+.info-bar .bubble img:active {
+  opacity: 0.5;
+}
+
+.info-bar .bubble svg {
+  position: absolute;
+  left: 3px;
+}
+
+.info-bar .bubble .copyright {
+  direction: rtl;
+  overflow: hidden;
+}
+
+.info-bar .bubble a {
+  color: #635b5a;
+  text-decoration: none;
+  font-weight: 400;
+}
+
 .slider {
   position: relative;
   height: 100%;
@@ -68,21 +142,6 @@ body {
   opacity: 0;
 }
 
-@media (orientation: portrait) {
-  .chart-div {
-    height: 65vw;
-  }
-}
-
-@media (max-height: 530px) {
-  .chart-div {
-    height: 70vh;
-  }
-  .nav-dots {
-    opacity: 0;
-  }
-}
-
 .nav-arrow {
   position: absolute;
   top: 50%;
@@ -109,11 +168,11 @@ body {
 }
 
 .nav-arrow-left {
-  left: 25px;
+  left: 5%;
 }
 
 .nav-arrow-right {
-  right: 25px;
+  right: 5%;
 }
 
 .nav-dots {
@@ -142,4 +201,28 @@ body {
 
 .nav-dots .nav-dot.active {
   opacity: 0.4;
+}
+
+@media (orientation: portrait) {
+  .chart-div {
+    height: 65vw;
+  }
+}
+
+@media (orientation: portrait) and (max-width: 530px) {
+  .nav-arrow-left {
+    left: 2%;
+  }
+  .nav-arrow-right {
+    right: 2%;
+  }
+}
+
+@media (max-height: 530px) {
+  .chart-div {
+    height: 70vh;
+  }
+  .nav-dots {
+    opacity: 0;
+  }
 }
