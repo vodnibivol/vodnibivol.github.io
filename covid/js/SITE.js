@@ -1,4 +1,5 @@
-const chartDiv = document.getElementById("chartDiv");
+const chartDiv1 = document.getElementById("chartDiv1");
+const chartDiv2 = document.getElementById("chartDiv2");
 const spinner = document.getElementById("spinner");
 
 const url = "https://www.gov.si/assets/vlada/Koronavirus-podatki/COVID-19-vsi-podatki.xlsx";
@@ -9,7 +10,7 @@ const filename = "COVID-19-vsi-podatki.xlsx";
 function getFile() {
   /* set up async GET request */
   var req = new XMLHttpRequest();
-  req.open("GET", proxy + url, true); // proxy + url
+  req.open("GET", filename, true); // proxy + url
   req.responseType = "arraybuffer";
 
   req.onload = function (e) {
@@ -21,7 +22,8 @@ function getFile() {
 
     parseData(worksheet);
     spinner.classList.add("hidden");
-    chartDiv.classList.remove("hidden");
+    chartDiv1.classList.remove("hidden");
+    chartDiv2.classList.remove("hidden");
   };
 
   req.send();
@@ -41,6 +43,8 @@ function parseData(worksheet) {
       if (typeof nextCell === "undefined") {
         // column.push(void 0);
         return column;
+      } else if (nextCell.w.toLowerCase().includes("opombe")) {
+        return column
       } else column.push(nextCell.w);
     }
     return column;
@@ -53,75 +57,64 @@ function parseData(worksheet) {
   dates = dates.map((date) => date.replaceAll("/", "."));
   dates = dates.map((date) => date.replace(" 2020", ""));
 
-  // console.log(dates)
-  // console.log(daily_tested)
-  // console.log(daily_positive)
+  console.log(dates)
+  console.log(daily_tested)
+  console.log(daily_positive)
 
   draw(dates, daily_tested, daily_positive);
+  setCard(dates, daily_positive);
 }
 
-function draw(dates, daily_tested, daily_positive) {
-  daily_percent = [];
+function setCard(dates, daily_positive) {
+  const arrow = document.querySelector(".arrow");
+  const cardLower = document.querySelector(".card-lower");
+  const lastDate = document.querySelector(".last-date");
+  const lastPositive = document.querySelector(".last-positive");
 
-  for (var i = 0; i < daily_tested.length; i++) {
-    percent = (daily_positive[i] / daily_tested[i]) * 100;
-    percent = percent.toFixed(2);
+  function writeDate() {
+    date = dates[dates.length - 1].replace(".", "").split(" ");
 
-    daily_percent.push(percent);
+    lastDay = date[0];
+
+    months = [
+      "januar",
+      "februar",
+      "marec",
+      "april",
+      "maj",
+      "junij",
+      "julij",
+      "avgust",
+      "september",
+      "oktober",
+      "november",
+      "december",
+    ];
+
+    lastMonth = months[date[1] - 1];
+
+    lastDateText = `${lastDay}. ${lastMonth}`;
+
+    lastDate.innerHTML = lastDateText;
   }
 
-  var ctx = document.getElementById("chart").getContext("2d");
-  var myChart = new Chart(ctx, {
-    type: "line",
-    data: {
-      labels: dates,
-      datasets: [
-        {
-          label: "Pozitivne osebe v sorazmerju s testiranimi",
-          data: daily_percent,
-          backgroundColor: "#6ccefc44",
-          borderColor: "#6ccefc",
-          borderWidth: 1,
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        yAxes: [
-          {
-            ticks: {
-              beginAtZero: true,
-              callback: function (value) {
-                return value + " %";
-              },
-            },
-          },
-        ],
-        xAxes: [
-          {
-            ticks: {
-              autoSkipPadding: 15,
-            },
-          },
-        ],
-      },
-      tooltips: {
-        callbacks: {
-          label: (item) => `${item.yLabel} %`,
-        },
-      },
-    },
-  });
+  function writeNumber() {
+    lastPositive.innerHTML = daily_positive[daily_positive.length - 1];
+  }
+
+  function chooseArrow() {
+    if (daily_positive[daily_positive.length - 1] < daily_positive[daily_positive.length - 2]) {
+      arrow.src = "img/arrow_down.svg";
+      cardLower.style.backgroundColor = "#adf1ad";
+    } else {
+      arrow.src = "img/arrow_up.svg";
+      cardLower.style.backgroundColor = "#f1adad";
+    }
+  }
+
+  writeNumber();
+  chooseArrow();
+  writeDate();
 }
-
-(function chartSize() {
-  if (chartDiv.offsetWidth < 550) {
-    Chart.defaults.global.elements.point.radius = 0;
-  } else {
-    Chart.defaults.global.elements.point.radius = 2;
-  }
-})();
 
 getFile();

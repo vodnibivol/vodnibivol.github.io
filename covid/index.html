@@ -7,16 +7,59 @@
     <script src="js/xlsx.core.min.js"></script>
     <script src="js/Chart.min.js"></script>
     <script src="js/SITE.js" defer></script>
+    <script src="js/charts.js" defer></script>
+    <script src="js/slider.js" defer></script>
 
     <link rel="stylesheet" href="css/main.css" />
-    <link rel="shortcut icon" href="img/virus.png" type="image/x-icon" />
+    <link rel="stylesheet" href="css/card.css" />
+    <link rel="shortcut icon" href="img/virus_2.png" type="image/x-icon" />
     <title>covid-19</title>
   </head>
   <body>
-    <div class="content">
-      <img class="spinner" src="img/spinner1.gif" alt="spinner" id="spinner" />
-      <div class="chart_div hidden" id="chartDiv">
-        <canvas id="chart" width="800" height="300"></canvas>
+    <div class="slider">
+      <img class="nav-arrow nav-arrow-left" src="img/arrow_left.svg" alt="" />
+      <div class="slider-track-container">
+
+        <div class="slide slide-1">
+          <img class="spinner" src="img/spinner_3.gif" id="spinner" />
+          <div class="chart-div hidden" id="chartDiv1">
+            <canvas id="chart2" width="800" height="300"></canvas>
+          </div>
+        </div>
+
+        <div class="slide slide-2">
+          <img class="spinner" src="img/spinner_3.gif" id="spinner" />
+          <div class="chart-div hidden" id="chartDiv2">
+            <canvas id="chart1" width="800" height="300"></canvas>
+          </div>
+        </div>
+
+        <div class="slide slide-3">
+          <div class="card">
+            <div class="card-upper">
+              <div class="text">
+                <span class="last-positive">122</span>
+                <img src="img/arrow_down.svg" class="arrow" />
+              </div>
+            </div>
+            <div class="card-lower">
+              <span class="last-date">23. september</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <img class="nav-arrow nav-arrow-right" src="img/arrow_right.svg" alt="" />
+
+      <div class="nav-dots">
+        <svg class="nav-dot" width="25" height="6">
+          <rect width="25" height="3" rx="2" ry="1" style="fill: black" />
+        </svg>
+        <svg class="nav-dot active" width="25" height="6">
+          <rect width="25" height="3" rx="2" ry="1" style="fill: black" />
+        </svg>
+        <svg class="nav-dot" width="25" height="6">
+          <rect width="25" height="3" rx="2" ry="1" style="fill: black" />
+        </svg>
       </div>
     </div>
   </body>
