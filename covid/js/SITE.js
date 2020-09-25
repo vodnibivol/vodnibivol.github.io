@@ -22,7 +22,7 @@ infoButton.addEventListener("click", function() {
 function getFile() {
   /* set up async GET request */
   var req = new XMLHttpRequest();
-  req.open("GET", filename, true); // proxy + url
+  req.open("GET", proxy + url, true); // proxy + url
   req.responseType = "arraybuffer";
 
   req.onload = function (e) {
