@@ -13,9 +13,17 @@ const filename = "COVID-19-vsi-podatki.xlsx";
 
 /* ----------- event listeners ----------- */
 
-infoButton.addEventListener("click", function() {
-  infoBubble.classList.toggle("open")
-})
+infoButton.addEventListener("click", () => {
+  infoBubble.classList.toggle("open");
+
+  if (infoBubble.classList.contains("open")) {
+    countdown = setTimeout(() => {
+      infoBubble.classList.remove("open");
+    }, 5000);
+  } else {
+    clearTimeout(countdown);
+  }
+});
 
 /* -------- function declarations -------- */
 

@@ -70,10 +70,11 @@ body {
 .info-bar .bubble .copyright {
   direction: rtl;
   overflow: hidden;
+  color: #5c5c5c;
 }
 
 .info-bar .bubble a {
-  color: #635b5a;
+  color: #556a79;
   text-decoration: none;
   font-weight: 400;
 }
