@@ -34,8 +34,8 @@ body {
   -webkit-box-shadow: 0px 5px 20px 0px #88888844;
           box-shadow: 0px 5px 20px 0px #88888844;
   border-radius: 50px;
-  -webkit-transition: width .5s;
-  transition: width .5s;
+  -webkit-transition: width 0.5s;
+  transition: width 0.5s;
 }
 
 .info-bar .bubble.open {
@@ -114,13 +114,13 @@ body {
   width: 100%;
 }
 
-.slide .spinner {
+.spinner {
   position: absolute;
   width: 100px;
   z-index: -1;
 }
 
-.slide .spinner.hidden {
+.spinner.hidden {
   opacity: 0;
   -webkit-transition: opacity 0.8s;
   transition: opacity 0.8s;

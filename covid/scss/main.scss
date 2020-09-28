@@ -32,7 +32,7 @@ body {
     box-shadow: 0px 5px 20px 0px #88888844;
     border-radius: 50px;
 
-    transition: width .5s;
+    transition: width 0.5s;
 
     &.open {
       width: 170px;
@@ -105,16 +105,16 @@ body {
 
   position: absolute;
   width: 100%;
+}
 
-  .spinner {
-    position: absolute;
-    width: 100px;
-    z-index: -1;
+.spinner {
+  position: absolute;
+  width: 100px;
+  z-index: -1;
 
-    &.hidden {
-      opacity: 0;
-      transition: opacity 0.8s;
-    }
+  &.hidden {
+    opacity: 0;
+    transition: opacity 0.8s;
   }
 }
 

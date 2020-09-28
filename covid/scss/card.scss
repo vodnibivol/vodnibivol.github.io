@@ -17,6 +17,13 @@ body {
 
   font-family: "Lato", sans-serif;
 
+  transition: opacity 0.8s;
+  opacity: 1;
+
+  &.hidden {
+    opacity: 0;
+  }
+
   .card-upper {
     display: flex;
     justify-content: center;
@@ -61,6 +68,5 @@ body {
         font-size: 90px;
       }
     }
-
   }
 }

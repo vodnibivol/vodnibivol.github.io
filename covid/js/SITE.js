@@ -4,6 +4,7 @@ const infoButton = document.getElementById("infoButton");
 const infoBubble = document.getElementById("infoBubble");
 const chartDiv1 = document.getElementById("chartDiv1");
 const chartDiv2 = document.getElementById("chartDiv2");
+const card = document.getElementById("card");
 const spinner = document.getElementById("spinner");
 
 const url = "https://www.gov.si/assets/vlada/Koronavirus-podatki/COVID-19-vsi-podatki.xlsx";
@@ -44,6 +45,7 @@ function getFile() {
     spinner.classList.add("hidden");
     chartDiv1.classList.remove("hidden");
     chartDiv2.classList.remove("hidden");
+    card.classList.remove("hidden");
   };
 
   req.send();
@@ -64,7 +66,7 @@ function parseData(worksheet) {
         // column.push(void 0);
         return column;
       } else if (nextCell.w.toLowerCase().includes("opombe")) {
-        return column
+        return column;
       } else column.push(nextCell.w);
     }
     return column;
@@ -123,7 +125,10 @@ function setCard(dates, daily_positive) {
   }
 
   function chooseArrow() {
-    if (daily_positive[daily_positive.length - 1] < daily_positive[daily_positive.length - 2]) {
+    let today = parseInt(daily_positive[daily_positive.length - 1]);
+    let yesterday = parseInt(daily_positive[daily_positive.length - 2]);
+
+    if (today < yesterday) {
       arrow.src = "img/arrow_down.svg";
       cardLower.style.backgroundColor = "#adf1ad";
     } else {
