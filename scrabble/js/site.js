@@ -20,7 +20,7 @@ let WORDS;
 form.addEventListener("submit", function (e) {
   e.preventDefault();
 
-  let letters = input.value;
+  let letters = input.value.toLowerCase();
 
   // checkWords(letters);
   printMatches(letters);
@@ -35,10 +35,10 @@ function checkWords(letters) {
     let counted = {};
 
     for (var letter of arr) {
-      if (Object.keys(counted).includes(letter)) {
-        counted[letter]++;
+      if (Object.keys(counted).includes(letter.toLowerCase())) {
+        counted[letter.toLowerCase()]++;
       } else {
-        counted[letter] = 1;
+        counted[letter.toLowerCase()] = 1;
       }
     }
     // console.log(counted)
@@ -72,7 +72,7 @@ function checkWords(letters) {
     }
   }
 
-  // console.log(matches);
+  console.log(matches);
   return matches;
 }
 
@@ -99,6 +99,13 @@ function printMatches(letters) {
     output += "<p>" + expl;
     output += ` - <a target="_blank" href="//fran.si/133/sskj2-slovar-slovenskega-knjiznega-jezika-2/${index}/${word}">fran.si</a>`;
   }
+
+  if (matches == false) {
+    console.log("empty")
+    output = "<p>Najdena ni bila nobena beseda.</p>";
+  }
+
+  output += `<hr><span class="copyright">&copy; 2020 | vodnibivol</span>`
 
   const answersDiv = document.getElementById("answers");
 
