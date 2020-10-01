@@ -1,3 +1,4 @@
+const body = document.querySelector("body");
 const form = document.getElementById("form");
 const input = document.getElementById("inputField");
 const button = document.getElementById("button");
@@ -6,12 +7,18 @@ let WORDS;
 
 /* -------- function declarations -------- */
 
+(function setBackground() {
+  let color = (Math.random() * 100).toPrecision(2);
+  body.style.background = `hsl(${color}, 50%, 65%)`;
+})();
+
 (function loadWords() {
   fetch("words_and_explanations.json")
     .then((response) => response.json())
     .then((file) => {
       WORDS = file;
       button.disabled = false;
+      input.focus()
     });
 })();
 
@@ -72,7 +79,7 @@ function checkWords(letters) {
     }
   }
 
-  console.log(matches);
+  // console.log(matches);
   return matches;
 }
 
@@ -101,11 +108,11 @@ function printMatches(letters) {
   }
 
   if (matches == false) {
-    console.log("empty")
+    console.log("empty");
     output = "<p>Najdena ni bila nobena beseda.</p>";
   }
 
-  output += `<hr><span class="copyright">&copy; 2020 | vodnibivol</span>`
+  output += `<hr><span class="copyright">&copy; 2020 | vodnibivol</span>`;
 
   const answersDiv = document.getElementById("answers");
 

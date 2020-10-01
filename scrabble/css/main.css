@@ -6,7 +6,7 @@ body {
   margin: 0;
   padding: 0;
   height: 100vh;
-  background-color: #da8888;
+  background: #000000;
 }
 
 .content {
@@ -39,6 +39,8 @@ body {
           flex-direction: column;
   background-color: #fafafa;
   border-radius: 3px;
+  -webkit-box-shadow: 6px 6px 0px #00000044;
+          box-shadow: 6px 6px 0px #00000044;
 }
 
 .main h1 {
