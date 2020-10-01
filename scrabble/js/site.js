@@ -8,8 +8,8 @@ let WORDS;
 /* -------- function declarations -------- */
 
 (function setBackground() {
-  let color = (Math.random() * 100).toPrecision(2);
-  body.style.background = `hsl(${color}, 50%, 65%)`;
+  let color = Math.floor(Math.random() * 360);
+  body.style.background = `hsl(${color}, 40%, 65%)`;
 })();
 
 (function loadWords() {
@@ -18,7 +18,7 @@ let WORDS;
     .then((file) => {
       WORDS = file;
       button.disabled = false;
-      input.focus()
+      input.focus();
     });
 })();
 
