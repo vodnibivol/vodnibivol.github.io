@@ -9,12 +9,23 @@
   <body>
     <div class="content">
       <img class="reset" id="reset" src="img/reset.png" />
-      <span class="word" id="word">_ _ _ _ _ _ _ _</span>
-      <img class="countdown-img" src="img/trans.png" id="countdownImg" />
-      <div class="checked-letters" id="checkedLetters"></div>
-      <form id="form">
-        <input type="text" id="input" maxlength="1" autocomplete="off" spellcheck="false" />
-      </form>
+      <div class="upper">
+        <div class="word-and-info">
+          <span class="written-word" id="writtenWord">_ _ _ _ _ _ _ _</span>
+          <a class="info hidden" href="" id="info" target="_blank">
+            <img src="img/i.png" alt="info" />
+          </a>
+        </div>
+        <div class="progress">
+          <img class="countdown-img" src="img/trans.png" id="countdownImg" />
+          <div class="checked-letters" id="checkedLetters">&nbsp;</div>
+        </div>
+      </div>
+      <div class="lower">
+        <form id="form">
+          <input type="text" id="input" maxlength="1" autocomplete="off" spellcheck="false" />
+        </form>
+      </div>
     </div>
     <script src="js/main.js"></script>
   </body>

@@ -1,6 +1,8 @@
 "use strict";
 
-const mainWord = document.getElementById("word");
+const body = document.querySelector("body");
+const writtenWordEl = document.getElementById("writtenWord");
+const infoButton = document.getElementById("info");
 
 let WORDS;
 let selectedWord;
@@ -12,15 +14,18 @@ let selectedWord;
     .then(initialize);
 })();
 
+/* -------- word preparation -------- */
+
 function chooseWord() {
-  let randIndex, randEntry, randWord, frequency;
+  let randIndex, randId, randEntry, randWord, frequency;
 
   while (true) {
     const length = WORDS.length;
-    randIndex = Math.floor(Math.random() * length);
 
+    randIndex = Math.floor(Math.random() * length);
     randEntry = WORDS[randIndex];
 
+    randId = randEntry.id;
     randWord = randEntry.headwords.headword_clean;
     frequency = randEntry.frequency;
 
@@ -29,16 +34,24 @@ function chooseWord() {
   }
 
   selectedWord = randWord;
-  setMainWord(selectedWord);
 
-  // console.log(selectedWord);
+  setMainWord(selectedWord);
+  setFontSize(selectedWord);
+  setInfo(randId, selectedWord);
 }
 
 function setMainWord(word) {
   let secretWord = word[0] + " _".repeat(word.length - 2) + " " + word[word.length - 1];
 
-  // console.log(secretWord);
-  mainWord.innerHTML = secretWord;
+  writtenWordEl.innerHTML = secretWord;
+}
+
+function setFontSize(word) {
+  body.style["font-size"] = 31 - word.length + "px";
+}
+
+function setInfo(id, word) {
+  infoButton.href = `//fran.si/133/sskj2-slovar-slovenskega-knjiznega-jezika-2/${id}/${word}?Query=${word}`;
 }
 
 /* -------- main game logic -------- */
@@ -49,8 +62,11 @@ const checkedLetters = document.getElementById("checkedLetters");
 const countdownImg = document.getElementById("countdownImg");
 const resetButton = document.getElementById("reset");
 
-let trials;
-let trialLetters;
+let trials; // number of trials left
+let trialLetters = []; // letters already tried
+let writtenWord;
+
+// console.log(writtenWord)
 
 function initialize() {
   chooseWord();
@@ -60,12 +76,16 @@ function initialize() {
   trialLetters = [];
   countdownImg.src = "img/trans.png";
 
+  infoButton.classList.add("hidden");
+  body.classList.remove("lost");
+  body.classList.remove("won");
+
   input.select();
 }
 
 function updateChecked(letter) {
   if (!letter) {
-    checkedLetters.innerHTML = "";
+    checkedLetters.innerHTML = "&nbsp;";
     return;
   }
 
@@ -77,22 +97,24 @@ function updateChecked(letter) {
   checkedLetters.innerHTML = content;
 }
 
-function updateImage(trials) {
+function updateImage() {
   countdownImg.src = "img/" + trials + ".png";
 }
 
 function updateWord(letter, indexes) {
-  let writtenWord = [...word.innerHTML];
+  writtenWord = writtenWordEl.innerHTML.split(" ");
 
   for (let l = 0; l < indexes.length; l++) {
     let index = indexes[l];
-    writtenWord[2 * index] = letter;
+    writtenWord[index] = letter;
   }
 
-  word.innerHTML = writtenWord.join("");
+  writtenWordEl.innerHTML = writtenWord.join(" ");
 }
 
 function checkLetter(inputLetter) {
+  // ----- get indexes -----
+
   let indexes = [];
 
   for (let l = 0; l < selectedWord.length; l++) {
@@ -103,18 +125,30 @@ function checkLetter(inputLetter) {
     }
   }
 
-  console.log(indexes);
+  // ----- ----- -----
 
   if (indexes.length == 0) {
+    // letter IS NOT in word
     if (!trialLetters.includes(inputLetter)) {
       trials--;
       console.log(trials);
 
-      updateImage(trials);
+      updateImage();
       updateChecked(inputLetter);
     }
   } else {
+    // letter IS in word
     updateWord(inputLetter, indexes);
+  }
+
+  checkForWin();
+}
+
+function checkForWin() {
+  writtenWord = writtenWordEl.innerHTML.split(" ");
+
+  if (!writtenWord.includes("_")) {
+    gameWon();
   }
 
   if (!trials) {
@@ -122,10 +156,18 @@ function checkLetter(inputLetter) {
   }
 }
 
+function gameWon() {
+  console.log("game won!");
+  infoButton.classList.remove("hidden");
+  body.classList.add("won");
+}
+
 function gameOver() {
   console.log("game over!");
-  word.innerHTML = [...selectedWord].join(" ");
-  resetButton.classList.remove("hidden");
+  writtenWordEl.innerHTML = [...selectedWord].join(" ");
+
+  body.classList.add("lost");
+  infoButton.classList.remove("hidden");
 }
 
 form.addEventListener("submit", (e) => {
