@@ -8,24 +8,27 @@
   </head>
   <body>
     <div class="content" id="content">
-      
       <img class="reset-btn" id="reset-btn" src="img/reset.png" />
       <img class="settings-btn" id="settings-btn" src="img/settings.png" />
 
-      <div class="upper">
-        <div class="word-and-info">
-          <span class="written-word" id="writtenWord">_ _ _ _ _ _ _ _</span>
-          <a class="info hidden" href="" id="info" target="_blank">
-            <img src="img/i.png" alt="info" />
-          </a>
+      <div class="container-upper">
+
+        <div class="container-left">
+          <div class="word-and-info">
+            <span class="written-word" id="writtenWord">_ _ _ _ _ _ _ _</span>
+            <a class="info hidden" href="" id="info" target="_blank">
+              <img src="img/i.png" alt="info" />
+            </a>
+          </div>
         </div>
-        <div class="progress-div">
+
+        <div class="container-right">
           <img class="countdown-img" src="img/trans.png" id="countdownImg" />
           <div class="checked-letters" id="checkedLetters">&nbsp;</div>
         </div>
       </div>
 
-      <div class="lower">
+      <div class="container-lower">
         <form id="inputForm">
           <input type="text" id="letterInput" maxlength="1" autocomplete="off" spellcheck="false" />
         </form>
@@ -35,16 +38,17 @@
         <p>izbreri težavnost:</p>
         <form id="settingsForm">
           <input type="radio" id="enostavno" name="difficulty" value="easy" />
-          <label for="enostavno">enostavno</label><br />
+          <label for="enostavno">enostavno</label>
+          <br />
           <input type="radio" id="srednje" name="difficulty" value="medium" checked />
-          <label for="srednje">srednje</label><br />
+          <label for="srednje">srednje</label>
+          <br />
           <input type="radio" id="zahtevnejše" name="difficulty" value="hard" />
           <label for="zahtevnejše">zahtevnejše</label>
         </form>
       </div>
 
       <div class="loading-bar" id="loadingBar"></div>
-
     </div>
     <script src="js/main.js"></script>
   </body>

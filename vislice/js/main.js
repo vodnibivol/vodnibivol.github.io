@@ -226,7 +226,10 @@ inputForm.addEventListener("submit", (e) => {
   let letter = letterInput.value.toLowerCase();
   letterInput.value = "";
 
-  if (!letter) return;
+  console.log(letter.toUpperCase())
+
+  if (letter.toLowerCase() == letter.toUpperCase()) return
+
   checkLetter(letter);
 });
 

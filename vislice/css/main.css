@@ -54,64 +54,82 @@ body.lost {
           box-shadow: 5px 5px 0px #00000033;
 }
 
-.content .upper {
+.content .reset-btn,
+.content .settings-btn {
+  z-index: 3;
+  position: absolute;
+  top: 0;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.content .reset-btn:hover,
+.content .settings-btn:hover {
+  opacity: 0.7;
+}
+
+.content .reset-btn {
+  left: 0;
+  width: 15px;
+}
+
+.content .settings-btn {
+  right: 0;
+  width: 18px;
+}
+
+.content .container-upper {
   width: 100%;
-  height: 80%;
+  height: 85%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -ms-flex-pack: distribute;
-      justify-content: space-around;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
 }
 
-.content .reset-btn {
-  z-index: 3;
-  position: absolute;
-  top: 0;
-  left: 0;
-  margin: 10px;
-  width: 15px;
-  cursor: pointer;
+.content .container-upper .container-left {
+  width: 50%;
+  height: 100%;
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
-.content .settings-btn {
-  z-index: 3;
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin: 10px;
-  width: 18px;
-  cursor: pointer;
-}
-
-.content .word-and-info {
+.content .container-upper .container-left .word-and-info {
   position: relative;
 }
 
-.content .word-and-info .written-word {
+.content .container-upper .container-left .word-and-info .written-word {
   display: inline-block;
 }
 
-.content .word-and-info a.info {
+.content .container-upper .container-left .word-and-info a.info {
   z-index: 1;
   position: absolute;
   top: -13px;
   right: -13px;
 }
 
-.content .word-and-info a.info img {
+.content .container-upper .container-left .word-and-info a.info img {
   width: 24px;
 }
 
-.content .word-and-info a.info.hidden {
+.content .container-upper .container-left .word-and-info a.info.hidden {
   display: none;
 }
 
-.content .progress-div {
+.content .container-upper .container-right {
   height: 100%;
+  width: 50%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -127,15 +145,25 @@ body.lost {
           align-items: center;
 }
 
-.content .progress-div .countdown-img {
+.content .container-upper .container-right .countdown-img {
   max-width: 100%;
   max-height: 100%;
   margin-bottom: 10%;
 }
 
-.content .progress-div .checked-letters {
+.content .container-upper .container-right .checked-letters {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   text-align: center;
   width: 180px;
+  height: 46px;
 }
 
 .content .written-word,
@@ -148,8 +176,8 @@ body.lost {
           box-shadow: 5px 5px 0px #00000033;
 }
 
-.content .lower {
-  height: 20%;
+.content .container-lower {
+  height: 15%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -162,7 +190,7 @@ body.lost {
           justify-content: center;
 }
 
-.content .lower form input {
+.content .container-lower form input {
   width: 30px;
   height: 25px;
   border: none;
@@ -216,9 +244,9 @@ body.lost {
   width: 100%;
   height: 7px;
   background-color: #8f8f8f;
-  background-image: url("img/loading.png");
-  -webkit-transition: width ease .5s;
-  transition: width ease .5s;
+  background-image: url("../img/loading.png");
+  -webkit-transition: width ease 0.5s;
+  transition: width ease 0.5s;
 }
 
 @media screen and (max-width: 600px) {
@@ -226,21 +254,22 @@ body.lost {
     width: 80%;
     height: 80%;
   }
-  .content .upper {
+  .content .container-upper {
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
         -ms-flex-direction: column;
             flex-direction: column;
   }
-  .content .upper .progress {
+  .content .container-upper .progress {
     -webkit-box-ordinal-group: 2;
         -ms-flex-order: 1;
             order: 1;
   }
-  .content .upper .word-and-info {
+  .content .container-upper .container-left {
     -webkit-box-ordinal-group: 3;
         -ms-flex-order: 2;
             order: 2;
     margin-top: 10px;
+    width: unset;
   }
 }
