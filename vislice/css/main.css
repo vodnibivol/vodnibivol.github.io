@@ -29,6 +29,7 @@ body.lost {
 
 .content {
   height: 70vh;
+  max-height: 500px;
   width: 80vw;
   max-width: 800px;
   padding: 30px;
@@ -134,7 +135,7 @@ body.lost {
 
 .content .progress-div .checked-letters {
   text-align: center;
-  width: 60%;
+  width: 180px;
 }
 
 .content .written-word,
@@ -206,6 +207,18 @@ body.lost {
 .content .settings form label {
   cursor: pointer;
   line-height: 30px;
+}
+
+.content .loading-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0px;
+  width: 100%;
+  height: 7px;
+  background-color: #8f8f8f;
+  background-image: url("img/loading.png");
+  -webkit-transition: width ease .5s;
+  transition: width ease .5s;
 }
 
 @media screen and (max-width: 600px) {

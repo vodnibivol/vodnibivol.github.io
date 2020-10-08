@@ -8,8 +8,10 @@
   </head>
   <body>
     <div class="content" id="content">
+      
       <img class="reset-btn" id="reset-btn" src="img/reset.png" />
       <img class="settings-btn" id="settings-btn" src="img/settings.png" />
+
       <div class="upper">
         <div class="word-and-info">
           <span class="written-word" id="writtenWord">_ _ _ _ _ _ _ _</span>
@@ -22,6 +24,7 @@
           <div class="checked-letters" id="checkedLetters">&nbsp;</div>
         </div>
       </div>
+
       <div class="lower">
         <form id="inputForm">
           <input type="text" id="letterInput" maxlength="1" autocomplete="off" spellcheck="false" />
@@ -39,6 +42,9 @@
           <label for="zahtevnejše">zahtevnejše</label>
         </form>
       </div>
+
+      <div class="loading-bar" id="loadingBar"></div>
+
     </div>
     <script src="js/main.js"></script>
   </body>

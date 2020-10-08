@@ -3,6 +3,7 @@
 const body = document.querySelector("body");
 const writtenWordEl = document.getElementById("writtenWord");
 const infoButton = document.getElementById("info");
+const loadingBar = document.getElementById("loadingBar");
 
 let WORDS;
 let selectedWord;
@@ -21,20 +22,23 @@ let difficulty = "medium";
 function chooseWord() {
   let randIndex, randId, randEntry, randWord, frequency;
 
-  let minFreq, maxFreq;
+  let minFreq, maxFreq, minLength;
 
   switch (difficulty) {
     case "easy":
-      minFreq = 10000;
-      maxFreq = 100000;
+      minFreq = 100000;
+      maxFreq = 10000000;
+      minLength = 5;
       break;
     case "medium":
       minFreq = 1000;
       maxFreq = 20000;
+      minLength = 7;
       break;
     case "hard":
       minFreq = 0;
-      maxFreq = 1000;
+      maxFreq = 100;
+      minLength = 8;
       break;
   }
 
@@ -49,7 +53,7 @@ function chooseWord() {
     frequency = randEntry.frequency;
 
     if (randWord.includes(" ")) continue;
-    if (randWord.length > 8 && frequency > minFreq && frequency < maxFreq) break;
+    if (randWord.length > minLength && frequency > minFreq && frequency < maxFreq) break;
   }
 
   selectedWord = randWord;
@@ -93,6 +97,7 @@ function initialize() {
 
   trials = 8;
   trialLetters = [];
+  loadingBar.style.width = "100%";
   countdownImg.src = "img/trans.png";
 
   infoButton.classList.add("hidden");
@@ -100,6 +105,7 @@ function initialize() {
   body.classList.remove("won");
   settings.classList.add("hidden");
 
+  letterInput.disabled = false;
   letterInput.select();
 }
 
@@ -115,6 +121,11 @@ function updateChecked(letter) {
 
   let content = trialLetters.join(", ");
   checkedLetters.innerHTML = content;
+}
+
+function updateLoadingBar() {
+  let percent = (trials / 8) * 100;
+  loadingBar.style.width = percent + "%";
 }
 
 function updateImage() {
@@ -155,6 +166,7 @@ function checkLetter(inputLetter) {
 
       updateImage();
       updateChecked(inputLetter);
+      updateLoadingBar();
     }
   } else {
     // letter IS in word
@@ -180,13 +192,17 @@ function gameWon() {
   console.log("game won!");
   infoButton.classList.remove("hidden");
   body.classList.add("won");
+  letterInput.disabled = true;
 
   switch (trials) {
     case 8:
-      randWin = Math.floor(Math.random() * 2);
+      let randWin = Math.floor(Math.random() * 2);
       countdownImg.src = `img/win${randWin}.png`;
+      checkedLetters.innerHTML = "jes jes jes!";
+      break;
     default:
-      countdownImg.src = "img/dove.png";
+      countdownImg.src = `img/dove${trials}.png`;
+      checkedLetters.innerHTML = "rešil te je ptič golobič.";
   }
 }
 
@@ -196,6 +212,7 @@ function gameOver() {
 
   body.classList.add("lost");
   infoButton.classList.remove("hidden");
+  letterInput.disabled = true;
 }
 
 /* -------- event listeners -------- */
