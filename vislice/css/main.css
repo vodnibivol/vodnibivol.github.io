@@ -1,8 +1,19 @@
 body {
   font-family: monospace;
   font-size: 20px;
+  height: 100vh;
   margin: 0;
   padding: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  overflow: hidden;
   background-color: #c5e5e9;
   -webkit-transition: background-color 0.5s;
   transition: background-color 0.5s;
@@ -22,10 +33,6 @@ body.lost {
   max-width: 800px;
   padding: 30px;
   position: absolute;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -39,6 +46,7 @@ body.lost {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  overflow: hidden;
   border: 2px solid black;
   background-color: #fafafa;
   -webkit-box-shadow: 5px 5px 0px #00000033;
@@ -58,16 +66,24 @@ body.lost {
           align-items: center;
 }
 
-.content .reset {
+.content .reset-btn {
+  z-index: 3;
   position: absolute;
   top: 0;
   left: 0;
-  width: 30px;
+  margin: 10px;
+  width: 15px;
   cursor: pointer;
 }
 
-.content .reset.hidden {
-  display: none;
+.content .settings-btn {
+  z-index: 3;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px;
+  width: 18px;
+  cursor: pointer;
 }
 
 .content .word-and-info {
@@ -79,7 +95,7 @@ body.lost {
 }
 
 .content .word-and-info a.info {
-  z-index: 2;
+  z-index: 1;
   position: absolute;
   top: -13px;
   right: -13px;
@@ -93,7 +109,7 @@ body.lost {
   display: none;
 }
 
-.content .progress {
+.content .progress-div {
   height: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -110,13 +126,13 @@ body.lost {
           align-items: center;
 }
 
-.content .progress .countdown-img {
+.content .progress-div .countdown-img {
   max-width: 100%;
   max-height: 100%;
   margin-bottom: 10%;
 }
 
-.content .progress .checked-letters {
+.content .progress-div .checked-letters {
   text-align: center;
   width: 60%;
 }
@@ -155,6 +171,41 @@ body.lost {
   font-size: 20px;
   background-color: #fafafa;
   text-align: center;
+}
+
+.content .settings {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: #fafafa;
+  -webkit-box-shadow: 0px 2px 0px #000000;
+          box-shadow: 0px 2px 0px #000000;
+  -webkit-transition: top 0.4s ease;
+  transition: top 0.4s ease;
+}
+
+.content .settings.hidden {
+  top: -105%;
+}
+
+.content .settings form label {
+  cursor: pointer;
+  line-height: 30px;
 }
 
 @media screen and (max-width: 600px) {

@@ -7,6 +7,8 @@ const infoButton = document.getElementById("info");
 let WORDS;
 let selectedWord;
 
+let difficulty = "medium";
+
 (function loadWords() {
   fetch("SSKJ_frequencies.json")
     .then((response) => response.json())
@@ -19,6 +21,23 @@ let selectedWord;
 function chooseWord() {
   let randIndex, randId, randEntry, randWord, frequency;
 
+  let minFreq, maxFreq;
+
+  switch (difficulty) {
+    case "easy":
+      minFreq = 10000;
+      maxFreq = 100000;
+      break;
+    case "medium":
+      minFreq = 1000;
+      maxFreq = 20000;
+      break;
+    case "hard":
+      minFreq = 0;
+      maxFreq = 1000;
+      break;
+  }
+
   while (true) {
     const length = WORDS.length;
 
@@ -30,7 +49,7 @@ function chooseWord() {
     frequency = randEntry.frequency;
 
     if (randWord.includes(" ")) continue;
-    if (randWord.length > 8 && frequency > 1000) break;
+    if (randWord.length > 8 && frequency > minFreq && frequency < maxFreq) break;
   }
 
   selectedWord = randWord;
@@ -41,13 +60,15 @@ function chooseWord() {
 }
 
 function setMainWord(word) {
-  let secretWord = word[0] + " _".repeat(word.length - 2) + " " + word[word.length - 1];
+  let secretWord = word[0] + "_".repeat(word.length - 2) + word[word.length - 1];
+
+  secretWord = [...secretWord].join(" ");
 
   writtenWordEl.innerHTML = secretWord;
 }
 
 function setFontSize(word) {
-  body.style["font-size"] = 31 - word.length + "px";
+  writtenWordEl.style["font-size"] = 31 - word.length + "px";
 }
 
 function setInfo(id, word) {
@@ -56,11 +77,9 @@ function setInfo(id, word) {
 
 /* -------- main game logic -------- */
 
-const form = document.getElementById("form");
-const input = document.getElementById("input");
+const letterInput = document.getElementById("letterInput");
 const checkedLetters = document.getElementById("checkedLetters");
 const countdownImg = document.getElementById("countdownImg");
-const resetButton = document.getElementById("reset");
 
 let trials; // number of trials left
 let trialLetters = []; // letters already tried
@@ -79,8 +98,9 @@ function initialize() {
   infoButton.classList.add("hidden");
   body.classList.remove("lost");
   body.classList.remove("won");
+  settings.classList.add("hidden");
 
-  input.select();
+  letterInput.select();
 }
 
 function updateChecked(letter) {
@@ -160,6 +180,14 @@ function gameWon() {
   console.log("game won!");
   infoButton.classList.remove("hidden");
   body.classList.add("won");
+
+  switch (trials) {
+    case 8:
+      randWin = Math.floor(Math.random() * 2);
+      countdownImg.src = `img/win${randWin}.png`;
+    default:
+      countdownImg.src = "img/dove.png";
+  }
 }
 
 function gameOver() {
@@ -170,14 +198,38 @@ function gameOver() {
   infoButton.classList.remove("hidden");
 }
 
-form.addEventListener("submit", (e) => {
+/* -------- event listeners -------- */
+
+const inputForm = document.getElementById("inputForm");
+const settingsForm = document.getElementById("settingsForm");
+
+inputForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  let letter = input.value.toLowerCase();
-  input.value = "";
+  let letter = letterInput.value.toLowerCase();
+  letterInput.value = "";
 
   if (!letter) return;
   checkLetter(letter);
 });
 
+settingsForm.addEventListener("click", (e) => {
+  if (e.target.tagName == "INPUT") {
+    difficulty = e.target.value;
+
+    setTimeout(initialize, 100);
+
+    // initialize();
+  }
+});
+
+/* -------- buttons -------- */
+
+const resetButton = document.getElementById("reset-btn");
+const settingsButton = document.getElementById("settings-btn");
+const settings = document.getElementById("settings");
+
 resetButton.addEventListener("click", initialize);
+settingsButton.addEventListener("click", function () {
+  settings.classList.toggle("hidden");
+});

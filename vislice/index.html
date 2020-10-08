@@ -7,8 +7,9 @@
     <title>vislice</title>
   </head>
   <body>
-    <div class="content">
-      <img class="reset" id="reset" src="img/reset.png" />
+    <div class="content" id="content">
+      <img class="reset-btn" id="reset-btn" src="img/reset.png" />
+      <img class="settings-btn" id="settings-btn" src="img/settings.png" />
       <div class="upper">
         <div class="word-and-info">
           <span class="written-word" id="writtenWord">_ _ _ _ _ _ _ _</span>
@@ -16,14 +17,26 @@
             <img src="img/i.png" alt="info" />
           </a>
         </div>
-        <div class="progress">
+        <div class="progress-div">
           <img class="countdown-img" src="img/trans.png" id="countdownImg" />
           <div class="checked-letters" id="checkedLetters">&nbsp;</div>
         </div>
       </div>
       <div class="lower">
-        <form id="form">
-          <input type="text" id="input" maxlength="1" autocomplete="off" spellcheck="false" />
+        <form id="inputForm">
+          <input type="text" id="letterInput" maxlength="1" autocomplete="off" spellcheck="false" />
+        </form>
+      </div>
+
+      <div class="settings hidden" id="settings">
+        <p>izbreri težavnost:</p>
+        <form id="settingsForm">
+          <input type="radio" id="enostavno" name="difficulty" value="easy" />
+          <label for="enostavno">enostavno</label><br />
+          <input type="radio" id="srednje" name="difficulty" value="medium" checked />
+          <label for="srednje">srednje</label><br />
+          <input type="radio" id="zahtevnejše" name="difficulty" value="hard" />
+          <label for="zahtevnejše">zahtevnejše</label>
         </form>
       </div>
     </div>
