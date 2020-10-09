@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-132327530-2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "UA-132327530-2");
+    </script>
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>vodnibivol</title>
@@ -76,6 +88,8 @@
         <li><a href="/rtv_download/">- rtv downloader</a></li>
         <li><a href="/vremenska_napoved/">- vremenska napoved</a></li>
         <li><a href="/covid/">- covid-19 graf</a></li>
+        <li><a href="/vislice/">- vislice</a></li>
+        <li><a href="/billionaire/">- milijarda sekund</a></li>
       </ul>
     </div>
     <footer>
@@ -84,7 +98,7 @@
       </div>
     </footer>
     <script>
-      document.addEventListener('contextmenu', event => event.preventDefault());
+      document.addEventListener("contextmenu", (event) => event.preventDefault());
     </script>
   </body>
 </html>
