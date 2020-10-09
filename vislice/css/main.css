@@ -1,6 +1,4 @@
 body {
-  font-family: monospace;
-  font-size: 20px;
   height: 100vh;
   margin: 0;
   padding: 0;
@@ -15,6 +13,9 @@ body {
           align-items: center;
   overflow: hidden;
   background-color: #c5e5e9;
+  background-image: url("../img/drops2.png");
+  font-family: monospace;
+  font-size: 20px;
   -webkit-transition: background-color 0.5s;
   transition: background-color 0.5s;
 }
@@ -84,9 +85,6 @@ body.lost {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
 }
 
 .content .container-upper .container-left {
@@ -102,6 +100,7 @@ body.lost {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  white-space: nowrap;
 }
 
 .content .container-upper .container-left .word-and-info {
@@ -112,24 +111,29 @@ body.lost {
   display: inline-block;
 }
 
-.content .container-upper .container-left .word-and-info a.info {
+.content .container-upper .container-left .word-and-info .info {
   z-index: 1;
   position: absolute;
   top: -13px;
   right: -13px;
 }
 
-.content .container-upper .container-left .word-and-info a.info img {
+.content .container-upper .container-left .word-and-info .info img {
   width: 24px;
 }
 
-.content .container-upper .container-left .word-and-info a.info.hidden {
+.content .container-upper .container-left .word-and-info .info.hidden {
   display: none;
 }
 
+.content .container-upper .container-left .word-and-info .info:hover {
+  -webkit-filter: brightness(0.9);
+          filter: brightness(0.9);
+}
+
 .content .container-upper .container-right {
-  height: 100%;
   width: 50%;
+  height: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -148,7 +152,6 @@ body.lost {
 .content .container-upper .container-right .countdown-img {
   max-width: 100%;
   max-height: 100%;
-  margin-bottom: 10%;
 }
 
 .content .container-upper .container-right .checked-letters {
@@ -163,7 +166,7 @@ body.lost {
           align-items: center;
   text-align: center;
   width: 180px;
-  height: 46px;
+  height: 45px;
 }
 
 .content .written-word,
@@ -196,18 +199,18 @@ body.lost {
   border: none;
   border-bottom: 2px solid black;
   outline: none;
+  background-color: inherit;
   font-family: monospace;
   font-size: 20px;
-  background-color: #fafafa;
   text-align: center;
 }
 
 .content .settings {
+  z-index: 1;
   position: absolute;
   top: 0;
   height: 100%;
   width: 100%;
-  z-index: 1;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -221,15 +224,13 @@ body.lost {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  background-color: #fafafa;
-  -webkit-box-shadow: 0px 2px 0px #000000;
-          box-shadow: 0px 2px 0px #000000;
+  background-color: inherit;
   -webkit-transition: top 0.4s ease;
   transition: top 0.4s ease;
 }
 
 .content .settings.hidden {
-  top: -105%;
+  top: -100%;
 }
 
 .content .settings form label {
@@ -237,12 +238,35 @@ body.lost {
   line-height: 30px;
 }
 
-.content .loading-bar {
+.content .settings .copyright-container {
+  width: 100%;
+  height: 40px;
   position: absolute;
   bottom: 0;
-  left: 0px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: #d6d6d6;
+}
+
+.content .settings .copyright-container .copyright {
+  display: inline-block;
+  color: #a1a1a1;
+  font-size: 18px;
+}
+
+.content .loading-bar {
   width: 100%;
   height: 7px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
   background-color: #8f8f8f;
   background-image: url("../img/loading.png");
   -webkit-transition: width ease 0.5s;
@@ -269,7 +293,13 @@ body.lost {
     -webkit-box-ordinal-group: 3;
         -ms-flex-order: 2;
             order: 2;
-    margin-top: 10px;
     width: unset;
+    height: 25%;
+  }
+  .content .container-upper .container-right {
+    width: unset;
+    height: 85%;
+    -ms-flex-pack: distribute;
+        justify-content: space-around;
   }
 }

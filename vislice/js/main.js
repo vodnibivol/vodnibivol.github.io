@@ -5,34 +5,46 @@ const writtenWordEl = document.getElementById("writtenWord");
 const infoButton = document.getElementById("info");
 const loadingBar = document.getElementById("loadingBar");
 
-let WORDS;
-let selectedWord;
+/* --------- load words.json --------- */
 
-let difficulty = "medium";
+let WORDS;
 
 (function loadWords() {
-  fetch("SSKJ_frequencies.json")
+  fetch("WORDS.json")
     .then((response) => response.json())
     .then((file) => (WORDS = file))
     .then(initialize);
 })();
 
+/* -------- load prefrences -------- */
+
+let settings;
+
+(function loadSettings() {
+  if (localStorage.settings) {
+    settings = JSON.parse(localStorage.settings);
+  } else {
+    settings = { difficulty: "medium", length: 8 };
+  }
+})();
+
 /* -------- word preparation -------- */
 
-function chooseWord() {
-  let randIndex, randId, randEntry, randWord, frequency;
+let selectedWord;
 
+function chooseWord() {
+  let randIndex, randEntry, randId, randWord, frequency;
   let minFreq, maxFreq, minLength;
 
-  switch (difficulty) {
+  switch (settings.difficulty) {
     case "easy":
       minFreq = 100000;
-      maxFreq = 10000000;
+      maxFreq = Infinity;
       minLength = 5;
       break;
     case "medium":
-      minFreq = 1000;
-      maxFreq = 20000;
+      minFreq = 10000;
+      maxFreq = 100000;
       minLength = 7;
       break;
     case "hard":
@@ -49,8 +61,8 @@ function chooseWord() {
     randEntry = WORDS[randIndex];
 
     randId = randEntry.id;
-    randWord = randEntry.headwords.headword_clean;
-    frequency = randEntry.frequency;
+    randWord = randEntry.word;
+    frequency = randEntry.freq;
 
     if (randWord.includes(" ")) continue;
     if (randWord.length > minLength && frequency > minFreq && frequency < maxFreq) break;
@@ -72,7 +84,22 @@ function setMainWord(word) {
 }
 
 function setFontSize(word) {
-  writtenWordEl.style["font-size"] = 31 - word.length + "px";
+  let leftDiv = document.querySelector(".container-left");
+  let fontSize = 31 - word.length;
+
+  writtenWordEl.style["font-size"] = fontSize + "px";
+
+  // if word is too long:
+
+  let divWidth = leftDiv.offsetWidth;
+  let wordWidth = writtenWordEl.offsetWidth;
+
+  while (wordWidth > divWidth) {
+    fontSize--;
+    writtenWordEl.style["font-size"] = fontSize + "px";
+
+    wordWidth = writtenWordEl.offsetWidth;
+  }
 }
 
 function setInfo(id, word) {
@@ -89,11 +116,9 @@ let trials; // number of trials left
 let trialLetters = []; // letters already tried
 let writtenWord;
 
-// console.log(writtenWord)
-
 function initialize() {
   chooseWord();
-  updateChecked();
+  updateCheckedLetters();
 
   trials = 8;
   trialLetters = [];
@@ -103,33 +128,10 @@ function initialize() {
   infoButton.classList.add("hidden");
   body.classList.remove("lost");
   body.classList.remove("won");
-  settings.classList.add("hidden");
+  settingsDiv.classList.add("hidden");
 
   letterInput.disabled = false;
   letterInput.select();
-}
-
-function updateChecked(letter) {
-  if (!letter) {
-    checkedLetters.innerHTML = "&nbsp;";
-    return;
-  }
-
-  if (!trialLetters.includes(letter)) {
-    trialLetters.push(letter);
-  }
-
-  let content = trialLetters.join(", ");
-  checkedLetters.innerHTML = content;
-}
-
-function updateLoadingBar() {
-  let percent = (trials / 8) * 100;
-  loadingBar.style.width = percent + "%";
-}
-
-function updateImage() {
-  countdownImg.src = "img/" + trials + ".png";
 }
 
 function updateWord(letter, indexes) {
@@ -143,8 +145,31 @@ function updateWord(letter, indexes) {
   writtenWordEl.innerHTML = writtenWord.join(" ");
 }
 
+function updateCheckedLetters(letter) {
+  if (!letter) {
+    checkedLetters.innerHTML = "";
+    return;
+  }
+
+  if (!trialLetters.includes(letter)) {
+    trialLetters.push(letter);
+  }
+
+  let content = trialLetters.join(", ");
+  checkedLetters.innerHTML = content;
+}
+
+function updateImage() {
+  countdownImg.src = "img/" + trials + ".png";
+}
+
+function updateLoadingBar() {
+  let percent = (trials / 8) * 100;
+  loadingBar.style.width = percent + "%";
+}
+
 function checkLetter(inputLetter) {
-  // ----- get indexes -----
+  /* ----- get indexes ----- */
 
   let indexes = [];
 
@@ -156,16 +181,15 @@ function checkLetter(inputLetter) {
     }
   }
 
-  // ----- ----- -----
+  /* ----------------------- */
 
   if (indexes.length == 0) {
     // letter IS NOT in word
     if (!trialLetters.includes(inputLetter)) {
       trials--;
-      console.log(trials);
 
       updateImage();
-      updateChecked(inputLetter);
+      updateCheckedLetters(inputLetter);
       updateLoadingBar();
     }
   } else {
@@ -189,25 +213,37 @@ function checkForWin() {
 }
 
 function gameWon() {
-  console.log("game won!");
   infoButton.classList.remove("hidden");
   body.classList.add("won");
   letterInput.disabled = true;
 
-  switch (trials) {
-    case 8:
-      let randWin = Math.floor(Math.random() * 2);
-      countdownImg.src = `img/win${randWin}.png`;
-      checkedLetters.innerHTML = "jes jes jes!";
-      break;
-    default:
-      countdownImg.src = `img/dove${trials}.png`;
-      checkedLetters.innerHTML = "rešil te je ptič golobič.";
+  if (trials == 8) {
+    let randWin = Math.floor(Math.random() * 4);
+    countdownImg.src = `img/win${randWin}.png`;
+
+    let message;
+    switch (randWin) {
+      case 0:
+        message = "hov hov, vse si imel prov!";
+        break;
+      case 1:
+        message = "tra ra ra!";
+        break;
+      case 2:
+        message = "tutu tutuuu!";
+        break;
+      case 3:
+        message = "tik tik tik. jejžek ti čestita.";
+        break;
+    }
+    checkedLetters.innerHTML = message;
+  } else {
+    countdownImg.src = `img/dove${trials}.png`;
+    checkedLetters.innerHTML = "rešil te je ptič golobič.";
   }
 }
 
 function gameOver() {
-  console.log("game over!");
   writtenWordEl.innerHTML = [...selectedWord].join(" ");
 
   body.classList.add("lost");
@@ -217,25 +253,29 @@ function gameOver() {
 
 /* -------- event listeners -------- */
 
+/* -------- form -------- */
+
 const inputForm = document.getElementById("inputForm");
 const settingsForm = document.getElementById("settingsForm");
 
 inputForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  let letter = letterInput.value.toLowerCase();
+  let char = letterInput.value.toLowerCase();
   letterInput.value = "";
 
-  console.log(letter.toUpperCase())
-
-  if (letter.toLowerCase() == letter.toUpperCase()) return
-
-  checkLetter(letter);
+  if (char.toLowerCase() == char.toUpperCase()) return;
+  else checkLetter(char); // character is a symbol
 });
+
+/* -------- settings -------- */
 
 settingsForm.addEventListener("click", (e) => {
   if (e.target.tagName == "INPUT") {
-    difficulty = e.target.value;
+    settings.difficulty = e.target.value;
+    // settings.length ...;
+
+    localStorage.settings = JSON.stringify(settings);
 
     setTimeout(initialize, 100);
 
@@ -247,9 +287,9 @@ settingsForm.addEventListener("click", (e) => {
 
 const resetButton = document.getElementById("reset-btn");
 const settingsButton = document.getElementById("settings-btn");
-const settings = document.getElementById("settings");
+const settingsDiv = document.getElementById("settingsDiv");
 
 resetButton.addEventListener("click", initialize);
 settingsButton.addEventListener("click", function () {
-  settings.classList.toggle("hidden");
+  settingsDiv.classList.toggle("hidden");
 });
