@@ -4,6 +4,7 @@ const body = document.querySelector("body");
 const writtenWordEl = document.getElementById("writtenWord");
 const infoButton = document.getElementById("info");
 const loadingBar = document.getElementById("loadingBar");
+const settingsForm = document.getElementById("settingsForm");
 
 /* --------- load words.json --------- */
 
@@ -129,6 +130,8 @@ function initialize() {
   body.classList.remove("lost");
   body.classList.remove("won");
   settingsDiv.classList.add("hidden");
+
+  settingsForm.querySelector(`[value="${settings.difficulty}"]`).checked = true;
 
   letterInput.disabled = false;
   letterInput.select();
@@ -256,7 +259,6 @@ function gameOver() {
 /* -------- form -------- */
 
 const inputForm = document.getElementById("inputForm");
-const settingsForm = document.getElementById("settingsForm");
 
 inputForm.addEventListener("submit", (e) => {
   e.preventDefault();
