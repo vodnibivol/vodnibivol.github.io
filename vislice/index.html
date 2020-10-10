@@ -18,7 +18,7 @@
     <meta property="og:url" content="https://vodnibivol.github.io/vislice/" />
     <meta property="og:description" content="Ali te bo rešil ptič golobič?" />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="img/preview.png" />
+    <meta property="og:image" content="img/preview2.png" />
 
     <link rel="apple-touch-icon" sizes="180x180" href="img/icons/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="img/icons/favicon-32x32.png" />
@@ -30,9 +30,12 @@
     <meta name="msapplication-config" content="img/icons/browserconfig.xml" />
     <meta name="theme-color" content="#ffffff" />
 
-    <link rel="preload" href="WORDS.json" as="fetch" type="application/json" crossorigin />
+    <!-- <link rel="preload" href="WORDS.json" as="fetch" type="application/json" crossorigin /> -->
 
     <meta charset="UTF-8" />
+    <meta name="description" content="Ali te bo rešil ptič golobič?" />
+    <meta name="keywords" content="vislice, igra, vodni bivol, vodnibivol" />
+    <meta name="author" content="Filip Kokol" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="css/main.css" />
     <title>vislice</title>
@@ -65,16 +68,43 @@
       </div>
 
       <div class="settings hidden" id="settingsDiv">
-        <p>izbreri težavnost:</p>
         <form id="settingsForm">
-          <input type="radio" id="enostavno" name="difficulty" value="easy" />
-          <label for="enostavno">enostavno</label>
-          <br />
-          <input type="radio" id="srednje" name="difficulty" value="medium" />
-          <label for="srednje">srednje</label>
-          <br />
-          <input type="radio" id="zahtevnejše" name="difficulty" value="hard" />
-          <label for="zahtevnejše">zahtevnejše</label>
+          <div class="form-container-upper">
+            <div class="form-frequency">
+              <p>pogostost besed:</p>
+              <input type="radio" id="high_freq" name="frequency" value="high" />
+              <label for="high_freq">pogoste</label>
+              <br />
+              <input type="radio" id="mid-freq" name="frequency" value="mid" />
+              <label for="mid-freq">srednje</label>
+              <br />
+              <input type="radio" id="low-freq" name="frequency" value="low" />
+              <label for="low-freq">redke</label>
+            </div>
+
+            <div class="form-dictionary">
+              <p>nabor besed:</p>
+              <input type="radio" id="all-words" name="dictionary" value="all" />
+              <label for="all-words">vse besede</label>
+              <br />
+              <input type="radio" id="newspapers" name="dictionary" value="news" />
+              <label for="newspapers">časopisi, revije</label>
+              <br />
+              <input type="radio" id="internet" name="dictionary" value="int" />
+              <label for="internet">internet</label>
+              <br />
+              <input type="radio" id="literature" name="dictionary" value="lit" />
+              <label for="literature">leposlovje</label>
+            </div>
+          </div>
+          <div class="form-container-lower">
+            <p>dolžina besede (+/- 2):</p>
+            <div class="slider-counter">
+              <input type="range" min="6" max="12" id="countRange" />
+              <span id="rangeOutput">(8)</span>
+            </div>
+          </div>
+          <input type="image" class="settings-submit" src="img/save.png" alt="submit" id="save-settings-btn">
         </form>
 
         <div class="copyright-container">

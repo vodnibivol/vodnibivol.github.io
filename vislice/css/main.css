@@ -57,7 +57,6 @@ body.lost {
 
 .content .reset-btn,
 .content .settings-btn {
-  z-index: 3;
   position: absolute;
   top: 0;
   margin: 10px;
@@ -70,13 +69,19 @@ body.lost {
 }
 
 .content .reset-btn {
+  z-index: 3;
   left: 0;
   width: 15px;
 }
 
 .content .settings-btn {
+  z-index: 1;
   right: 0;
   width: 18px;
+}
+
+.content .settings-btn.hidden {
+  display: none;
 }
 
 .content .container-upper {
@@ -218,9 +223,9 @@ body.lost {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
@@ -231,6 +236,81 @@ body.lost {
 
 .content .settings.hidden {
   top: -100%;
+}
+
+.content .settings form {
+  width: 90%;
+  height: 90%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.content .settings form .form-container-upper {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+}
+
+.content .settings form .form-container-lower {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.content .settings form .form-container-lower .slider-counter {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-left: 35px;
+}
+
+.content .settings form .form-container-lower .slider-counter span {
+  margin-left: 10px;
+}
+
+.content .settings form .settings-submit {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px;
+  width: 18px;
+  outline: none;
+}
+
+.content .settings form .settings-submit.hidden {
+  display: none;
+}
+
+.content .settings form .settings-submit:hover {
+  opacity: 0.7;
 }
 
 .content .settings form label {

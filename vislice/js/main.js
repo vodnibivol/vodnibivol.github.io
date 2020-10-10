@@ -6,18 +6,15 @@ const infoButton = document.getElementById("info");
 const loadingBar = document.getElementById("loadingBar");
 const settingsForm = document.getElementById("settingsForm");
 
-/* --------- load words.json --------- */
-
-let WORDS;
-
-(function loadWords() {
-  fetch("WORDS.json")
-    .then((response) => response.json())
-    .then((file) => (WORDS = file))
-    .then(initialize);
-})();
-
 /* -------- load prefrences -------- */
+
+let currentVersion = 2.3;
+
+if (localStorage.version != currentVersion) {
+  localStorage.clear();
+  localStorage.version = currentVersion;
+  console.log("updated app. cleared local storage.");
+}
 
 let settings;
 
@@ -25,8 +22,41 @@ let settings;
   if (localStorage.settings) {
     settings = JSON.parse(localStorage.settings);
   } else {
-    settings = { difficulty: "medium", length: 8 };
+    settings = { frequency: "mid", dictionary: "all", wordLength: 8 };
   }
+})();
+
+// console.log(settings);
+
+settingsForm.querySelector(`input[name="frequency"][value="${settings.frequency}"]`).checked = true;
+settingsForm.querySelector(`input[name="dictionary"][value="${settings.dictionary}"]`).checked = true;
+settingsForm.querySelector('input[type="range"]').value = settings.wordLength;
+
+/* --------- load words.json --------- */
+
+let WORDS;
+
+(function loadWords() {
+  let path;
+  switch (settings.dictionary) {
+    case "all":
+      path = "WORDS/WORDS_all.json";
+      break;
+    case "news":
+      path = "WORDS/WORDS_newspapers.json";
+      break;
+    case "int":
+      path = "WORDS/WORDS_internet.json";
+      break;
+    case "lit":
+      path = "WORDS/WORDS_literature.json";
+      break;
+  }
+
+  fetch(path)
+    .then((response) => response.json())
+    .then((file) => (WORDS = file))
+    .then(initialize);
 })();
 
 /* -------- word preparation -------- */
@@ -35,23 +65,27 @@ let selectedWord;
 
 function chooseWord() {
   let randIndex, randEntry, randId, randWord, frequency;
-  let minFreq, maxFreq, minLength;
+  let minFreq, maxFreq, minLength, maxLength;
 
-  switch (settings.difficulty) {
-    case "easy":
-      minFreq = 100000;
-      maxFreq = Infinity;
-      minLength = 5;
-      break;
-    case "medium":
+  minLength = settings.wordLength - 2;
+  maxLength = settings.wordLength + 2;
+
+  if (settings.wordLength == 12) {
+    maxLength = Infinity;
+  }
+
+  switch (settings.frequency) {
+    case "high":
       minFreq = 10000;
-      maxFreq = 100000;
-      minLength = 7;
+      maxFreq = Infinity;
       break;
-    case "hard":
+    case "mid":
+      minFreq = 1000;
+      maxFreq = 10000;
+      break;
+    case "low":
       minFreq = 0;
       maxFreq = 100;
-      minLength = 8;
       break;
   }
 
@@ -66,10 +100,12 @@ function chooseWord() {
     frequency = randEntry.freq;
 
     if (randWord.includes(" ")) continue;
-    if (randWord.length > minLength && frequency > minFreq && frequency < maxFreq) break;
+    if (randWord.length > minLength && randWord.length < maxLength && frequency > minFreq && frequency < maxFreq) break;
   }
 
   selectedWord = randWord;
+
+  // console.log(selectedWord);
 
   setMainWord(selectedWord);
   setFontSize(selectedWord);
@@ -130,8 +166,6 @@ function initialize() {
   body.classList.remove("lost");
   body.classList.remove("won");
   settingsDiv.classList.add("hidden");
-
-  settingsForm.querySelector(`[value="${settings.difficulty}"]`).checked = true;
 
   letterInput.disabled = false;
   letterInput.select();
@@ -272,17 +306,29 @@ inputForm.addEventListener("submit", (e) => {
 
 /* -------- settings -------- */
 
-settingsForm.addEventListener("click", (e) => {
-  if (e.target.tagName == "INPUT") {
-    settings.difficulty = e.target.value;
-    // settings.length ...;
+settingsForm.addEventListener("submit", (e) => {
+  e.preventDefault();
 
-    localStorage.settings = JSON.stringify(settings);
+  let freqValue = document.querySelector('input[name="frequency"]:checked').value;
+  let dictValue = document.querySelector('input[name="dictionary"]:checked').value;
+  let lengthValue = document.querySelector('input[type="range"]').value;
 
-    setTimeout(initialize, 100);
+  settings.frequency = freqValue;
+  settings.dictionary = dictValue;
+  settings.wordLength = parseInt(lengthValue);
 
-    // initialize();
-  }
+  localStorage.settings = JSON.stringify(settings);
+
+  initialize();
+});
+
+const countRange = document.getElementById("countRange");
+const rangeOutput = document.getElementById("rangeOutput");
+
+rangeOutput.innerHTML = "(" + countRange.value + ")"; // initial
+
+countRange.addEventListener("input", function () {
+  rangeOutput.innerHTML = "(" + countRange.value + ")";
 });
 
 /* -------- buttons -------- */
@@ -293,5 +339,5 @@ const settingsDiv = document.getElementById("settingsDiv");
 
 resetButton.addEventListener("click", initialize);
 settingsButton.addEventListener("click", function () {
-  settingsDiv.classList.toggle("hidden");
+  settingsDiv.classList.remove("hidden");
 });
