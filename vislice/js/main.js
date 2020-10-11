@@ -69,6 +69,7 @@ function loadWords() {
   req.onprogress = function (e) {
     let progress = (e.loaded / e.total) * 100;
     loadingBar.style.width = progress + "%";
+    console.log(progress)
   };
 }
 
