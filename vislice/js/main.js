@@ -67,9 +67,12 @@ function loadWords() {
   };
 
   req.onprogress = function (e) {
-    let progress = (e.loaded / e.total) * 100;
-    loadingBar.style.width = progress + "%";
-    console.log(e)
+    if (e.lengthComputable) {
+      let progress = (e.loaded / e.total) * 100;
+      loadingBar.style.width = progress + "%";
+      
+      loadingBar.style.animation = "none";
+    }
   };
 }
 

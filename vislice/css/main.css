@@ -383,6 +383,25 @@ body.lost {
   background-image: url("../img/progress.png");
   width: 100%;
   height: 7px;
+  animation: move 1s linear infinite reverse;
+}
+
+@-webkit-keyframes move {
+  from {
+    background-position: 0%;
+  }
+  to {
+    background-position: 100%;
+  }
+}
+
+@keyframes move {
+  from {
+    background-position: 0%;
+  }
+  to {
+    background-position: 100%;
+  }
 }
 
 @media screen and (max-width: 600px) {
