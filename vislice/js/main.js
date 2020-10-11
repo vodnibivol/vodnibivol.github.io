@@ -3,12 +3,14 @@
 const body = document.querySelector("body");
 const writtenWordEl = document.getElementById("writtenWord");
 const infoButton = document.getElementById("info");
+const progressBar = document.getElementById("progressBar");
 const loadingBar = document.getElementById("loadingBar");
+const loadingBarContainer = document.getElementById("loadingBarContainer");
 const settingsForm = document.getElementById("settingsForm");
 
 /* -------- load prefrences -------- */
 
-let currentVersion = "2.3.1";
+let currentVersion = "2.3.2";
 
 if (localStorage.version != currentVersion) {
   localStorage.clear();
@@ -53,10 +55,21 @@ function loadWords() {
       break;
   }
 
-  fetch(path)
-    .then((response) => response.json())
-    .then((file) => (WORDS = file))
-    .then(initialize);
+  loadingBarContainer.classList.remove("hidden");
+
+  let req = new XMLHttpRequest();
+  req.open("GET", path);
+  req.send();
+
+  req.onload = function () {
+    WORDS = JSON.parse(this.responseText);
+    initialize();
+  };
+
+  req.onprogress = function (e) {
+    let progress = (e.loaded / e.total) * 100;
+    loadingBar.style.width = progress + "%";
+  };
 }
 
 loadWords();
@@ -170,13 +183,14 @@ function initialize() {
 
   trials = 8;
   trialLetters = [];
-  loadingBar.style.width = "100%";
+  progressBar.style.width = "100%";
   countdownImg.src = "img/trans.png";
 
   infoButton.classList.remove("show");
   body.classList.remove("lost");
   body.classList.remove("won");
   settingsDiv.classList.add("hidden");
+  loadingBarContainer.classList.add("hidden");
 
   letterInput.disabled = false;
   letterInput.select();
@@ -211,9 +225,9 @@ function updateImage() {
   countdownImg.src = "img/" + trials + ".png";
 }
 
-function updateLoadingBar() {
+function updateProgressBar() {
   let percent = (trials / 8) * 100;
-  loadingBar.style.width = percent + "%";
+  progressBar.style.width = percent + "%";
 }
 
 function checkLetter(inputLetter) {
@@ -238,7 +252,7 @@ function checkLetter(inputLetter) {
 
       updateImage();
       updateCheckedLetters(inputLetter);
-      updateLoadingBar();
+      updateProgressBar();
     }
   } else {
     // letter IS in word

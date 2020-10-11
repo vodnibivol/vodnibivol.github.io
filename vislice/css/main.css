@@ -348,16 +348,41 @@ body.lost {
   font-size: 18px;
 }
 
-.content .loading-bar {
+.content .progress-bar {
   width: 100%;
   height: 7px;
   position: absolute;
   bottom: 0;
   left: 0;
   background-color: #8f8f8f;
-  background-image: url("../img/loading.png");
+  background-image: url("../img/progress.png");
   -webkit-transition: width ease 0.5s;
   transition: width ease 0.5s;
+}
+
+.loading-bar-container {
+  position: fixed;
+  top: 0;
+  width: 150px;
+  padding: 10px 20px;
+  background-color: #ffffff;
+  border: 2px solid black;
+  border-top: none;
+  -webkit-box-shadow: 5px 5px 0px #00000033;
+          box-shadow: 5px 5px 0px #00000033;
+  -webkit-transition: top 0.3s;
+  transition: top 0.3s;
+}
+
+.loading-bar-container.hidden {
+  top: -35px;
+}
+
+.loading-bar-container .loading-bar {
+  background-color: #8f8f8f;
+  background-image: url("../img/progress.png");
+  width: 100%;
+  height: 7px;
 }
 
 @media screen and (max-width: 600px) {
