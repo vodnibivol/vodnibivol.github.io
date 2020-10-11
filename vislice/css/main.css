@@ -121,14 +121,21 @@ body.lost {
   position: absolute;
   top: -13px;
   right: -13px;
+  -webkit-transform: scale(0);
+          transform: scale(0);
+  -webkit-transition: -webkit-transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transition: -webkit-transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55), -webkit-transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 .content .container-upper .container-left .word-and-info .info img {
   width: 24px;
 }
 
-.content .container-upper .container-left .word-and-info .info.hidden {
-  display: none;
+.content .container-upper .container-left .word-and-info .info.show {
+  -webkit-transform: scale(1);
+          transform: scale(1);
 }
 
 .content .container-upper .container-left .word-and-info .info:hover {

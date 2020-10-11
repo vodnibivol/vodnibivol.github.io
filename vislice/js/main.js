@@ -8,7 +8,7 @@ const settingsForm = document.getElementById("settingsForm");
 
 /* -------- load prefrences -------- */
 
-let currentVersion = 2.3;
+let currentVersion = "2.3.1";
 
 if (localStorage.version != currentVersion) {
   localStorage.clear();
@@ -36,7 +36,7 @@ settingsForm.querySelector('input[type="range"]').value = settings.wordLength;
 
 let WORDS;
 
-(function loadWords() {
+function loadWords() {
   let path;
   switch (settings.dictionary) {
     case "all":
@@ -57,7 +57,9 @@ let WORDS;
     .then((response) => response.json())
     .then((file) => (WORDS = file))
     .then(initialize);
-})();
+}
+
+loadWords();
 
 /* -------- word preparation -------- */
 
@@ -67,8 +69,8 @@ function chooseWord() {
   let randIndex, randEntry, randId, randWord, frequency;
   let minFreq, maxFreq, minLength, maxLength;
 
-  minLength = settings.wordLength - 2;
-  maxLength = settings.wordLength + 2;
+  minLength = settings.wordLength - 1;
+  maxLength = settings.wordLength + 1;
 
   if (settings.wordLength == 12) {
     maxLength = Infinity;
@@ -76,20 +78,28 @@ function chooseWord() {
 
   switch (settings.frequency) {
     case "high":
-      minFreq = 10000;
+      minFreq = 100;
       maxFreq = Infinity;
       break;
     case "mid":
-      minFreq = 1000;
-      maxFreq = 10000;
+      minFreq = 1;
+      maxFreq = 100;
       break;
     case "low":
       minFreq = 0;
-      maxFreq = 100;
+      maxFreq = 0.1;
       break;
   }
 
+  let i = 0;
+
   while (true) {
+    i++;
+    if (i > 1000000) {
+      console.error("Too many iterations. Random word chosen.");
+      break;
+    }
+
     const length = WORDS.length;
 
     randIndex = Math.floor(Math.random() * length);
@@ -100,7 +110,8 @@ function chooseWord() {
     frequency = randEntry.freq;
 
     if (randWord.includes(" ")) continue;
-    if (randWord.length > minLength && randWord.length < maxLength && frequency > minFreq && frequency < maxFreq) break;
+    if (randWord.length >= minLength && randWord.length <= maxLength && frequency >= minFreq && frequency <= maxFreq)
+      break;
   }
 
   selectedWord = randWord;
@@ -162,7 +173,7 @@ function initialize() {
   loadingBar.style.width = "100%";
   countdownImg.src = "img/trans.png";
 
-  infoButton.classList.add("hidden");
+  infoButton.classList.remove("show");
   body.classList.remove("lost");
   body.classList.remove("won");
   settingsDiv.classList.add("hidden");
@@ -250,12 +261,12 @@ function checkForWin() {
 }
 
 function gameWon() {
-  infoButton.classList.remove("hidden");
+  infoButton.classList.add("show");
   body.classList.add("won");
   letterInput.disabled = true;
 
   if (trials == 8) {
-    let randWin = Math.floor(Math.random() * 4);
+    let randWin = Math.floor(Math.random() * 7);
     countdownImg.src = `img/win${randWin}.png`;
 
     let message;
@@ -272,6 +283,15 @@ function gameWon() {
       case 3:
         message = "tik tik tik. jejžek ti čestita.";
         break;
+      case 4:
+        message = "hru hru! od veselja zakrulim!";
+        break;
+      case 5:
+        message = "hu hu, pameti ti ne manjka.";
+        break;
+      case 6:
+        message = "tik tik tik. rakec ti čestita.";
+        break;
     }
     checkedLetters.innerHTML = message;
   } else {
@@ -284,7 +304,7 @@ function gameOver() {
   writtenWordEl.innerHTML = [...selectedWord].join(" ");
 
   body.classList.add("lost");
-  infoButton.classList.remove("hidden");
+  infoButton.classList.add("show");
   letterInput.disabled = true;
 }
 
@@ -313,13 +333,22 @@ settingsForm.addEventListener("submit", (e) => {
   let dictValue = document.querySelector('input[name="dictionary"]:checked').value;
   let lengthValue = document.querySelector('input[type="range"]').value;
 
+  let prevSettings = Object.assign({}, settings);
+
   settings.frequency = freqValue;
   settings.dictionary = dictValue;
   settings.wordLength = parseInt(lengthValue);
 
   localStorage.settings = JSON.stringify(settings);
 
-  initialize();
+  if (prevSettings.dictionary != settings.dictionary) {
+    loadWords();
+  } else if (JSON.stringify(prevSettings) != JSON.stringify(settings)) {
+    initialize();
+  } else {
+    // settings have not changed
+    settingsDiv.classList.add("hidden");
+  }
 });
 
 const countRange = document.getElementById("countRange");
