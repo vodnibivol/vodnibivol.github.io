@@ -35,8 +35,8 @@
 
     <script src="js/xlsx.core.min.js"></script>
     <script src="js/Chart.min.js"></script>
-    <script src="js/SITE.js" defer></script>
     <script src="js/charts.js" defer></script>
+    <script src="js/SITE.js" defer></script>
     <script src="js/slider.js" defer></script>
 
     <link rel="stylesheet" href="css/main.css" />
@@ -45,7 +45,17 @@
   </head>
   <body>
     <header class="info-bar">
-      <div class="bubble" id="infoBubble">
+      <div class="settings-bubble" id="settingsBubble">
+        <span>vse</span>
+        <label class="toggle">
+          <input class="toggle__input" name="" type="checkbox" id="sizeToggle" />
+          <div class="toggle__fill"></div>
+        </label>
+        <span>zadnji podatki</span>
+        <img src="img/arrow_right_small.svg" alt="settings" id="settingsButton" />
+      </div>
+
+      <div class="info-bubble" id="infoBubble">
         <svg height="18" width="18">
           <circle cx="9" cy="9" r="9" fill="#f7f7f7" />
         </svg>

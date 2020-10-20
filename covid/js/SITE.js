@@ -1,7 +1,12 @@
+"use strict";
+
 /* -------- variable declarations -------- */
 
 const infoButton = document.getElementById("infoButton");
 const infoBubble = document.getElementById("infoBubble");
+const settingsButton = document.getElementById("settingsButton");
+const settingsBubble = document.getElementById("settingsBubble");
+const sizeToggle = document.getElementById("sizeToggle");
 const chartDiv1 = document.getElementById("chartDiv1");
 const chartDiv2 = document.getElementById("chartDiv2");
 const card = document.getElementById("card");
@@ -11,6 +16,25 @@ const url = "https://www.gov.si/assets/vlada/Koronavirus-podatki/COVID-19-vsi-po
 const proxy = "https://cors-anywhere.herokuapp.com/";
 
 const filename = "COVID-19-vsi-podatki.xlsx";
+
+/* ---------- load preferences ---------- */
+
+let settings;
+
+// first time visit: set default
+if (chartDiv1.offsetWidth < 600) {
+  settings = { data: "small" };
+} else {
+  settings = { data: "large" };
+}
+
+if (localStorage.covidSettings) {
+  settings = JSON.parse(localStorage.covidSettings);
+}
+
+if (settings.data == "small") {
+  sizeToggle.checked = true;
+}
 
 /* ----------- event listeners ----------- */
 
@@ -24,6 +48,29 @@ infoButton.addEventListener("click", () => {
   } else {
     clearTimeout(countdown);
   }
+});
+
+settingsButton.addEventListener("click", () => {
+  settingsBubble.classList.toggle("open");
+  settingsButton.classList.toggle("reverse");
+});
+
+sizeToggle.addEventListener("change", () => {
+  if (sizeToggle.checked) {
+    settings.data = "small";
+  } else {
+    settings.data = "large";
+  }
+
+  localStorage.covidSettings = JSON.stringify(settings);
+
+  config1.options.animation.duration = 0;
+  config2.options.animation.duration = 0;
+
+  config();
+
+  chart1.update();
+  chart2.update();
 });
 
 /* -------- function declarations -------- */
@@ -51,6 +98,8 @@ function getFile() {
   req.send();
 }
 
+let dates, dates_s, daily_tested, daily_positive, daily_positive_s, daily_percent, daily_percent_s;
+
 function parseData(worksheet) {
   let getColumn = function (sheet, col_num) {
     let range = XLSX.utils.decode_range(sheet["!ref"]);
@@ -72,18 +121,47 @@ function parseData(worksheet) {
     return column;
   };
 
-  let dates = getColumn(worksheet, 0);
-  let daily_tested = getColumn(worksheet, 2);
-  let daily_positive = getColumn(worksheet, 4);
+  dates = getColumn(worksheet, 0);
+  daily_tested = getColumn(worksheet, 2);
+  daily_positive = getColumn(worksheet, 4);
 
-  dates = dates.map((date) => date.replaceAll("/", "."));
-  dates = dates.map((date) => date.replace(" 2020", ""));
+  dates = dates.map((date) => {
+    // wrong date correction
+    if (date.split(" ").length != 3) {
+      console.log("wrong syntax : " + date);
+
+      date = date.split(".").join(". ");
+    }
+
+    date = date.replaceAll("/", ".");
+    date = date.replace(" 2020", "");
+
+    return date;
+  });
+
+  daily_percent = (function () {
+    let arr = [];
+
+    for (var i = 0; i < daily_tested.length; i++) {
+      let percent = (daily_positive[i] / daily_tested[i]) * 100;
+      percent = percent.toFixed(2);
+
+      arr.push(percent);
+    }
+
+    return arr;
+  })();
+
+  dates_s = dates.slice(-50);
+  daily_percent_s = daily_percent.slice(-50);
+  daily_positive_s = daily_positive.slice(-50);
 
   // console.log(dates)
   // console.log(daily_tested)
   // console.log(daily_positive)
 
-  draw(dates, daily_tested, daily_positive);
+  config(dates, daily_positive, daily_tested);
+  draw();
   setCard(dates, daily_positive);
 }
 

@@ -70,7 +70,7 @@ function loadWords() {
     if (e.lengthComputable) {
       let progress = (e.loaded / e.total) * 100;
       loadingBar.style.width = progress + "%";
-      
+
       loadingBar.style.animation = "none";
     }
   };

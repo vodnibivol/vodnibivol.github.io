@@ -10,9 +10,113 @@ body {
   z-index: 2;
   width: 100%;
   font-family: "Lato", sans-serif;
+  font-size: 14px;
 }
 
-.info-bar .bubble {
+.info-bar .settings-bubble {
+  position: absolute;
+  top: 15px;
+  left: -172px;
+  padding: 4px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: #fafafa;
+  -webkit-box-shadow: 0px 5px 20px 0px #88888844;
+          box-shadow: 0px 5px 20px 0px #88888844;
+  border-radius: 0px 30px 30px 0px;
+  -webkit-transition: left 0.5s;
+  transition: left 0.5s;
+}
+
+.info-bar .settings-bubble span {
+  margin: 0 10px;
+  -webkit-transform: translateY(-1.5px);
+          transform: translateY(-1.5px);
+  color: #555;
+}
+
+.info-bar .settings-bubble img {
+  width: 5px;
+  margin: auto 5px auto auto;
+  cursor: pointer;
+  opacity: 0.6;
+  opacity: 0.3;
+  -webkit-transition: opacity 0.3s;
+  transition: opacity 0.3s;
+}
+
+.info-bar .settings-bubble img:hover {
+  opacity: 0.4;
+}
+
+.info-bar .settings-bubble img:active {
+  opacity: 0.5;
+}
+
+.info-bar .settings-bubble img.reverse {
+  -webkit-transform: rotateY(180deg);
+          transform: rotateY(180deg);
+}
+
+.info-bar .settings-bubble.open {
+  left: 0;
+}
+
+.info-bar .settings-bubble .toggle {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.info-bar .settings-bubble .toggle .toggle__input {
+  display: none;
+}
+
+.info-bar .settings-bubble .toggle .toggle__input:checked ~ .toggle__fill {
+  background-color: #6ccefc77;
+}
+
+.info-bar .settings-bubble .toggle .toggle__input:checked ~ .toggle__fill::after {
+  -webkit-transform: translateX(16px);
+          transform: translateX(16px);
+}
+
+.info-bar .settings-bubble .toggle .toggle__fill {
+  position: relative;
+  width: 30px;
+  height: 12px;
+  border-radius: 20px;
+  background: #dddddd;
+  -webkit-transition: background 0.5s;
+  transition: background 0.5s;
+  -webkit-box-shadow: inset -2px -2px 0px #00000011;
+          box-shadow: inset -2px -2px 0px #00000011;
+}
+
+.info-bar .settings-bubble .toggle .toggle__fill::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -1px;
+  height: 16px;
+  width: 16px;
+  background: #ffffff;
+  -webkit-box-shadow: 0px 0px 10px #00000033;
+          box-shadow: 0px 0px 10px #00000033;
+  border-radius: 20px;
+  -webkit-transition: -webkit-transform 0.3s;
+  transition: -webkit-transform 0.3s;
+  transition: transform 0.3s;
+  transition: transform 0.3s, -webkit-transform 0.3s;
+}
+
+.info-bar .info-bubble {
   position: relative;
   float: right;
   display: -webkit-box;
@@ -27,7 +131,6 @@ body {
   width: 9px;
   margin: 15px;
   padding: 4px 8px;
-  font-size: 14px;
   white-space: nowrap;
   overflow: hidden;
   background-color: #fafafa;
@@ -38,11 +141,11 @@ body {
   transition: width 0.5s;
 }
 
-.info-bar .bubble.open {
+.info-bar .info-bubble.open {
   width: 170px;
 }
 
-.info-bar .bubble img {
+.info-bar .info-bubble img {
   position: absolute;
   left: 4px;
   height: 18px;
@@ -54,26 +157,26 @@ body {
   cursor: pointer;
 }
 
-.info-bar .bubble img:hover {
+.info-bar .info-bubble img:hover {
   opacity: 0.4;
 }
 
-.info-bar .bubble img:active {
+.info-bar .info-bubble img:active {
   opacity: 0.5;
 }
 
-.info-bar .bubble svg {
+.info-bar .info-bubble svg {
   position: absolute;
   left: 3px;
 }
 
-.info-bar .bubble .copyright {
+.info-bar .info-bubble .copyright {
   direction: rtl;
   overflow: hidden;
   color: #5c5c5c;
 }
 
-.info-bar .bubble a {
+.info-bar .info-bubble a {
   color: #556a79;
   text-decoration: none;
   font-weight: 400;
