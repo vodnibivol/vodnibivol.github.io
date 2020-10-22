@@ -199,7 +199,17 @@ function setCard(dates, daily_positive) {
   }
 
   function writeNumber() {
-    lastPositive.innerHTML = daily_positive[daily_positive.length - 1];
+    let lastPositiveNum = daily_positive[daily_positive.length - 1];
+    lastPositive.innerHTML = lastPositiveNum;
+
+    switch (lastPositiveNum.length) {
+      case 4:
+        lastPositive.style["font-size"] = "80px";
+        break;
+      case 5:
+        lastPositive.style["font-size"] = "65px";
+        break;
+    }
   }
 
   function chooseArrow() {
