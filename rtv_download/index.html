@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-132327530-2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-132327530-2');
+    </script>
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
@@ -19,10 +31,6 @@
     <link rel="shortcut icon" href="img/icons/favicon.ico" />
 
     <link rel="stylesheet" href="css/main.css" />
-    <script src="js/PRNG.js" defer></script>
-    <script src="js/SITE.js" defer></script>
-    <script src="js/animations.js" defer></script>
-    <script src="js/getLink.js" defer></script>
 
     <link rel="preload" href="./fonts/raleway-v15-latin-ext-regular.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="./fonts/raleway-v15-latin-ext-700.woff2" as="font" type="font/woff2" crossorigin />
@@ -65,15 +73,17 @@
       <p class="tip" id="tip">Press enter to download</p>
     </div>
     <footer>
-      <div class="buttons" hidden>
+      <!-- <div class="buttons">
         <button type="button" id="startButton">start animation</button>
         <button type="button" id="stopButton">stop animation</button>
-      </div>
+      </div> -->
       <div>
         <span class="info">&copy; 2020 | vodnibivol | <a href="//4d.rtvslo.si/" target="_blank">rtvslo.si</a></span>
       </div>
     </footer>
-    <!-- prettier-ignore -->
-    <script> </script>
+    <script src="js/PRNG.js"></script>
+    <script src="js/SITE.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/getLink.js"></script>
   </body>
 </html>

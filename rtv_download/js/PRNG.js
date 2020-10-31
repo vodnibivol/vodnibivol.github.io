@@ -1,11 +1,11 @@
 function getRand() {
   function today() {
-    var now = new Date();
-    var start = new Date(2020, 0, 0);
-    var offset = start.getTimezoneOffset() - now.getTimezoneOffset();
-    var diff = now - start + offset * 60 * 1000;
-    var oneDay = 1000 * 60 * 60 * 24;
-    var day_no = Math.floor(diff / oneDay);
+    let now = new Date();
+    let start = new Date(2020, 0, 0);
+    let offset = start.getTimezoneOffset() - now.getTimezoneOffset();
+    let diff = now - start + offset * 60 * 1000;
+    let oneDay = 1000 * 60 * 60 * 24;
+    let day_no = Math.floor(diff / oneDay);
 
     return day_no;
   }
@@ -25,9 +25,11 @@ function getRand() {
   let quarantine = 11; // repeat interval (min.)
   let sample = population - quarantine;
 
-  for (var i = 0; i < today(); i++) {
-    var randIndex = nextRand() % sample;
-    var randPick = arr[randIndex];
+  let randIndex, randPick;
+
+  for (let i = 0; i < today(); i++) {
+    randIndex = nextRand() % sample;
+    randPick = arr[randIndex];
 
     arr.push(...arr.splice(randIndex, 1));
   }
