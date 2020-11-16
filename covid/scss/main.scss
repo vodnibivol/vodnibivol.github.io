@@ -4,6 +4,10 @@ body {
   height: 100vh;
 }
 
+::selection {
+  background-color: #a6d1d65c;
+}
+
 .info-bar {
   position: absolute;
   top: 0;

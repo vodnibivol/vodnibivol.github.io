@@ -90,14 +90,22 @@ async function getFile() {
   }
 }
 
-let dates, dates_s, daily_tested, daily_positive, daily_positive_s, daily_percent, daily_percent_s;
+let dates, daily_tested, daily_positive, daily_percent, dates_s, daily_positive_s, daily_percent_s;
 
 function parseData(obj) {
-  console.log(obj);
+  // console.log(obj);
 
-  if (!obj[obj.length - 1].cases.confirmedToday) {
-    obj = obj.slice(0, -1)
+  // cut off empty results
+
+  while (!obj[1].cases.confirmedToday) {
+    obj.shift();
   }
+
+  while (!obj[obj.length - 1].cases.confirmedToday) {
+    obj.pop();
+  }
+
+  // ---------------------
 
   dates = obj.map((item) => `${item.day}. ${item.month}`);
   daily_tested = obj.map((item) => item.tests.performed.today || item.tests.performed.toDate);

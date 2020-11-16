@@ -4,6 +4,14 @@ body {
   height: 100vh;
 }
 
+::-moz-selection {
+  background-color: #a6d1d65c;
+}
+
+::selection {
+  background-color: #a6d1d65c;
+}
+
 .info-bar {
   position: absolute;
   top: 0;
