@@ -27,6 +27,11 @@ body {
   height: 100vh;
 }
 
+body.preload {
+  -webkit-transition: none !important;
+  transition: none !important;
+}
+
 .bgnd {
   background-image: unset;
   height: 100%;

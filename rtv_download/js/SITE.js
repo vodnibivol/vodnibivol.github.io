@@ -10,6 +10,10 @@ const backgroundImage = document.getElementById('bgndImg');
 
 /* ----- Event listeners ----- */
 
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelector('body').classList.remove('preload');
+});
+
 search.addEventListener('keydown', () => {
   tip.classList.add('show');
 });

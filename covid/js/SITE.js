@@ -37,6 +37,10 @@ if (settings.data == 'small') {
 
 /* ----------- event listeners ----------- */
 
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelector('body').classList.remove('preload');
+});
+
 infoButton.addEventListener('click', () => {
   infoBubble.classList.toggle('open');
 
