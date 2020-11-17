@@ -41,6 +41,8 @@ document.addEventListener('DOMContentLoaded', function () {
   document.querySelector('body').classList.remove('preload');
 });
 
+let countdown;
+
 infoButton.addEventListener('click', () => {
   infoBubble.classList.toggle('open');
 
@@ -178,7 +180,9 @@ function setCard(dates, daily_positive) {
     let lastPositiveNum = daily_positive[daily_positive.length - 1];
     lastPositive.innerHTML = lastPositiveNum;
 
-    switch (lastPositiveNum.length) {
+    let numLength = lastPositiveNum.toString().length;
+
+    switch (numLength) {
       case 4:
         lastPositive.style['font-size'] = '80px';
         break;
