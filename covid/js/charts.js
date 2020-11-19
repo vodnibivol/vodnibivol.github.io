@@ -53,6 +53,9 @@ let config1 = {
             beginAtZero: true,
             autoSkipPadding: 10,
           },
+          gridLines: {
+            drawOnChartArea: false, // only want the grid lines for one axis to show up
+          },
         },
       ],
       xAxes: [
@@ -65,7 +68,15 @@ let config1 = {
     },
     tooltips: {
       callbacks: {
-        label: (item) => `${item.yLabel} %`,
+        label: (tooltipItem, data) => {
+          var label = data.datasets[tooltipItem.datasetIndex].label;
+          if (tooltipItem.datasetIndex == 0) {
+            return `${label}: ${tooltipItem.yLabel} %`
+          }
+          else {
+            return `${label}: ${tooltipItem.yLabel}`
+          }
+        },
       },
     },
   },
@@ -118,6 +129,9 @@ let config2 = {
           ticks: {
             beginAtZero: true,
             autoSkipPadding: 10,
+          },
+          gridLines: {
+            drawOnChartArea: false, // only want the grid lines for one axis to show up
           },
         },
       ],

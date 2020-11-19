@@ -129,8 +129,6 @@ function parseData(obj) {
   daily_active = obj.map((item) => item.cases.active || 0);
   daily_hospital = obj.map((item) => item.statePerTreatment.inHospital || 0);
 
-  console.log(daily_hospital)
-
   daily_percent = (function () {
     let arr = [];
 
