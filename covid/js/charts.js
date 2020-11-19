@@ -12,8 +12,17 @@ let config1 = {
       {
         label: "Delež pozitivnih oseb",
         data: [],
+        yAxisID: "A",
         backgroundColor: "#6ccefc44",
         borderColor: "#6ccefc",
+        borderWidth: 1,
+      },
+      {
+        label: "Število aktivnih oseb",
+        data: [],
+        yAxisID: "B",
+        backgroundColor: "#8deb8144",
+        borderColor: "#8deb81",
         borderWidth: 1,
       },
     ],
@@ -27,12 +36,22 @@ let config1 = {
     scales: {
       yAxes: [
         {
+          id: "A",
+          position: "left",
           ticks: {
             beginAtZero: true,
             autoSkipPadding: 10,
             callback: function (value) {
               return value + " %";
             },
+          },
+        },
+        {
+          id: "B",
+          position: "right",
+          ticks: {
+            beginAtZero: true,
+            autoSkipPadding: 10,
           },
         },
       ],
@@ -62,8 +81,17 @@ let config2 = {
       {
         label: "Število pozitivnih oseb",
         data: [],
+        yAxisID: "A",
         backgroundColor: "#efac9b44",
         borderColor: "#efac9b",
+        borderWidth: 1,
+      },
+      {
+        label: "Število hospitaliziranih oseb",
+        data: [],
+        yAxisID: "B",
+        backgroundColor: "#f792a844",
+        borderColor: "#f792a8",
         borderWidth: 1,
       },
     ],
@@ -77,6 +105,16 @@ let config2 = {
     scales: {
       yAxes: [
         {
+          id: "A",
+          position: "left",
+          ticks: {
+            beginAtZero: true,
+            autoSkipPadding: 10,
+          },
+        },
+        {
+          id: "B",
+          position: "right",
           ticks: {
             beginAtZero: true,
             autoSkipPadding: 10,
@@ -99,16 +137,20 @@ function config() {
     case "small":
       config1.data.labels = dates_s;
       config1.data.datasets[0].data = daily_percent_s;
+      config1.data.datasets[1].data = daily_active_s;
 
       config2.data.labels = dates_s;
       config2.data.datasets[0].data = daily_positive_s;
+      config2.data.datasets[1].data = daily_hospital_s;
       break;
     case "large":
       config1.data.labels = dates;
       config1.data.datasets[0].data = daily_percent;
+      config1.data.datasets[1].data = daily_active;
 
       config2.data.labels = dates;
       config2.data.datasets[0].data = daily_positive;
+      config2.data.datasets[1].data = daily_hospital;
       break;
   }
 }

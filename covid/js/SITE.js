@@ -96,10 +96,20 @@ async function getFile() {
   }
 }
 
-let dates, daily_tested, daily_positive, daily_percent, dates_s, daily_positive_s, daily_percent_s;
+let dates,
+  dates_s,
+  daily_tested,
+  daily_positive,
+  daily_positive_s,
+  daily_active,
+  daily_active_s,
+  daily_hospital,
+  daily_hospital_s,
+  daily_percent,
+  daily_percent_s;
 
 function parseData(obj) {
-  // console.log(obj);
+  console.log(obj);
 
   // cut off empty results
 
@@ -116,6 +126,10 @@ function parseData(obj) {
   dates = obj.map((item) => `${item.day}. ${item.month}`);
   daily_tested = obj.map((item) => item.tests.performed.today || item.tests.performed.toDate);
   daily_positive = obj.map((item) => item.cases.confirmedToday || 0);
+  daily_active = obj.map((item) => item.cases.active || 0);
+  daily_hospital = obj.map((item) => item.statePerTreatment.inHospital || 0);
+
+  console.log(daily_hospital)
 
   daily_percent = (function () {
     let arr = [];
@@ -133,12 +147,14 @@ function parseData(obj) {
   dates_s = dates.slice(-50);
   daily_percent_s = daily_percent.slice(-50);
   daily_positive_s = daily_positive.slice(-50);
+  daily_active_s = daily_active.slice(-50);
+  daily_hospital_s = daily_hospital.slice(-50);
 
   // console.log(dates)
   // console.log(daily_tested)
   // console.log(daily_positive)
 
-  config(dates, daily_positive, daily_tested);
+  config();
   draw();
   setCard(dates, daily_positive);
 }
