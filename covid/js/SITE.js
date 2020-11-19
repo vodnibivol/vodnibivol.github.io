@@ -109,7 +109,7 @@ let dates,
   daily_percent_s;
 
 function parseData(obj) {
-  console.log(obj);
+  // console.log(obj);
 
   // cut off empty results
 
@@ -154,10 +154,10 @@ function parseData(obj) {
 
   config();
   draw();
-  setCard(dates, daily_positive);
+  setCard();
 }
 
-function setCard(dates, daily_positive) {
+function setCard() {
   const arrow = document.querySelector('.arrow');
   const cardLower = document.querySelector('.card-lower');
   const lastDate = document.querySelector('.last-date');
@@ -191,26 +191,39 @@ function setCard(dates, daily_positive) {
   }
 
   function writeNumber() {
-    let lastPositiveNum = daily_positive[daily_positive.length - 1];
-    lastPositive.innerHTML = lastPositiveNum;
+    let last_active = daily_active_s.slice(-3);
+    let tension = (last_active[2] + last_active[1]) / 2 - (last_active[1] + last_active[0]) / 2;
 
-    let numLength = lastPositiveNum.toString().length;
+    tension = tension / 1500;
 
-    switch (numLength) {
+    let tensionString = tension.toFixed(2);
+
+    if (tension > 0) {
+      tensionString = '+' + tensionString;
+    }
+
+    lastPositive.innerHTML = tensionString;
+
+    switch (tensionString.length) {
       case 4:
         lastPositive.style['font-size'] = '80px';
         break;
       case 5:
+        lastPositive.style['font-size'] = '75px';
+        break;
+      case 6:
         lastPositive.style['font-size'] = '65px';
         break;
     }
   }
 
   function chooseArrow() {
-    let today = parseInt(daily_positive[daily_positive.length - 1]);
-    let yesterday = parseInt(daily_positive[daily_positive.length - 2]);
+    let last_active = daily_active_s.slice(-3);
+    let tension = (last_active[2] + last_active[1]) / 2 / ((last_active[1] + last_active[0]) / 2);
 
-    if (today < yesterday) {
+    // console.log(tension)
+
+    if (tension < 0) {
       arrow.src = 'img/arrow_down.svg';
       cardLower.style.backgroundColor = '#adf1ad';
     } else {

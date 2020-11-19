@@ -70,6 +70,7 @@ let config1 = {
       callbacks: {
         label: (tooltipItem, data) => {
           var label = data.datasets[tooltipItem.datasetIndex].label;
+          
           if (tooltipItem.datasetIndex == 0) {
             return `${label}: ${tooltipItem.yLabel} %`
           }
