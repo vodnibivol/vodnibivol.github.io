@@ -29,7 +29,7 @@ form.addEventListener('submit', (e) => {
 /* ----- Function declarations ----- */
 
 (function randomBackgroundImage() {
-  let imageUrl = `img/bg/bgnd_${getRand()}.jpg`;
+  let imageUrl = `../img/bg/bgnd_${getRand()}.jpg`;
 
   // -- background image preload
 

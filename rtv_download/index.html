@@ -1,91 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-132327530-2"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag('js', new Date());
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" />
+  <title>rtv download</title>
+  <style>
+    ::selection {
+      background: #ccffdd;
+    }
 
-      gtag('config', 'UA-132327530-2');
-    </script>
+    html {
+      cursor: url("../static/cursors/tiny_default_2.cur"), default;
+    }
 
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    body {
+      padding: 0;
+      margin: 0;
+      font-family: monospace;
+      font-size: 13px;
 
-    <meta property="og:title" content="RTV Downloader" />
-    <meta property="og:site_name" content="RTV Downloader" />
-    <meta property="og:url" content="https://vodnibivol.github.io/rtv_download/" />
-    <meta property="og:description" content="Dolpoteg videjev in glasbenih vsebin z RTV arhiva." />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="img/screenshot.png" />
+      background-color: aliceblue;
+    }
 
-    <link rel="apple-touch-icon" sizes="180x180" href="img/icons/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="img/icons/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="img/icons/favicon-16x16.png" />
-    <link rel="manifest" href="./site.webmanifest" />
-    <link rel="mask-icon" href="img/icons/safari-pinned-tab.svg" color="#da532c" />
-    <link rel="shortcut icon" href="img/icons/favicon.ico" />
+    .content {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
 
-    <link rel="stylesheet" href="css/main.css" />
+      width: 100%;
 
-    <link rel="preload" href="./fonts/raleway-v15-latin-ext-regular.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="./fonts/raleway-v15-latin-ext-700.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="./img/icons/download.ico" as="image" />
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-    <title>RTV 4D - Download</title>
-  </head>
-  <body class="preload">
-    <a target="_blank" id="anchor" hidden></a>
-    <div class="bgnd hidden" id="bgnd">
-      <img id="bgndImg" hidden />
+    ul {
+      margin: 0;
+      padding: 0;
+
+      list-style-type: none;
+    }
+
+    li {
+      margin: 20px;
+    }
+
+    a {
+      color: black;
+      text-decoration: none;
+
+      opacity: 0.8;
+      cursor: url("../static/cursors/tiny_pointer.cur"), pointer;
+
+      transform: opacity 0.3s;
+    }
+
+    a:hover {
+      opacity: 1;
+    }
+
+    .copyright {
+      position: absolute;
+      right: 30px;
+      bottom: 2px;
+
+      color: #5e5e5e;
+    }
+  </style>
+</head>
+<body>
+  <div class="content">
+    <ul>
+      <li><a href="v1/">- rtv download: v1.2</a></li>
+      <li><a href="v2/">- rtv download: v2.0</a></li>
+    </ul>
+  </div>
+  <footer>
+    <div class="copyright">
+      <p>(c) 2020 | vodnibivol</p>
     </div>
-    <div class="input-div">
-      <div class="bounce-div" id="bounceDiv">
-        <form id="search" class="search">
-          <input
-            class="input-field"
-            type="text"
-            placeholder="https://4d.rtvslo.si/arhiv/lahko-noc-otroci/174689123"
-            autocomplete="off"
-            spellcheck="false"
-            name="inputUrl"
-            id="inputField"
-          />
-          <input class="dl-button" type="image" src="img/icons/download.ico" alt="submit" id="dlButton" />
-        </form>
-        <svg class="progress-ring" id="circleDiv" width="60" height="60">
-          <circle
-            class="progress-circle"
-            id="progressCircle"
-            stroke="white"
-            stroke-width="3"
-            fill="transparent"
-            r="22"
-            cx="30"
-            cy="30"
-          />
-        </svg>
-      </div>
-      <p class="tip" id="tip">Press enter to download</p>
-    </div>
-    <footer>
-      <!-- <div class="buttons">
-        <button type="button" id="startButton">start animation</button>
-        <button type="button" id="stopButton">stop animation</button>
-      </div> -->
-      <div>
-        <span class="info">&copy; 2020 | vodnibivol | <a href="//4d.rtvslo.si/" target="_blank">rtvslo.si</a></span>
-      </div>
-    </footer>
-    <script src="js/PRNG.js"></script>
-    <script src="js/SITE.js"></script>
-    <script src="js/animations.js"></script>
-    <script src="js/getLink.js"></script>
-    <!-- prettier-ignore -->
-    <script> </script>
-  </body>
+  </footer>
+</body>
 </html>

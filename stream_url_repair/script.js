@@ -9,7 +9,7 @@ const copyBtn = document.getElementById('copyBtn');
 
 const clientID = '82013fb3a531d5414f478747c1aca622';
 const sessionID = '5f8b37d5132e81.86424273.3356888652';
-const proxy = 'https://cors-anywhere.herokuapp.com/';
+const proxy = 'https://corsaire.herokuapp.com/';
 
 const meta = 'https://api.rtvslo.si/ava/getRecordingDrm/';
 const api = 'https://api.rtvslo.si/ava/getMedia/';
