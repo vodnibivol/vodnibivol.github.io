@@ -30,8 +30,6 @@ async function main(mediaID) {
   startAnim();
 
   try {
-    // if (metaJSON.hasOwnProperty('error')) throw 'Error 404: File not found.';
-
     let r = await fetch(`https://rtv-api.herokuapp.com/api/${mediaID}`);
     let j = await r.json();
 

@@ -194,7 +194,7 @@ function setCard() {
     let last_active = daily_active_s.slice(-3);
     let tension = (last_active[2] + last_active[1]) / 2 - (last_active[1] + last_active[0]) / 2;
 
-    tension = tension / 1500;
+    tension /= 1500;
 
     let tensionString = tension.toFixed(2);
 
@@ -219,11 +219,13 @@ function setCard() {
 
   function chooseArrow() {
     let last_active = daily_active_s.slice(-3);
-    let tension = (last_active[2] + last_active[1]) / 2 / ((last_active[1] + last_active[0]) / 2);
+    let tension = (last_active[2] + last_active[1]) / 2 - (last_active[1] + last_active[0]) / 2;
 
-    // console.log(tension)
+    tension /= 1500;
 
-    if (tension < 0) {
+    // console.log(tension);
+
+    if (tension <= 0) {
       arrow.src = 'img/arrow_down.svg';
       cardLower.style.backgroundColor = '#adf1ad';
     } else {
