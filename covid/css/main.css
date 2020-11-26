@@ -335,12 +335,6 @@ body.preload {
   }
 }
 
-@media (orientation: landscape) {
-  .chart-div {
-    height: 65vw;
-  }
-}
-
 @media (orientation: landscape) and (max-height: 530px) {
   .chart-div {
     height: 70vh;
