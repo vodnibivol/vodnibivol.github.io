@@ -41,6 +41,16 @@ form.addEventListener('submit', (e) => {
   };
 })();
 
+(function runServer() {
+  let startTime = new Date();
+  console.log('server waking up ..');
+
+  fetch('https://rtv-api.herokuapp.com/').then(() => {
+    let endTime = new Date();
+    console.log(`server started in ${(endTime - startTime) / 1000} seconds.`);
+  });
+})();
+
 function randomBackgroundColor() {
   flatColors = ['#fad390', '#2ecc71'];
 
