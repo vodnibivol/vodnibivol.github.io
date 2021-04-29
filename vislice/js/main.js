@@ -168,7 +168,7 @@ function setFontSize(word) {
 }
 
 function setInfo(id, word) {
-  infoButton.href = `//fran.si/133/sskj2-slovar-slovenskega-knjiznega-jezika-2/${id}/${word}?Query=${word}`;
+  infoButton.href = `//fran.si/iskanje?View=1&Query=${word}&FilteredDictionaryIds=133`;
 }
 
 /* -------- main game logic -------- */
