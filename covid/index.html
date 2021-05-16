@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/card.css" />
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-132327530-2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-132327530-2');
+    </script>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta property="og:title" content="Graf Covid-19" />
+    <meta property="og:site_name" content="Graf Covid-19" />
+    <meta property="og:url" content="https://vodnibivol.github.io/covid/" />
+    <meta property="og:description" content="Zadnji podatki o razvoju koronavirusa." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="img/preview.png" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="img/icons/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="img/icons/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="img/icons/favicon-16x16.png" />
+    <link rel="manifest" href="img/icons/site.webmanifest" />
+    <link rel="mask-icon" href="img/icons/safari-pinned-tab.svg" color="#5bbad5" />
+    <link rel="shortcut icon" href="img/icons/favicon.ico" />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="msapplication-config" content="img/icons/browserconfig.xml" />
+    <meta name="theme-color" content="#ffffff" />
+
+    <title>covid-19</title>
+  </head>
+  <body class="preload">
+    <header class="info-bar">
+      <div class="settings-bubble" id="settingsBubble">
+        <span>vse</span>
+        <label class="toggle">
+          <input class="toggle__input" name="" type="checkbox" id="sizeToggle" />
+          <div class="toggle__fill"></div>
+        </label>
+        <span>zadnji podatki</span>
+        <img src="img/arrow_right_small.svg" alt="settings" id="settingsButton" />
+      </div>
+
+      <div class="info-bubble" id="infoBubble">
+        <svg height="18" width="18">
+          <circle cx="9" cy="9" r="9" fill="#f7f7f7" />
+        </svg>
+        <img src="img/info.png" alt="info" id="infoButton" />
+        <span class="copyright"
+          >2020 | Filip Kokol | <a href="//covid-19.sledilnik.org/sl/sources" target="_blank">NIJZ | gov.si</a></span
+        >
+      </div>
+    </header>
+    <div class="slider">
+      <img class="nav-arrow nav-arrow-left" src="img/arrow_left.svg" alt="" />
+      <div class="slider-track-container">
+        <div class="slide slide-1">
+          <img class="spinner" src="img/spinner_3.gif" id="spinner" />
+          <div class="chart-div hidden" id="chartDiv1">
+            <canvas id="chart2" width="800" height="300"></canvas>
+          </div>
+        </div>
+
+        <div class="slide slide-2">
+          <img class="spinner" src="img/spinner_3.gif" id="spinner" />
+          <div class="chart-div hidden" id="chartDiv2">
+            <canvas id="chart1" width="800" height="300"></canvas>
+          </div>
+        </div>
+
+        <div class="slide slide-3">
+          <img class="spinner" src="img/spinner_3.gif" id="spinner" />
+          <div class="card hidden" id="card">
+            <div class="card-upper">
+              <div class="text">
+                <span class="last-positive">122</span>
+                <img src="img/arrow_down.svg" class="arrow" />
+              </div>
+            </div>
+            <div class="card-lower">
+              <span class="last-date">23. september</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <img class="nav-arrow nav-arrow-right" src="img/arrow_right.svg" alt="" />
+
+      <div class="nav-dots">
+        <svg class="nav-dot" width="25" height="6">
+          <rect width="25" height="3" rx="2" ry="1" style="fill: black" />
+        </svg>
+        <svg class="nav-dot active" width="25" height="6">
+          <rect width="25" height="3" rx="2" ry="1" style="fill: black" />
+        </svg>
+        <svg class="nav-dot" width="25" height="6">
+          <rect width="25" height="3" rx="2" ry="1" style="fill: black" />
+        </svg>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.2.1/dist/chart.min.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/SITE.js"></script>
+    <script src="js/slider.js"></script>
+  </body>
+</html>

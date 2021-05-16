@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-132327530-2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "UA-132327530-2");
+    </script>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <title>vodnibivol</title>
+    <style>
+      ::selection {
+        background: #ccffdd;
+      }
+
+      html {
+        cursor: url("./static/cursors/tiny_default_2.cur"), default;
+      }
+
+      body {
+        padding: 0;
+        margin: 0;
+        font-family: monospace;
+        font-size: 13px;
+
+        background-color: aliceblue;
+      }
+
+      .content {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+
+        width: 100%;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      ul {
+        margin: 0;
+        padding: 0;
+
+        list-style-type: none;
+      }
+
+      li {
+        margin: 20px;
+      }
+
+      a {
+        color: black;
+        text-decoration: none;
+
+        opacity: 0.8;
+        cursor: url("./static/cursors/tiny_pointer.cur"), pointer;
+
+        transform: opacity 0.3s;
+      }
+
+      a:hover {
+        opacity: 1;
+      }
+
+      .copyright {
+        position: absolute;
+        right: 30px;
+        bottom: 2px;
+
+        color: #5e5e5e;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="content">
+      <ul>
+        <li><a href="beseda_dneva/">- beseda dneva</a></li>
+        <li><a href="rtv_download/">- rtv downloader</a></li>
+        <li><a href="vremenska_napoved/">- vremenska napoved</a></li>
+        <li><a href="covid/">- covid-19 graf</a></li>
+        <li><a href="vislice/">- vislice</a></li>
+        <li><a href="billionaire/">- milijarda sekund</a></li>
+      </ul>
+    </div>
+    <footer>
+      <div class="copyright">
+        <p>(c) 2020 | vodnibivol</p>
+      </div>
+    </footer>
+    <script>
+      document.addEventListener("contextmenu", (event) => event.preventDefault());
+    </script>
+  </body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-132327530-2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "UA-132327530-2");
+    </script>
+
+    <meta property="og:title" content="vislice" />
+    <meta property="og:site_name" content="vislice" />
+    <meta property="og:url" content="https://vodnibivol.github.io/vislice/" />
+    <meta property="og:description" content="Ali te bo rešil ptič golobič?" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="img/preview2.png" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="img/icons/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="img/icons/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="img/icons/favicon-16x16.png" />
+    <link rel="manifest" href="img/icons/site.webmanifest" />
+    <link rel="mask-icon" href="img/icons/safari-pinned-tab.svg" color="#5bbad5" />
+    <link rel="shortcut icon" href="img/icons/favicon.ico" />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="msapplication-config" content="img/icons/browserconfig.xml" />
+    <meta name="theme-color" content="#ffffff" />
+
+    <link rel="preload" href="img/progress.png" as="image" />
+
+    <meta charset="UTF-8" />
+    <meta name="description" content="Ali te bo rešil ptič golobič?" />
+    <meta name="keywords" content="vislice, igra, vodni bivol, vodnibivol, SSKJ, didaktična igra" />
+    <meta name="author" content="Filip Kokol" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/main.css" />
+    <title>vislice</title>
+  </head>
+  <body>
+    <div class="loading-bar-container" id="loadingBarContainer">
+      <!-- <progress id="loadingBar" value="0" max="100"></progress> -->
+      <div class="loading-bar" id="loadingBar"></div>
+    </div>
+
+    <div class="content" id="content">
+      <img class="reset-btn" id="reset-btn" src="img/reset.png" />
+      <img class="settings-btn" id="settings-btn" src="img/settings.png" />
+
+      <div class="container-upper">
+        <div class="container-left">
+          <div class="word-and-info">
+            <span class="written-word" id="writtenWord">_ _ _ _ _ _ _ _</span>
+            <a class="info" href="" id="info" target="_blank">
+              <img src="img/i.png" alt="info" />
+            </a>
+          </div>
+        </div>
+
+        <div class="container-right">
+          <img class="countdown-img" src="img/trans.png" id="countdownImg" />
+          <div class="checked-letters" id="checkedLetters">&nbsp;</div>
+        </div>
+      </div>
+
+      <div class="container-lower">
+        <form id="inputForm">
+          <input type="text" id="letterInput" maxlength="1" autocomplete="off" spellcheck="false" />
+        </form>
+      </div>
+
+      <div class="settings hidden" id="settingsDiv">
+        <form id="settingsForm">
+          <div class="form-container-upper">
+            <div class="form-frequency">
+              <p>pogostost besed:</p>
+              <input type="radio" id="high_freq" name="frequency" value="high" />
+              <label for="high_freq">pogoste</label>
+              <br />
+              <input type="radio" id="mid-freq" name="frequency" value="mid" />
+              <label for="mid-freq">srednje</label>
+              <br />
+              <input type="radio" id="low-freq" name="frequency" value="low" />
+              <label for="low-freq">redke</label>
+            </div>
+
+            <div class="form-dictionary">
+              <p>nabor besed:</p>
+              <input type="radio" id="all-words" name="dictionary" value="all" />
+              <label for="all-words">vse besede</label>
+              <br />
+              <input type="radio" id="newspapers" name="dictionary" value="news" />
+              <label for="newspapers">časopisi, revije</label>
+              <br />
+              <input type="radio" id="internet" name="dictionary" value="int" />
+              <label for="internet">internet</label>
+              <br />
+              <input type="radio" id="literature" name="dictionary" value="lit" />
+              <label for="literature">leposlovje</label>
+            </div>
+          </div>
+          <div class="form-container-lower">
+            <p>dolžina besede (+/- 1):</p>
+            <div class="slider-counter">
+              <input type="range" min="4" max="12" id="countRange" />
+              <span id="rangeOutput">(8)</span>
+            </div>
+          </div>
+          <input type="image" class="settings-submit" src="img/save.png" alt="submit" id="save-settings-btn" />
+        </form>
+
+        <div class="copyright-container">
+          <span class="copyright">2020 | Filip Kokol</span>
+        </div>
+      </div>
+
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <script src="js/main.js"></script>
+  </body>
+</html>

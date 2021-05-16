@@ -1,0 +1,38 @@
+html, body {
+  font-family: monospace;
+  margin: 0;
+  padding: 0;
+}
+
+input[type="submit"] {
+  font-family: inherit;
+  /* height: 24px; */
+}
+
+.content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 70vw;
+  /* height: 100vh; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+p {
+  line-height: 1.5rem;
+  text-align: justify;
+}
+
+form, p, .back {
+  display: none;
+}
+
+.back {
+  cursor: pointer;
+  margin-top: 10px;
+}

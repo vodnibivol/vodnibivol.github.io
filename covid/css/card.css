@@ -1,0 +1,74 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400&display=swap");
+body {
+  background-color: #f1f1f1;
+}
+
+.card {
+  width: 250px;
+  height: 330px;
+  background-color: #fafafa;
+  -webkit-box-shadow: 0px 10px 20px 0px #88888844;
+          box-shadow: 0px 10px 20px 0px #88888844;
+  border-radius: 8px;
+  font-family: "Lato", sans-serif;
+  -webkit-transition: opacity 0.8s;
+  transition: opacity 0.8s;
+  opacity: 1;
+}
+
+.card.hidden {
+  opacity: 0;
+}
+
+.card .card-upper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 85%;
+  border-radius: 8px 8px 0 0;
+}
+
+.card .card-upper .last-positive {
+  font-size: 100px;
+  font-weight: 300;
+}
+
+.card .card-upper img {
+  width: 30px;
+  margin-left: 8px;
+}
+
+.card .card-lower {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 15%;
+  background-color: #e7e7e7;
+  border-radius: 0 0 8px 8px;
+}
+
+.card .card-lower .last-date {
+  font-size: 18px;
+  color: #00000088;
+}
+
+@media (max-height: 350px) {
+  .card {
+    height: 280px;
+  }
+  .card .card-upper .last-positive {
+    font-size: 90px;
+  }
+}
