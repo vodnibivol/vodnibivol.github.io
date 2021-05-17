@@ -5,7 +5,6 @@ const Site = (function () {
   const tip = document.querySelector('.tip');
 
   const background = document.querySelector('.bg-wrapper');
-  // const link = document.getElementById('link');
 
   // events
   input.addEventListener('input', _toggleTip);
@@ -15,12 +14,6 @@ const Site = (function () {
   input.placeholder = 'https://4d.rtvslo.si/arhiv/lahko-noc-otroci/174689123';
   input.select();
   _dailyBg();
-
-  /** TEMP */
-  // const URL = 'https://4d.rtvslo.si/arhiv/tinka-in-zverca/174775853';
-  // input.value = URL;
-  // Fetch.getLink(URL); // TODO: loose coupling (potrebno?)
-  /** END-TEMP */
 
   // f(x)
   function _handleSubmit(e) {
@@ -47,8 +40,7 @@ const Site = (function () {
     input.value = '';
     input.focus();
     tip.innerHTML = 'Press enter to download';
-
-    // endAnim();
+    tip.classList.remove('show');
   }
 
   function _dailyBg() {
@@ -68,27 +60,42 @@ const Site = (function () {
   return { openUrl };
 })();
 
-const Anim = (function () {
+const Visual = (function () {
   // cache
   const form = document.querySelector('form');
   const downloadIcon = form.querySelector('.btn-download i');
+  const tip = document.querySelector('.tip');
 
   // events
   form.addEventListener('animationend', () => form.removeAttribute('style'));
 
-  return {
-    headShake: function () {
-      form.style.animation = 'shake 0.5s';
-    },
+  // f(x)
+  function headShake() {
+    form.style.animation = 'shake 0.5s';
+  }
 
-    check: function () {
-      downloadIcon.classList.toggle('fa-arrow-down');
-      downloadIcon.classList.toggle('fa-check');
+  function checkmark(isCorrect) {
+    if (isCorrect) {
+      downloadIcon.classList.remove('fa-arrow-down');
+      downloadIcon.classList.add('fa-check');
 
       setTimeout(() => {
-        downloadIcon.classList.toggle('fa-check');
-        downloadIcon.classList.toggle('fa-arrow-down');
+        downloadIcon.classList.remove('fa-check');
+        downloadIcon.classList.add('fa-arrow-down');
       }, 2000);
-    },
-  };
+    } else {
+      downloadIcon.classList.remove('fa-check');
+      downloadIcon.classList.add('fa-arrow-down');
+    }
+  }
+
+  function errMsg(message) {
+    console.error(e);
+    headShake();
+    checkmark(false);
+    tip.innerHTML = message;
+    tip.classList.add('show');
+  }
+
+  return { headShake, checkmark, errMsg };
 })();

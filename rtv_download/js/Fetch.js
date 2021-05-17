@@ -1,9 +1,5 @@
 const Fetch = (function () {
   // vars
-  const tip = document.querySelector('.tip');
-
-  const inputRegEx = /^https?:\/\/4d\.rtvslo\.si\/arhiv\/[\w-]+\/(\d{7,})$/;
-
   const CLIENT_ID = '82013fb3a531d5414f478747c1aca622'; // +SESSION_ID?
   const META_TEMPLATE = 'https://api.rtvslo.si/ava/getRecordingDrm/{rec_id}?client_id={client_id}';
   const MEDIA_TEMPLATE = 'https://api.rtvslo.si/ava/getMedia/{rec_id}?client_id={client_id}&jwt={jwt}';
@@ -15,18 +11,17 @@ const Fetch = (function () {
 
   // f(x)
   async function getLink(url) {
-    let match = url.match(inputRegEx);
+    let match = url.match(/\d{7,11}/);
 
     if (!match) {
-      tip.innerHTML = 'Wrong url';
-      tip.classList.add('show');
-      Anim.headShake();
+      Visual.errMsg('Wrong url');
       return;
     }
 
-    Anim.check();
+    Visual.checkmark(true);
 
-    rec_id = match[1];
+    rec_id = match[0];
+    console.log(rec_id);
     _getMeta();
   }
 
@@ -43,9 +38,13 @@ const Fetch = (function () {
   }
 
   function parseMeta(data) {
-    // console.log(data);
-    let jwt = data.response.jwt;
-    _getMedia(jwt);
+    console.log(data);
+    try {
+      let jwt = data.response.jwt;
+      _getMedia(jwt);
+    } catch (e) {
+      Visual.errMsg('Error parsing metadata.');
+    }
   }
 
   async function parseMedia(data) {
@@ -53,30 +52,44 @@ const Fetch = (function () {
     let r = data.response;
 
     try {
-      let target = r.addaptiveMedia.hls;
-
-      let groups = target.match(/encrypted(\d+)\/_definst_\/([\d\/]+)\/\d{7,}.smil\/.+hash=(.*)$/);
-
       let largestFile = r.mediaFiles.reduce((acc, cur) => (acc.bitrate > cur.bitrate ? acc : cur));
-      let hls = largestFile.streams.hls;
 
-      let filename = hls.match(/\/([\w\d\-]+.mp4)\//)[1];
+      let s = largestFile.streams;
+      let stream = s.http || s.https || s.hls;
 
-      let fmt = {
-        archive_no: groups[1],
-        date: groups[2],
-        filename: filename,
-        hash: groups[3],
-      };
+      if (!stream) {
+        throw new Error('No url found.');
+      }
 
-      download_url = DOWNLOAD_TEMPLATE.format(fmt);
+      if (/(preroll|expired)/.test(stream)) {
+        // video expired
+        throw new Error('Media expired.');
+      }
+
+      if (/progressive.+mp[34]/.test(stream)) {
+        // found direct download link
+        download_url = stream;
+      } else if (/vodstr.*m3u8/.test(stream)) {
+        // found hls stream url
+        let hls = largestFile.streams.hls;
+        let groups = hls.match(/encrypted(\d+)\/_definst_\/([\d\/]+)\/([\w\-]+\.mp4).+hash=(.*)$/);
+
+        let fmt = {
+          archive_no: groups[1],
+          date: groups[2],
+          filename: groups[3],
+          hash: groups[4],
+        };
+
+        download_url = DOWNLOAD_TEMPLATE.format(fmt);
+      }
 
       console.log('URL found:');
       console.log(download_url);
 
       Site.openUrl(download_url);
     } catch (e) {
-      console.error(e);
+      Visual.errMsg(e);
     }
   }
 
@@ -90,8 +103,7 @@ const Fetch = (function () {
 
       document.body.appendChild(script);
     } catch (e) {
-      console.error(e);
-      // fancy animation
+      Visual.errMsg('Error getting JSONP.');
     } finally {
       script.remove();
     }
