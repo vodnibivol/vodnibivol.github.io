@@ -1,85 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" />
-  <title>rtv download</title>
-  <style>
-    ::selection {
-      background: #ccffdd;
-    }
+  <head>
+    <link rel="stylesheet" href="./css/main.css" />
 
-    html {
-      cursor: url("../static/cursors/tiny_default_2.cur"), default;
-    }
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-132327530-2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
 
-    body {
-      padding: 0;
-      margin: 0;
-      font-family: monospace;
-      font-size: 13px;
+      gtag('config', 'UA-132327530-2');
+    </script>
 
-      background-color: aliceblue;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    .content {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
+    <meta property="og:title" content="RTV Downloader" />
+    <meta property="og:site_name" content="RTV Downloader" />
+    <meta property="og:url" content="https://vodnibivol.github.io/rtv_download/" />
+    <meta property="og:description" content="Dolpoteg videjev in glasbenih vsebin z RTV arhiva." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="./img/screenshot.png" />
 
-      width: 100%;
+    <link rel="apple-touch-icon" sizes="180x180" href="./img/icons/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./img/icons/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="./img/icons/favicon-16x16.png" />
+    <link rel="manifest" href="./site.webmanifest" />
+    <link rel="mask-icon" href="./img/icons/safari-pinned-tab.svg" color="#da532c" />
+    <link rel="shortcut icon" href="./img/icons/favicon.ico" />
 
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+    <link rel="preload" href="./fonts/raleway-v15-latin-ext-regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="./fonts/raleway-v15-latin-ext-700.woff2" as="font" type="font/woff2" crossorigin />
 
-    ul {
-      margin: 0;
-      padding: 0;
+    <script src="https://unpkg.com/phosphor-icons"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+      crossorigin="anonymous"
+    />
 
-      list-style-type: none;
-    }
-
-    li {
-      margin: 20px;
-    }
-
-    a {
-      color: black;
-      text-decoration: none;
-
-      opacity: 0.8;
-      cursor: url("../static/cursors/tiny_pointer.cur"), pointer;
-
-      transform: opacity 0.3s;
-    }
-
-    a:hover {
-      opacity: 1;
-    }
-
-    .copyright {
-      position: absolute;
-      right: 30px;
-      bottom: 2px;
-
-      color: #5e5e5e;
-    }
-  </style>
-</head>
-<body>
-  <div class="content">
-    <ul>
-      <li><a href="v1/">- rtv download: v1.2</a></li>
-      <li><a href="v2/">- rtv download: v2.0</a></li>
-    </ul>
-  </div>
-  <footer>
-    <div class="copyright">
-      <p>(c) 2020 | vodnibivol</p>
+    <title>RTV 4D - Download</title>
+  </head>
+  <body>
+    <div class="bg-wrapper"></div>
+    <div class="main">
+      <form class="search-form">
+        <input class="input-field" type="text" autocomplete="off" spellcheck="false" />
+        <button type="submit" class="btn-download">
+          <i class="fas fa-arrow-down"></i>
+        </button>
+      </form>
+      <span class="tip">Press enter to download</span>
     </div>
-  </footer>
-</body>
+    <footer>
+      <div>
+        <span class="info">&copy; 2020 | vodnibivol | <a href="//4d.rtvslo.si/" target="_blank">rtvslo.si</a></span>
+      </div>
+    </footer>
+
+    <script src="./js/Utils.js"></script>
+    <script src="./js/Fetch.js"></script>
+    <script src="./js/Site.js"></script>
+  </body>
 </html>
