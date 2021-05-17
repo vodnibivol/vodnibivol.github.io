@@ -90,7 +90,7 @@ const Visual = (function () {
   }
 
   function errMsg(message) {
-    console.error(e);
+    console.error(message);
     headShake();
     checkmark(false);
     tip.innerHTML = message;

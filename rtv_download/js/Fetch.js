@@ -10,7 +10,7 @@ const Fetch = (function () {
   let download_url;
 
   // f(x)
-  async function getLink(url) {
+  function getLink(url) {
     let match = url.match(/\d{7,11}/);
 
     if (!match) {
@@ -38,7 +38,7 @@ const Fetch = (function () {
   }
 
   function parseMeta(data) {
-    console.log(data);
+    // console.log(data);
     try {
       let jwt = data.response.jwt;
       _getMedia(jwt);
@@ -47,8 +47,8 @@ const Fetch = (function () {
     }
   }
 
-  async function parseMedia(data) {
-    console.log(data);
+  function parseMedia(data) {
+    // console.log(data);
     let r = data.response;
 
     try {
@@ -61,9 +61,9 @@ const Fetch = (function () {
         throw new Error('No url found.');
       }
 
-      if (/(preroll|expired)/.test(stream)) {
+      if (/(preroll|expired|dummy)/.test(stream)) {
         // video expired
-        throw new Error('Media expired.');
+        throw new Error('Media expired or unavailable.');
       }
 
       if (/progressive.+mp[34]/.test(stream)) {
@@ -93,7 +93,7 @@ const Fetch = (function () {
     }
   }
 
-  async function _getScript(url, functionName /* string */) {
+  function _getScript(url, functionName /* string */) {
     let script = document.createElement('script');
 
     try {

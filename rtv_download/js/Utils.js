@@ -23,8 +23,8 @@ class PRNG {
     this.M = Math.pow(2, 32);
     this.SEED = 12;
 
-    this.ARR = [...Array(this.POPULATION).keys()]; // range
-    this.QUARANTINE = 11; // repeat interval (min.)
+    this.ARR = [...Array(this.POPULATION).keys()]; // range(P)
+    this.QUARANTINE = 11; // repeat interval (min)
     this.SAMPLE = this.POPULATION - this.QUARANTINE;
   }
 
