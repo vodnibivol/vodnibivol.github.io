@@ -172,17 +172,16 @@ footer {
   }
 }
 
-@media (min-width: 1280px) {
+@media (min-width: 1480px) {
   .main .input-field {
     width: 480px;
   }
 }
 
 @media (max-width: 640px) {
-  .input-div {
+  .main {
     .input-field {
       width: 60vw;
-      // height: 14px;
     }
 
     .tip {

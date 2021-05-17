@@ -4,8 +4,6 @@ const Site = (function () {
   const input = form.querySelector('.input-field');
   const tip = document.querySelector('.tip');
 
-  const background = document.querySelector('.bg-wrapper');
-
   // events
   input.addEventListener('input', _toggleTip);
   form.addEventListener('submit', _handleSubmit);
@@ -23,7 +21,6 @@ const Site = (function () {
   }
 
   function _toggleTip() {
-    tip.innerHTML = 'Press enter to download';
     let isShown = tip.classList.contains('show');
 
     if (input.value) {
@@ -44,6 +41,8 @@ const Site = (function () {
   }
 
   function _dailyBg() {
+    const background = document.querySelector('.bg-wrapper');
+
     let randNum = new PRNG().randomImage;
     let path = `./img/bg/bg_${randNum}.jpg`;
 
