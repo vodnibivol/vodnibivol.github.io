@@ -33,7 +33,7 @@ class PRNG {
   }
 
   next() {
-    return this.SEED = (this.A * this.SEED + this.C) % this.M;
+    return (this.SEED = (this.A * this.SEED + this.C) % this.M);
   }
 
   today() {
@@ -52,7 +52,7 @@ class PRNG {
   getRand() {
     let randIndex, randPick;
 
-    for (let i = 0; i < this.today(); i++) { // this.today()
+    for (let i = 0; i < this.today(); i++) {
       randIndex = this.next() % this.SAMPLE;
       randPick = this.ARR[randIndex];
 
