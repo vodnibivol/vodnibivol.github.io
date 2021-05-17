@@ -53,7 +53,7 @@ const Site = (function () {
 
   function _dailyBg() {
     let randNum = new PRNG().randomImage;
-    let path = `../img/bg/bgnd_${randNum}.jpg`;
+    let path = `./img/bg/bg_${randNum}.jpg`;
 
     let backgroundImg = document.createElement('img');
     backgroundImg.src = path;
