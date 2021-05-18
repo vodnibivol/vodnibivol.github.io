@@ -52,8 +52,15 @@ const Site = (function () {
     backgroundImg.className = 'bg-img hidden';
     background.appendChild(backgroundImg);
 
+    // let backgroundImg = document.createElement('img');
+    // backgroundImg.src = path;
+    // backgroundImg.hidden = true;
+    // background.appendChild(backgroundImg);
+
     backgroundImg.onload = function () {
       backgroundImg.classList.remove('hidden');
+      // background.style['background-image'] = `url(${imageUrl})`;
+      // background.classList.remove('hidden');
     };
   }
 
