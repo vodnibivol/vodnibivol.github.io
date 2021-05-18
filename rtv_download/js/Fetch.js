@@ -1,17 +1,18 @@
 const Fetch = (function () {
   // vars
-  const CLIENT_ID = '82013fb3a531d5414f478747c1aca622'; // +SESSION_ID?
+  const CLIENT_ID = '82013fb3a531d5414f478747c1aca622';
   const META_TEMPLATE = 'https://api.rtvslo.si/ava/getRecordingDrm/{rec_id}?client_id={client_id}';
   const MEDIA_TEMPLATE = 'https://api.rtvslo.si/ava/getMedia/{rec_id}?client_id={client_id}&jwt={jwt}';
   const DOWNLOAD_TEMPLATE = 'https://progressive.rtvslo.si/encrypted{archive_no}/{date}/{filename}?keylockhash={hash}';
 
+  const REGEX_IDEC = /P-\d{7}-\d{3}-\d{4}-\d{3}/; // P-1033308-000-2021-096
+  const REGEX_ID = /\d{7,11}/; // 174689123
+
   let rec_id;
-  // let stream_url;
-  let download_url;
 
   // f(x)
   function getLink(url) {
-    let match = url.match(/\d{7,11}/);
+    let match = url.match(REGEX_IDEC) || url.match(REGEX_ID);
 
     if (!match) {
       Visual.errMsg('Wrong url');
@@ -40,8 +41,8 @@ const Fetch = (function () {
   function parseMeta(data) {
     // console.log(data);
     try {
-      let jwt = data.response.jwt;
-      _getMedia(jwt);
+      if (REGEX_IDEC.test(rec_id)) rec_id = data.response.id;
+      _getMedia(data.response.jwt);
     } catch (e) {
       Visual.errMsg('Error parsing metadata.');
     }
@@ -50,6 +51,7 @@ const Fetch = (function () {
   function parseMedia(data) {
     // console.log(data);
     let r = data.response;
+    let download_url;
 
     try {
       let largestFile = r.mediaFiles.reduce((acc, cur) => (acc.bitrate > cur.bitrate ? acc : cur));

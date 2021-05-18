@@ -31,7 +31,8 @@ const Site = (function () {
   }
 
   function openUrl(url) {
-    window.open(url, '_blank');
+    // window.open(url);
+    window.location.href = url;
 
     // reset form
     input.value = '';
