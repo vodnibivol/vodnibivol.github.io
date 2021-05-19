@@ -28,7 +28,7 @@ const Site = (function () {
     console.log('no. of entries : ' + INDEX.entries);
 
     let randNum = new Random(INDEX.entries).randEntry; // 0-entries
-    console.log('random entry : ' + randEntry);
+    console.log('random entry : ' + randNum);
 
     let file_no = Math.floor(randNum / INDEX.filesize);
     let entry_no = randNum % INDEX.filesize;

@@ -5,7 +5,7 @@ export default class PRNG {
     this.A = 1664525;
     this.C = 1013904223;
     this.M = Math.pow(2, 32);
-    this.SEED = this.today();
+    this.SEED = 11;
   }
 
   get randEntry() {
@@ -35,7 +35,7 @@ export default class PRNG {
   }
 
   get_rand() {
-    for (let i = 0; i < 721; i++) {
+    for (let i = 0; i < this.today(); i++) {
       this.SEED = (this.A * this.SEED + this.C) % this.M;
     }
 
