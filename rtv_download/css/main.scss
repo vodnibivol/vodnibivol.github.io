@@ -116,17 +116,22 @@ footer {
 
   .btn-download {
     display: contents;
-    cursor: pointer;
-    position: relative;
 
     i {
+      box-sizing: border-box;
       position: absolute;
-      right: 12px;
+      right: 0px;
+      line-height: 19px;
 
+      height: 100%;
+      padding: 7px 12px;
+
+      border-radius: 0 30px 30px 0;
       font-size: 15px;
       opacity: 0.25;
 
       transition: opacity 0.2s;
+      cursor: pointer;
 
       &:hover {
         opacity: 0.4;
@@ -154,7 +159,7 @@ footer {
     transition: opacity 0.5s;
 
     &.show {
-      opacity: 0.5;
+      opacity: 0.6;
     }
   }
 }

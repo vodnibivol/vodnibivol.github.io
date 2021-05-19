@@ -42,8 +42,13 @@ const Fetch = (function () {
     // console.log(data);
     try {
       if (REGEX_IDEC.test(rec_id)) rec_id = data.response.id;
-      _getMedia(data.response.jwt);
+
+      let jwt = data.response.jwt;
+      if (!jwt) throw new Error();
+
+      _getMedia(jwt);
     } catch (e) {
+      console.error(e);
       Visual.errMsg('Error parsing metadata.');
     }
   }
@@ -91,6 +96,7 @@ const Fetch = (function () {
 
       Site.openUrl(download_url);
     } catch (e) {
+      console.error(e);
       Visual.errMsg(e);
     }
   }
@@ -105,6 +111,7 @@ const Fetch = (function () {
 
       document.body.appendChild(script);
     } catch (e) {
+      console.error(e);
       Visual.errMsg('Error getting JSONP.');
     } finally {
       script.remove();

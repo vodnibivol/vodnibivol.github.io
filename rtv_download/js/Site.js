@@ -1,5 +1,5 @@
 const Site = (function () {
-  // cache
+  // cache DOM
   const form = document.querySelector('.search-form');
   const input = form.querySelector('.input-field');
   const tip = document.querySelector('.tip');
@@ -24,6 +24,7 @@ const Site = (function () {
     let isShown = tip.classList.contains('show');
 
     if (input.value) {
+      tip.innerHTML = 'Press enter to download';
       if (!isShown) setTimeout(() => tip.classList.add('show'), 400);
     } else {
       if (isShown) tip.classList.remove('show');
@@ -31,14 +32,13 @@ const Site = (function () {
   }
 
   function openUrl(url) {
-    // window.open(url);
+    // window.open(url); // causes pop-up problems
     window.location.href = url;
 
     // reset form
     input.value = '';
+    input.dispatchEvent(new Event('input'));
     input.focus();
-    tip.innerHTML = 'Press enter to download';
-    tip.classList.remove('show');
   }
 
   function _dailyBg() {
@@ -61,7 +61,7 @@ const Site = (function () {
 })();
 
 const Visual = (function () {
-  // cache
+  // cache DOM
   const form = document.querySelector('form');
   const downloadIcon = form.querySelector('.btn-download i');
   const tip = document.querySelector('.tip');
