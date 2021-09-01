@@ -110,8 +110,8 @@ const Fetch = (function () {
       script.src = url + '&callback=' + functionName;
       script.crossorigin = 'anonymous';
 
-      script.onerror = function (e) {
-        throw new Error(e);
+      script.onerror = function () {
+        throw new Error();
       };
 
       document.body.appendChild(script);
@@ -119,7 +119,7 @@ const Fetch = (function () {
       console.error(e);
       Visual.errMsg('Error getting JSONP');
     } finally {
-      script.remove();
+      // script.remove();
     }
   }
 
