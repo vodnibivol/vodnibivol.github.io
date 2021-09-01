@@ -108,10 +108,9 @@ const Fetch = (function () {
       script.id = 'ava';
       script.type = 'text/javascript';
       script.src = url + '&callback=' + functionName;
-      script.crossorigin = 'anonymous';
 
       script.onerror = function () {
-        throw new Error();
+        Visual.errMsg('Error getting JSONP');
       };
 
       document.body.appendChild(script);
