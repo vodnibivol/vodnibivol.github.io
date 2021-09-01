@@ -19,7 +19,7 @@ const Fetch = (function () {
       return;
     }
 
-    Visual.checkmark(true);
+    Visual.checkmark(true); // TODO: malo misleading, ce pride do errorja
 
     rec_id = match[0];
     console.log(rec_id);
@@ -49,7 +49,7 @@ const Fetch = (function () {
       _getMedia(jwt);
     } catch (e) {
       console.error(e);
-      Visual.errMsg('Error parsing metadata.');
+      Visual.errMsg('Error parsing metadata');
     }
   }
 
@@ -65,12 +65,12 @@ const Fetch = (function () {
       let stream = s.http || s.https || s.hls;
 
       if (!stream) {
-        throw new Error('No url found.');
+        throw new Error('No url found');
       }
 
       if (/(preroll|expired|dummy)/.test(stream)) {
         // video expired
-        throw new Error('Media expired or unavailable.');
+        throw new Error('Media expired or unavailable');
       }
 
       if (/progressive.+mp[34]/.test(stream)) {
@@ -109,10 +109,15 @@ const Fetch = (function () {
       script.type = 'text/javascript';
       script.src = url + '&callback=' + functionName;
 
+      script.onerror = function (event) {
+        console.log('error!');
+        console.log(event);
+      };
+
       document.body.appendChild(script);
     } catch (e) {
       console.error(e);
-      Visual.errMsg('Error getting JSONP.');
+      Visual.errMsg('Error getting JSONP');
     } finally {
       script.remove();
     }
