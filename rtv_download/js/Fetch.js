@@ -118,7 +118,7 @@ const Fetch = (function () {
       console.error(e);
       Visual.errMsg('Error getting JSONP');
     } finally {
-      // script.remove();
+      script.remove();
     }
   }
 
