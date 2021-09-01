@@ -108,10 +108,10 @@ const Fetch = (function () {
       script.id = 'ava';
       script.type = 'text/javascript';
       script.src = url + '&callback=' + functionName;
+      script.crossorigin = 'anonymous';
 
-      script.onerror = function (event) {
-        console.log('error!');
-        console.log(event);
+      script.onerror = function (e) {
+        throw new Error(e);
       };
 
       document.body.appendChild(script);
