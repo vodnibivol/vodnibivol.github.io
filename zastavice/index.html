@@ -21,9 +21,10 @@
       <button v-if="!menuIsOpen" type="button" class="btn open-menu-btn" @click="openMenu">izberi države</button>
 
       <div class="form-container" v-show="menuIsOpen">
-        <label v-for="r in allRegions"><input type="checkbox" :value="r" v-model="selectedRegions" />{{r}}</label>
+        <label v-for="r in allRegions"><input type="checkbox" :value="r" v-model="selectedRegions" />{{ r }}</label>
         <br />
-        <button type="button" v-if="menuIsOpen" class="btn submit-menu-btn" @click="closeMenu">potrdi</button>
+        <!-- prettier-ignore -->
+        <button type="button" v-if="menuIsOpen" class="btn submit-menu-btn" @click="selectedRegions.length && closeMenu()">potrdi</button>
       </div>
 
       <div class="text-input">
