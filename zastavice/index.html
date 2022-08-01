@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>zastavice</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+  </head>
+  <body>
+    <div class="main">
+      <div class="box-container" v-if="!menuIsOpen">
+        <div class="box target">
+          <img :src="targetImg" alt="target" />
+        </div>
+        <div class="box guess" v-if="state === 'INCORRECT'">
+          <img :src="guessImg" alt="guess" />
+        </div>
+      </div>
+      <button v-if="!menuIsOpen" type="button" class="btn open-menu-btn" @click="openMenu">izberi države</button>
+
+      <div class="form-container" v-show="menuIsOpen">
+        <label v-for="r in allRegions"><input type="checkbox" :value="r" v-model="selectedRegions" />{{r}}</label>
+        <br />
+        <button type="button" v-if="menuIsOpen" class="btn submit-menu-btn" @click="closeMenu">potrdi</button>
+      </div>
+
+      <div class="text-input">
+        <form action="#" @submit="onEnter">
+          <input v-model="inputValue" type="text" name="" id="textInput" spellcheck="false" autocomplete="off" />
+        </form>
+      </div>
+
+      <div class="score-meter">
+        <span id="score">{{ score }}</span>
+      </div>
+
+      <div class="mr-worldwide" :class="{ show: score >= 10 }">
+        <img src="flags/worldwide.png" />
+      </div>
+    </div>
+
+    <!-- Vue -->
+    <!-- <script src="js/vue3.js"></script> -->
+    <script src="https://unpkg.com/vue@3.2.37/dist/vue.global.prod.js"></script>
+    <!-- main questions object -->
+    <script src="js/Questions.js"></script>
+    <!-- list of questions and answers -->
+    <script src="flags/flag_data.js"></script>
+    <!-- site logic -->
+    <script src="js/main.js"></script>
+  </body>
+</html>

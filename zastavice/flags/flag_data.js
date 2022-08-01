@@ -139,7 +139,7 @@ const QA = {
   'https://flagcdn.com/at.svg': 'Austria',
   'https://flagcdn.com/vc.svg': 'Saint Vincent and the Grenadines',
   'https://flagcdn.com/ad.svg': 'Andorra',
-  // 'https://flagcdn.com/sj.svg': 'Svalbard and Jan Mayen',
+  // 'https://flagcdn.com/sj.svg': 'Svalbard and Jan Mayen', norway flag
   'https://flagcdn.com/nf.svg': 'Norfolk Island',
   'https://flagcdn.com/sr.svg': 'Suriname',
   'https://flagcdn.com/mn.svg': 'Mongolia',
@@ -161,7 +161,7 @@ const QA = {
   'https://flagcdn.com/hk.svg': 'Hong Kong',
   // 'https://flagcdn.com/re.svg': 'RÃ©union',
   'https://flagcdn.com/re.svg': 'Reunion',
-  'https://flagcdn.com/mf.svg': 'Saint Martin',
+  // 'https://flagcdn.com/mf.svg': 'Saint Martin', // french flag
   'https://flagcdn.com/lv.svg': 'Latvia',
   'https://flagcdn.com/gf.svg': 'French Guiana',
   'https://flagcdn.com/pk.svg': 'Pakistan',
@@ -546,6 +546,16 @@ const ANTARCTIC = [
 ];
 
 const ALL = [...EUROPE, ...ASIA, ...AFRICA, ...AMERICAS, ...OCEANIA, ...ANTARCTIC];
+
+const FLAGS = {
+  all: ALL,
+  europe: EUROPE,
+  asia: ASIA,
+  africa: AFRICA,
+  americas: AMERICAS,
+  oceania: OCEANIA,
+  antarctic: ANTARCTIC,
+};
 
 // console.log(ALL.length);
 // console.log(Object.keys(QA).length);

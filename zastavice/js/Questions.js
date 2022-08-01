@@ -42,6 +42,28 @@ class Questions {
     return this._equals(answer, this.TARGET.answer);
   }
 
+  exists(answer) {
+    return this.getQuestion(answer) !== undefined;
+  }
+
+  // events
+
+  onCorrect() {
+    this.TARGET.score++;
+  }
+
+  onIncorrect() {
+    this.TARGET.score = -1;
+  }
+
+  onInvalid() {
+    alert('invalid');
+  }
+
+  onEmpty() {
+    this.TARGET.score = -2;
+  }
+
   // --- utils
 
   _shuffle() {
@@ -102,4 +124,21 @@ function shuffleArray(array) {
 
 function getKeyByValue(object, value) {
   return Object.keys(object).find((key) => object[key] === value);
+}
+
+function toObj(str) {
+  return str
+    .split('\n')
+    .filter((a) => !!a)
+    .reduce((acc, cur) => {
+      let [key, val] = cur.split(': ');
+      acc[key] = val;
+      return acc;
+    }, {});
+}
+
+function reverseObject(obj) {
+  let arr = Object.entries(obj);
+  let reversed = arr.map(([a, b]) => [b, a]);
+  return reversed;
 }
