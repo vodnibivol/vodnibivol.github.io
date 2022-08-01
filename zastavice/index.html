@@ -27,7 +27,7 @@
       </div>
 
       <div class="text-input">
-        <form action="#" @submit="onEnter">
+        <form action="#" @submit.prevent="onEnter">
           <input v-model="inputValue" type="text" name="" id="textInput" spellcheck="false" autocomplete="off" />
         </form>
       </div>
