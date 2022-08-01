@@ -1,5 +1,4 @@
 let Q; // will be set in mounted();
-document.addEventListener('click', () => document.querySelector('#textInput').focus());
 
 const Main = Vue.createApp({
   data() {
@@ -23,12 +22,28 @@ const Main = Vue.createApp({
   },
 
   mounted() {
+    // events
+    document.addEventListener('click', this.inputFocus);
+
+    // init
     let cachedRegions = localStorage.getItem(this.STORAGE_KEY);
-    this.selectedRegions = cachedRegions ? JSON.parse(cachedRegions) : {};
+
+    if (cachedRegions !== null) {
+      this.selectedRegions = JSON.parse(cachedRegions);
+    } else {
+      this.selectedRegions = this.allRegions;
+      this.menuIsOpen = true;
+    }
+
     this.init();
+    this.inputFocus();
   },
 
   methods: {
+    inputFocus() {
+      document.querySelector('#textInput').focus();
+    },
+
     init() {
       let vals = this.selectedRegions.map((r) => FLAGS[r]).flat();
 
