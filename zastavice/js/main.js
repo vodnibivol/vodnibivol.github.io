@@ -37,6 +37,7 @@ const Main = Vue.createApp({
 
     this.init();
     this.inputFocus();
+    document.querySelector('.main').classList.remove('hidden');
   },
 
   methods: {
@@ -52,8 +53,8 @@ const Main = Vue.createApp({
         values: vals,
       });
 
-      if (!Q) throw new Error('Q object must be provided');
       this.nextGuess();
+      this.score = 0; // reset score
     },
 
     openMenu() {
@@ -80,6 +81,7 @@ const Main = Vue.createApp({
       if (this.inputValue === '?') {
         this.state = 'HELP';
         Q.TARGET.score = -2;
+        this.score = 0; // reset score
         this.inputValue = 'ANSWER: ' + Q.TARGET.answer.toUpperCase();
         return;
       }
