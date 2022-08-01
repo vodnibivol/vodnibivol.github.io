@@ -42,7 +42,7 @@ const Main = Vue.createApp({
 
   methods: {
     inputFocus() {
-      document.querySelector('#textInput').focus();
+      if (!this.menuIsOpen) document.querySelector('#textInput').focus();
     },
 
     init() {
@@ -101,7 +101,7 @@ const Main = Vue.createApp({
           // NOTE: INCORRECT
           this.score = 0;
           Q.onIncorrect();
-          this.guessImg = question; // render guess
+          this.guessImg = './flags/img/' + question; // render guess
 
           this.state = 'INCORRECT';
           this.inputValue = 'FALSE. PRESS ENTER TO CONTINUE';
@@ -115,7 +115,7 @@ const Main = Vue.createApp({
       Q.next();
 
       if (!Q.TARGET) alert('NO MORE QUESTIONS.');
-      else this.targetImg = Q.TARGET.question; // render question
+      else this.targetImg = './flags/img/' + Q.TARGET.question; // render question
     },
   },
 });

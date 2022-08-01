@@ -27,18 +27,18 @@
         <button type="button" v-if="menuIsOpen" class="btn submit-menu-btn" @click="selectedRegions.length && closeMenu()">potrdi</button>
       </div>
 
-      <div class="text-input">
+      <div v-if="!menuIsOpen" class="text-input">
         <form action="#" @submit.prevent="onEnter">
           <input v-model="inputValue" type="text" name="" id="textInput" spellcheck="false" autocomplete="off" />
         </form>
-      </div>
 
-      <div class="score-meter">
-        <span id="score">{{ score }}</span>
-      </div>
+        <div class="score-meter">
+          <span id="score">{{ score }}</span>
+        </div>
 
-      <div class="mr-worldwide" :class="{ show: score >= 10 }">
-        <img src="flags/worldwide.png" />
+        <div class="mr-worldwide" :class="{ show: score >= 10 }">
+          <img src="flags/worldwide.png" />
+        </div>
       </div>
     </div>
 
