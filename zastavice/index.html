@@ -18,13 +18,13 @@
           <img :src="guessImg" alt="guess" />
         </div>
       </div>
-      <button v-if="!menuIsOpen" type="button" class="btn open-menu-btn" @click="openMenu">izberi države</button>
+      <button v-if="!menuIsOpen" type="button" class="btn open-menu-btn" @click="openMenu">regions</button>
 
       <div class="form-container" v-show="menuIsOpen">
         <label v-for="r in allRegions"><input type="checkbox" :value="r" v-model="selectedRegions" />{{ r }}</label>
         <br />
         <!-- prettier-ignore -->
-        <button type="button" v-if="menuIsOpen" class="btn submit-menu-btn" @click="selectedRegions.length && closeMenu()">potrdi</button>
+        <button type="button" v-if="menuIsOpen" class="btn submit-menu-btn" @click="selectedRegions.length && closeMenu()">ok</button>
       </div>
 
       <div v-if="!menuIsOpen" class="text-input">

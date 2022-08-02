@@ -7,9 +7,8 @@ const Main = Vue.createApp({
       qa: null, // in mounted
 
       menuIsOpen: false,
-      guessIsShown: false,
       inputValue: '',
-      state: 'GUESSING', // GUESSING, INCORRECT, HELP
+      state: 'GUESSING', // GUESSING, INCORRECT, HELP, FINISHED
 
       score: 0,
 
@@ -111,11 +110,15 @@ const Main = Vue.createApp({
 
     nextGuess() {
       this.inputValue = '';
-      this.state = 'GUESSING';
       Q.next();
 
-      if (!Q.TARGET) alert('NO MORE QUESTIONS.');
-      else this.targetImg = './flags/img/' + Q.TARGET.question; // render question
+      if (!!Q.TARGET) {
+        this.state = 'GUESSING';
+        this.targetImg = './flags/img/' + Q.TARGET.question; // render question
+      } else {
+        this.state = 'FINISHED';
+        alert('konec:)');
+      }
     },
   },
 });
