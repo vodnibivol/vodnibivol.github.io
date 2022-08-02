@@ -1,7 +1,8 @@
 class Questions {
   constructor({ qa = null, keys = null, values = null }) {
     if (!qa) throw new Error('QA must be provided.');
-    this.QA = Object.entries(qa);
+
+    this.QA = Object.entries(qa); // all provided (not filtered)
     this.GUESSES = this._createGuesses(keys, values);
 
     this._shuffle(); // TODO: enable

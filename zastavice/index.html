@@ -10,7 +10,16 @@
   </head>
   <body>
     <div class="main hidden">
-      <div class="box-container" v-if="!menuIsOpen">
+      <!-- OPEN MENU BTN -->
+      <button class="btn open-menu-btn" type="button" v-if="!menuOpen && ['GUESSING', 'HELP', 'INCORRECT'].includes(state)" @click="openMenu">regions</button>
+
+      <!-- LOADING BAR -->
+      <div class="progress-container" v-show="state === 'LOADING' && !menuOpen">
+        <progress min="0" :max="allImgs" :value="loadedImgs"></progress>
+      </div>
+
+      <!-- ZASTAVICE -->
+      <div class="box-container" v-if="!menuOpen && ['GUESSING', 'HELP', 'INCORRECT'].includes(state)">
         <div class="box target">
           <img :src="targetImg" alt="target" />
         </div>
@@ -18,24 +27,27 @@
           <img :src="guessImg" alt="guess" />
         </div>
       </div>
-      <button v-if="!menuIsOpen" type="button" class="btn open-menu-btn" @click="openMenu">regions</button>
 
-      <div class="form-container" v-show="menuIsOpen">
+      <!-- MENU -->
+      <div class="form-container" v-show="menuOpen">
         <label v-for="r in allRegions"><input type="checkbox" :value="r" v-model="selectedRegions" />{{ r }}</label>
         <br />
         <!-- prettier-ignore -->
-        <button type="button" v-if="menuIsOpen" class="btn submit-menu-btn" @click="selectedRegions.length && closeMenu()">ok</button>
+        <button type="button" class="btn submit-menu-btn" @click="selectedRegions.length && closeMenu()">ok</button>
       </div>
 
-      <div v-if="!menuIsOpen" class="text-input">
+      <!-- INPUT -->
+      <div class="text-input" v-show="!menuOpen && ['GUESSING', 'HELP', 'INCORRECT'].includes(state)">
         <form action="#" @submit.prevent="onEnter">
           <input v-model="inputValue" type="text" name="" id="textInput" spellcheck="false" autocomplete="off" />
         </form>
 
+        <!-- score -->
         <div class="score-meter">
           <span id="score">{{ score }}</span>
         </div>
 
+        <!-- worldwide -->
         <div class="mr-worldwide" :class="{ show: score >= 10 }">
           <img src="flags/worldwide.png" />
         </div>

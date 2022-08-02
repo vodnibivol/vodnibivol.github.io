@@ -6,9 +6,9 @@ const Main = Vue.createApp({
       STORAGE_KEY: 'FLAG_REGIONS',
       qa: null, // in mounted
 
-      menuIsOpen: false,
+      menuOpen: false, // NOTE: mora biti ločeno, da se vrne na prejšnje stanje
       inputValue: '',
-      state: 'GUESSING', // GUESSING, INCORRECT, HELP, FINISHED
+      state: '', // LOADING, GUESSING, INCORRECT, HELP, FINISHED
 
       score: 0,
 
@@ -17,6 +17,9 @@ const Main = Vue.createApp({
 
       allRegions: ['europe', 'asia', 'africa', 'americas', 'oceania', 'antarctic'],
       selectedRegions: ['europe', 'asia', 'africa', 'americas', 'oceania', 'antarctic'],
+
+      allImgs: 0,
+      loadedImgs: 0,
     };
   },
 
@@ -35,29 +38,49 @@ const Main = Vue.createApp({
     }
 
     this.init();
-    this.inputFocus();
     document.querySelector('.main').classList.remove('hidden');
   },
 
   methods: {
     inputFocus() {
-      if (!this.menuIsOpen) document.querySelector('#textInput').focus();
+      if (['GUESSING', 'INCORRECT', 'HELP'].includes(this.state)) document.querySelector('#textInput').focus();
     },
 
     init() {
-      let vals = this.selectedRegions.map((r) => FLAGS[r]).flat();
-
       Q = new Questions({
         qa: QA,
-        values: vals,
+        values: this.selectedRegions.map((r) => FLAGS[r]).flat(),
       });
 
-      this.nextGuess();
+      this.preloadImages(() => {
+        this.nextGuess();
+        this.inputFocus();
+      });
+
       this.score = 0; // reset score
     },
 
+    preloadImages(callback) {
+      // called only on beginning (size of all not too large < 3mb)
+      this.state = 'LOADING';
+
+      let urls = Q.QA.map((q) => './flags/img/' + q[0]);
+      this.allImgs = urls.length;
+
+      for (let url of urls) {
+        let img = new Image();
+        img.onload = () => {
+          this.loadedImgs++;
+          // console.log(`loaded image ${this.loadedImgs} of ${this.allImgs} ..`);
+
+          this.loadedImgs === this.allImgs && callback();
+        };
+        img.src = url;
+      }
+    },
+
     openMenu() {
-      this.menuIsOpen = true;
+      this.menuOpen = true;
     },
 
     closeMenu() {
@@ -68,7 +91,7 @@ const Main = Vue.createApp({
         this.init();
       }
 
-      this.menuIsOpen = false;
+      this.menuOpen = false;
     },
 
     onEnter() {
