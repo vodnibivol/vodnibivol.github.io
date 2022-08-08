@@ -9,7 +9,6 @@ const Main = Vue.createApp({
       menuOpen: false, // NOTE: mora biti ločeno, da se vrne na prejšnje stanje
       inputValue: '',
       state: '', // LOADING, GUESSING, INCORRECT, HELP, FINISHED
-
       score: 0,
 
       targetImg: '',
@@ -66,6 +65,7 @@ const Main = Vue.createApp({
 
       let urls = Q.QA.map((q) => './flags/img/' + q[0]);
       this.allImgs = urls.length;
+      this.loadedImgs = 0;
 
       for (let url of urls) {
         let img = new Image();
@@ -73,7 +73,7 @@ const Main = Vue.createApp({
           this.loadedImgs++;
           // console.log(`loaded image ${this.loadedImgs} of ${this.allImgs} ..`);
 
-          this.loadedImgs === this.allImgs && callback();
+          this.loadedImgs === this.allImgs && callback(); // no of images
         };
         img.src = url;
       }
