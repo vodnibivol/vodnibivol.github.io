@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>učenje!</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+  </head>
+  <body class="flex-center">
+    <div class="main flex-center">
+      <!-- MENU OPEN -->
+      <div class="textarea-container">
+        <button class="boxed" type="button" @click="menuOpen ? closeMenu() : openMenu()">{{ menuBtnString }}</button>
+
+        <textarea v-if="menuOpen && !helpOpen" v-model="Qstring" @input="edited = true"></textarea>
+        <textarea v-if="menuOpen && helpOpen" v-model="HELP_TEXT"></textarea>
+
+        <div class="value-switch-container" v-if="menuOpen">
+          <input type="checkbox" id="valuesSwitched" v-model="valuesSwitched" @click="edited = true" />
+          <label for="valuesSwitched" class="values-switch boxed">zamenjaj</label>
+        </div>
+
+        <div class="help-switch-container" v-if="menuOpen">
+          <input type="checkbox" id="menuOpen" v-model="helpOpen" />
+          <label for="menuOpen" class="help-switch boxed">?</label>
+        </div>
+      </div>
+
+      <!-- MAIN -->
+      <div class="box-container" v-if="!menuOpen">
+        <div class="box target">
+          <p id="targetKeyword">{{ targetKey }}</p>
+        </div>
+
+        <div class="box guess">
+          <form action="#" @submit.prevent="onEnter">
+            <input type="text" v-model="inputValue" placeholder="odgovor" autocomplete="off" spellcheck="false" />
+            <button type="submit">ok</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@3.2.37/dist/vue.global.js"></script>
+    <script src="js/Questions.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
