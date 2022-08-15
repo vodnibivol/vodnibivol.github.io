@@ -12,7 +12,7 @@
     <div class="main flex-center">
       <!-- MENU OPEN -->
       <div class="textarea-container">
-        <button class="boxed" type="button" @click="menuOpen ? closeMenu() : openMenu()">{{ menuBtnString }}</button>
+        <button class="toggle-menu boxed" type="button" @click="menuOpen ? closeMenu() : openMenu()">{{ menuBtnString }}</button>
 
         <textarea v-if="menuOpen && !helpOpen" v-model="Qstring" @input="edited = true"></textarea>
         <textarea v-if="menuOpen && helpOpen" v-model="HELP_TEXT"></textarea>

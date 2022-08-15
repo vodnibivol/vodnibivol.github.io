@@ -43,7 +43,7 @@ body {
 }
 
 .textarea-container {
-  button {
+  button.toggle-menu {
     position: absolute;
     top: 1rem;
     left: 1rem;
@@ -59,7 +59,7 @@ body {
     }
   }
 
-  label {
+  label, button {
     &:active {
       transform: translateY(2px);
     }
@@ -67,16 +67,14 @@ body {
 
   label.values-switch {
     position: absolute;
-    top: 1rem;
-    right: 1rem;
+    bottom: 1rem;
+    left: 1rem;
   }
 
   label.help-switch {
     position: absolute;
     bottom: 1rem;
     right: 1rem;
-
-    // padding: 3px;
   }
 
   textarea {

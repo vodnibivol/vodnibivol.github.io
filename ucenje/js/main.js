@@ -6,13 +6,13 @@ const Main = Vue.createApp({
       STORAGE_KEY: 'TEXT_TRAIN_QUESTIONS',
       HELP_TEXT: HELP,
 
-      menuOpen: false, // NOTE: mora biti ločeno, da se vrne na prejšnje stanje
       inputValue: '',
       targetKey: '[target]',
       Qstring: '',
-
-      valuesSwitched: false,
+      
+      menuOpen: false, // NOTE: mora biti ločeno, da se vrne na prejšnje stanje
       helpOpen: false,
+      valuesSwitched: false,
       edited: false,
 
       state: '', // LOADING, GUESSING, INCORRECT, HELP, FINISHED
@@ -169,6 +169,9 @@ proprium: značilnost
 
 # z gumbom 'zamenjaj' zamenjaš pare
 # vprašanj in odgovorov.
+
+# z gumbom '?' odpreš / zapreš
+# navodila.
 
 
 ### TOČKOVANJE
