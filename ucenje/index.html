@@ -12,10 +12,11 @@
     <div class="main flex-center">
       <!-- MENU OPEN -->
       <div class="textarea-container">
+        <!-- prettier-ignore -->
         <button class="toggle-menu boxed" type="button" @click="menuOpen ? closeMenu() : openMenu()">{{ menuBtnString }}</button>
 
-        <textarea v-if="menuOpen && !helpOpen" v-model="Qstring" @input="edited = true"></textarea>
-        <textarea v-if="menuOpen && helpOpen" v-model="HELP_TEXT"></textarea>
+        <textarea v-if="menuOpen && !helpOpen" v-model="Qstring" @input="edited = true" spellcheck="false"></textarea>
+        <textarea v-if="menuOpen && helpOpen" v-model="HELP_TEXT" spellcheck="false"></textarea>
 
         <div class="value-switch-container" v-if="menuOpen">
           <input type="checkbox" id="valuesSwitched" v-model="valuesSwitched" @click="edited = true" />
@@ -37,10 +38,13 @@
         <div class="box guess">
           <form action="#" @submit.prevent="onEnter">
             <input type="text" v-model="inputValue" placeholder="odgovor" autocomplete="off" spellcheck="false" />
-            <button type="submit">ok</button>
+            <button class="boxed" type="submit">ok</button>
           </form>
         </div>
       </div>
+
+      <div class="progress" id="progressBar" v-if="!menuOpen" :style="{ width: score + 'vw' }"></div>
+      <!-- <div class="test"></div> -->
     </div>
 
     <script src="https://unpkg.com/vue@3.2.37/dist/vue.global.js"></script>

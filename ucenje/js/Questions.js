@@ -1,8 +1,11 @@
 class Training {
   constructor({ qa = null, keys = null, values = null }) {
     if (!qa) throw new Error('QA must be provided.');
+
     this.QA = Object.entries(qa);
     this.GUESSES = this._createGuesses(keys, values);
+
+    this.MAX_SCORE = 3;
 
     this._shuffle(); // TODO: enable
   }
@@ -11,7 +14,7 @@ class Training {
     const WORST_GUESSES = 5;
     const MIN_DISTANCE = 1;
 
-    let guesses = this.GUESSES.filter((t) => t.score < 3 && t.distance > MIN_DISTANCE);
+    let guesses = this.GUESSES.filter((t) => t.score < this.MAX_SCORE && t.distance > MIN_DISTANCE);
 
     let _5worstGuesses = guesses.sort((a, b) => a.score - b.score).slice(0, WORST_GUESSES);
     let _2oldestGuesses = guesses.sort((a, b) => b.distance - a.distance).slice(0, 2);
@@ -59,8 +62,11 @@ class Training {
   }
 
   onInvalid() {
-    // do nothing (i.e. headshake)
+    // headshake // TODO: score-- ?
     this.TARGET.guesses.mistakes++;
+    if (this.TARGET.guesses.mistakes % 2 == 0) {
+      this.TARGET.score--;
+    }
   }
 
   onEmpty() {

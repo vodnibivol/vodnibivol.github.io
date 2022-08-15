@@ -1,4 +1,4 @@
-let Q; // will be set in mounted();
+let T; // will be set in mounted();
 
 const Main = Vue.createApp({
   data() {
@@ -14,6 +14,8 @@ const Main = Vue.createApp({
       helpOpen: false,
       valuesSwitched: false,
       edited: false,
+
+      score: 0,
 
       state: '', // LOADING, GUESSING, INCORRECT, HELP, FINISHED
     };
@@ -57,8 +59,6 @@ const Main = Vue.createApp({
         console.log('not focusing on input');
       }
 
-      console.log(Q.QA);
-
       // if (['GUESSING', 'INCORRECT', 'HELP'].includes(this.state)) document.querySelector('.guess input').focus();
     },
 
@@ -67,7 +67,7 @@ const Main = Vue.createApp({
 
       if (this.valuesSwitched) QA = reverseObject(QA);
 
-      Q = new Training({
+      T = new Training({
         qa: QA,
       });
 
@@ -103,25 +103,25 @@ const Main = Vue.createApp({
 
       if (this.inputValue === '?') {
         this.state = 'HELP';
-        Q.onEmpty();
-        this.inputValue = 'ODG: ' + Q.TARGET.answer; // .toUpperCase()
+        T.onEmpty();
+        this.inputValue = 'ODG: ' + T.TARGET.answer; // .toUpperCase()
         return;
       }
 
-      if (Q.isCorrect(this.inputValue)) {
+      if (T.isCorrect(this.inputValue)) {
         // NOTE: CORRECT
-        Q.onCorrect();
+        T.onCorrect();
         this.nextGuess();
       } else {
-        let question = Q.getQuestion(this.inputValue); // question to your answer
+        let question = T.getQuestion(this.inputValue); // question to your answer
 
         if (question === undefined) {
           // NOTE: INVALID
-          Q.onInvalid();
+          T.onInvalid();
           shake('.box-container');
         } else {
           // NOTE: INCORRECT
-          Q.onIncorrect();
+          T.onIncorrect();
           this.state = 'INCORRECT';
           this.inputValue = `narobe .. [${this.inputValue}]`;
         }
@@ -130,11 +130,18 @@ const Main = Vue.createApp({
 
     nextGuess() {
       this.inputValue = '';
-      Q.next();
+      T.next();
 
-      if (!!Q.TARGET) {
+      // -- progress
+
+      let all = T.GUESSES.length * T.MAX_SCORE;
+      let remaining = T.GUESSES.reduce((acc, cur) => acc + (T.MAX_SCORE - cur.score), 0); // progress max
+      this.score = Math.max(0, ((all - remaining) / all) * 100);
+      console.log(this.score);
+
+      if (!!T.TARGET) {
         this.state = 'GUESSING';
-        this.targetKey = Q.TARGET.question; // render question
+        this.targetKey = T.TARGET.question; // render question
       } else {
         this.state = 'FINISHED';
         this.targetKey = '[target]';
@@ -144,16 +151,34 @@ const Main = Vue.createApp({
     },
 
     onFinished() {
-      let stats = Q.GUESSES.sort((a, b) => {
+      let stats = T.GUESSES.sort((a, b) => {
+        // empty worst 2, other 1
+        // points: incorrect + empty + mistakes
         // the worst: incorrect + empty
-        let Aworst = a.guesses.incorrect + a.guesses.empty;
-        let Bworst = b.guesses.incorrect + b.guesses.empty;
+        let Aworst = 2 * a.guesses.empty + a.guesses.incorrect + a.guesses.mistakes;
+        let Bworst = 2 * b.guesses.empty + b.guesses.incorrect + b.guesses.mistakes;
         return Bworst - Aworst; // return lower
       });
 
-      for (let i = 0; i < stats.length; i++) {
-        let stat = stats[i];
-        console.log(`[${i}] ${stat.question},${stat.answer} : ${JSON.stringify(stat.guesses)}`);
+      // FIRST print the worst (> 2 bad points)
+
+      let theWorst = stats.filter((s) => 2 * s.guesses.empty + s.guesses.incorrect + s.guesses.mistakes > 3);
+      let remains = stats.filter(
+        (s) => !theWorst.includes(s) && 2 * s.guesses.empty + s.guesses.incorrect + s.guesses.mistakes > 1
+      );
+
+      // THEN print remains
+
+      if (theWorst.length) console.log('NAJSLABŠE (VELIKO VADI):');
+      for (let i = 0; i < theWorst.length; i++) {
+        let stat = theWorst[i];
+        console.log(`[${i}] ${stat.question} - ${stat.answer} : ${JSON.stringify(stat.guesses)}`);
+      }
+
+      if (remains.length) console.log('OSTALO SLABO (VADI):');
+      for (let i = 0; i < remains.length; i++) {
+        let stat = remains[i];
+        console.log(`[${i}] ${stat.question} - ${stat.answer} : ${JSON.stringify(stat.guesses)}`);
       }
     },
   },
