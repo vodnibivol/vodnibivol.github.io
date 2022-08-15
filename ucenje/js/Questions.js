@@ -12,7 +12,7 @@ class Training {
     const MIN_DISTANCE = 1;
 
     let guesses = this.GUESSES.filter((t) => t.score < 3 && t.distance > MIN_DISTANCE);
-    
+
     let _5worstGuesses = guesses.sort((a, b) => a.score - b.score).slice(0, WORST_GUESSES);
     let _2oldestGuesses = guesses.sort((a, b) => b.distance - a.distance).slice(0, 2);
 
@@ -46,22 +46,26 @@ class Training {
     return this.getQuestion(answer) !== undefined;
   }
 
-  // events
+  // --- EVENTS
 
   onCorrect() {
     this.TARGET.score++;
+    this.TARGET.guesses.correct++;
   }
 
   onIncorrect() {
     this.TARGET.score = -1;
+    this.TARGET.guesses.incorrect++;
   }
 
   onInvalid() {
-    alert('invalid');
+    // do nothing (i.e. headshake)
+    this.TARGET.guesses.mistakes++;
   }
 
   onEmpty() {
     this.TARGET.score = -2;
+    this.TARGET.guesses.empty++;
   }
 
   // --- utils
@@ -98,7 +102,18 @@ class Training {
     // TODO: add option for arrays
 
     return QA.map((e) => {
-      return { question: e[0], answer: e[1], score: 0, distance: Infinity };
+      return {
+        question: e[0],
+        answer: e[1],
+        score: 0,
+        distance: Infinity,
+        guesses: {
+          incorrect: 0,
+          empty: 0,
+          correct: 0,
+          mistakes: 0, // headshakes
+        },
+      };
     });
   }
 }

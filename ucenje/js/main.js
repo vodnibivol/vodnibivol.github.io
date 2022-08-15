@@ -9,7 +9,7 @@ const Main = Vue.createApp({
       inputValue: '',
       targetKey: '[target]',
       Qstring: '',
-      
+
       menuOpen: false, // NOTE: mora biti ločeno, da se vrne na prejšnje stanje
       helpOpen: false,
       valuesSwitched: false,
@@ -57,7 +57,7 @@ const Main = Vue.createApp({
         console.log('not focusing on input');
       }
 
-      console.log(Q.QA)
+      console.log(Q.QA);
 
       // if (['GUESSING', 'INCORRECT', 'HELP'].includes(this.state)) document.querySelector('.guess input').focus();
     },
@@ -117,7 +117,7 @@ const Main = Vue.createApp({
 
         if (question === undefined) {
           // NOTE: INVALID
-          // alert('odgovor ne obstaja');
+          Q.onInvalid();
           shake('.box-container');
         } else {
           // NOTE: INCORRECT
@@ -139,6 +139,21 @@ const Main = Vue.createApp({
         this.state = 'FINISHED';
         this.targetKey = '[target]';
         this.inputValue = 'konec:)';
+        this.onFinished();
+      }
+    },
+
+    onFinished() {
+      let stats = Q.GUESSES.sort((a, b) => {
+        // the worst: incorrect + empty
+        let Aworst = a.guesses.incorrect + a.guesses.empty;
+        let Bworst = b.guesses.incorrect + b.guesses.empty;
+        return Bworst - Aworst; // return lower
+      });
+
+      for (let i = 0; i < stats.length; i++) {
+        let stat = stats[i];
+        console.log(`[${i}] ${stat.question},${stat.answer} : ${JSON.stringify(stat.guesses)}`);
       }
     },
   },
