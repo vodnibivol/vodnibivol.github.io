@@ -141,6 +141,7 @@ const Main = Vue.createApp({
         this.state = 'FINISHED';
         this.targetKey = '[target]';
         this.inputValue = 'konec:)';
+        this.score = 100;
         this.onFinished();
       }
     },

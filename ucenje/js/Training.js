@@ -5,7 +5,7 @@ class Training {
     this.QA = Object.entries(qa);
     this.GUESSES = this._createGuesses(keys, values);
 
-    this.MAX_SCORE = 3;
+    this.MAX_SCORE = 2;
 
     this._shuffle(); // TODO: enable
   }
