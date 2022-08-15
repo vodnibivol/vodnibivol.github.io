@@ -126,18 +126,13 @@ const Main = Vue.createApp({
           this.inputValue = `narobe .. [${this.inputValue}]`;
         }
       }
+
+      this.setProgress();
     },
 
     nextGuess() {
       this.inputValue = '';
       T.next();
-
-      // -- progress
-
-      let all = T.GUESSES.length * T.MAX_SCORE;
-      let remaining = T.GUESSES.reduce((acc, cur) => acc + (T.MAX_SCORE - cur.score), 0); // progress max
-      this.score = Math.max(0, ((all - remaining) / all) * 100);
-      console.log(this.score);
 
       if (!!T.TARGET) {
         this.state = 'GUESSING';
@@ -148,6 +143,13 @@ const Main = Vue.createApp({
         this.inputValue = 'konec:)';
         this.onFinished();
       }
+    },
+
+    setProgress() {
+      let all = T.GUESSES.length * T.MAX_SCORE;
+      let remaining = T.GUESSES.reduce((acc, cur) => acc + (T.MAX_SCORE - cur.score), 0); // progress max
+      this.score = Math.max(0, ((all - remaining) / all) * 100);
+      // console.log(this.score);
     },
 
     onFinished() {
