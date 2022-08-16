@@ -62,7 +62,7 @@ class Training {
   }
 
   onInvalid() {
-    // headshake // TODO: score-- ?
+    // headshake
     this.TARGET.guesses.mistakes++;
     if (this.TARGET.guesses.mistakes % 2 == 0) {
       this.TARGET.score--;

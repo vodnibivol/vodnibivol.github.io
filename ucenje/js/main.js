@@ -73,6 +73,7 @@ const Main = Vue.createApp({
 
       this.nextGuess();
       this.inputFocus();
+      this.setProgress();
     },
 
     openMenu() {
@@ -102,13 +103,11 @@ const Main = Vue.createApp({
       if (this.inputValue === '') return;
 
       if (this.inputValue === '?') {
-        this.state = 'HELP';
+        // NOTE: EMPTY
         T.onEmpty();
+        this.state = 'HELP';
         this.inputValue = 'ODG: ' + T.TARGET.answer; // .toUpperCase()
-        return;
-      }
-
-      if (T.isCorrect(this.inputValue)) {
+      } else if (T.isCorrect(this.inputValue)) {
         // NOTE: CORRECT
         T.onCorrect();
         this.nextGuess();
@@ -139,18 +138,22 @@ const Main = Vue.createApp({
         this.targetKey = T.TARGET.question; // render question
       } else {
         this.state = 'FINISHED';
-        this.targetKey = '[target]';
-        this.inputValue = 'konec:)';
-        this.score = 100;
+        this.targetKey = 'konecツ';
+        this.inputValue = '';
         this.onFinished();
       }
     },
 
     setProgress() {
-      let all = T.GUESSES.length * T.MAX_SCORE;
-      let remaining = T.GUESSES.reduce((acc, cur) => acc + (T.MAX_SCORE - cur.score), 0); // progress max
-      this.score = Math.max(0, ((all - remaining) / all) * 100);
-      // console.log(this.score);
+      if (this.state === 'FINISHED') {
+        this.score = 100;
+      } else {
+        let all = T.GUESSES.length * T.MAX_SCORE;
+        let remaining = T.GUESSES.reduce((acc, cur) => acc + (T.MAX_SCORE - cur.score), 0); // progress max
+        this.score = Math.max(0, ((all - remaining) / all) * 100);
+      }
+
+      console.log('set progress : ' + this.score);
     },
 
     onFinished() {
