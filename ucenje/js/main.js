@@ -106,7 +106,7 @@ const Main = Vue.createApp({
         // NOTE: EMPTY
         T.onEmpty();
         this.state = 'HELP';
-        this.inputValue = 'ODG: ' + T.TARGET.answer; // .toUpperCase()
+        this.inputValue = 'ODG: ' + T.TARGET.answer;
       } else if (T.isCorrect(this.inputValue)) {
         // NOTE: CORRECT
         T.onCorrect();
@@ -157,6 +157,8 @@ const Main = Vue.createApp({
     },
 
     onFinished() {
+      this.setProgress();
+
       let stats = T.GUESSES.sort((a, b) => {
         // empty worst 2, other 1
         // points: incorrect + empty + mistakes
