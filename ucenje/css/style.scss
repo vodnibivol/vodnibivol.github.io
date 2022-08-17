@@ -163,14 +163,19 @@ button {
     }
   }
 
-  #progressBar {
+  .progress-container {
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 0; // will be set programatically
-    height: 2px;
-    background: black;
-    transition: width 0.3s;
+    width: 100vw;
+    // padding: 3px;
+
+    #progressBar {
+      width: 0; // will be set programatically
+      height: 2px;
+      background: black;
+      transition: width 0.3s;
+    }
   }
 
   .test {

@@ -95,8 +95,9 @@ const Main = Vue.createApp({
 
     onEnter() {
       if (this.state === 'GUESSING') this.checkAnswer();
-      else if (this.state === 'FINISHED') return;
-      else this.nextGuess();
+      else if (this.state === 'FINISHED') {
+        if (/^ponovi\??$/.test(this.inputValue)) this.init();
+      } else this.nextGuess();
     },
 
     checkAnswer() {
@@ -137,9 +138,6 @@ const Main = Vue.createApp({
         this.state = 'GUESSING';
         this.targetKey = T.TARGET.question; // render question
       } else {
-        this.state = 'FINISHED';
-        this.targetKey = 'konecツ';
-        this.inputValue = '';
         this.onFinished();
       }
     },
@@ -153,10 +151,13 @@ const Main = Vue.createApp({
         this.score = Math.max(0, ((all - remaining) / all) * 100);
       }
 
-      console.log('set progress : ' + this.score);
+      console.log('set progress : ' + this.score); // TODO: delete
     },
 
     onFinished() {
+      this.state = 'FINISHED';
+      this.targetKey = 'konecツ';
+      this.inputValue = 'ponovi?';
       this.setProgress();
 
       let stats = T.GUESSES.sort((a, b) => {

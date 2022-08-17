@@ -43,8 +43,9 @@
         </div>
       </div>
 
-      <div class="progress" id="progressBar" v-if="!menuOpen" :style="{ width: score + 'vw' }"></div>
-      <!-- <div class="test"></div> -->
+      <div class="progress-container">
+        <div class="progress" id="progressBar" v-if="!menuOpen" :style="{ width: score + '%' }"></div>
+      </div>
     </div>
 
     <script src="https://unpkg.com/vue@3.2.37/dist/vue.global.js"></script>
