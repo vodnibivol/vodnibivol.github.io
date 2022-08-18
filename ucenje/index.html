@@ -13,7 +13,7 @@
       <!-- MENU OPEN -->
       <div class="textarea-container">
         <!-- prettier-ignore -->
-        <button class="toggle-menu boxed" type="button" @click="toggleMenu">{{ menuBtnString }}</button>
+        <button class="toggle-menu boxed" v-show="validQuestions" type="button" @click="toggleMenu">{{ menuBtnString }}</button>
 
         <textarea v-if="menuOpen && !helpOpen" v-model="Qstring" @input="edited = true" spellcheck="false"></textarea>
         <textarea v-if="menuOpen && helpOpen" v-model="HELP_TEXT" spellcheck="false"></textarea>

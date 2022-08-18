@@ -3,14 +3,15 @@ let T; // will be set in mounted();
 const Main = Vue.createApp({
   data() {
     return {
-      STORAGE_KEY: 'TEXT_TRAIN_QUESTIONS',
+      QSTRING_KEY: 'UCENJE_QSTRING',
+      SWITCH_KEY: 'UCENJE_SWITCHED',
       HELP_TEXT: HELP,
 
       inputValue: '',
       targetKey: '[target]',
       Qstring: '',
 
-      menuOpen: false, // NOTE: mora biti ločeno, da se vrne na prejšnje stanje
+      menuOpen: false,
       helpOpen: false,
       valuesSwitched: false,
       edited: false,
@@ -26,12 +27,13 @@ const Main = Vue.createApp({
     document.addEventListener('click', this.inputFocus);
 
     // init
-    let savedQstring = localStorage.getItem(this.STORAGE_KEY);
+    let savedQstring = localStorage.getItem(this.QSTRING_KEY);
+    this.valuesSwitched = localStorage.getItem(this.SWITCH_KEY) == 1; // must compare
 
     if (savedQstring) {
       this.Qstring = savedQstring;
     } else {
-      this.Qstring = '';
+      // this.Qstring = '';
       this.menuOpen = true;
       this.helpOpen = true;
     }
@@ -43,6 +45,10 @@ const Main = Vue.createApp({
     menuBtnString() {
       if (this.menuOpen) return this.edited ? 'shrani' : 'zapri';
       else return 'vprašanja';
+    },
+
+    validQuestions() {
+      return !!Object.keys(toObj(this.Qstring)).length;
     },
   },
 
@@ -70,7 +76,8 @@ const Main = Vue.createApp({
         if (!this.Qstring) return;
 
         if (this.edited) {
-          localStorage.setItem(this.STORAGE_KEY, this.Qstring);
+          localStorage.setItem(this.QSTRING_KEY, this.Qstring);
+          localStorage.setItem(this.SWITCH_KEY, this.valuesSwitched ? '1' : '0');
           this.init();
         }
 

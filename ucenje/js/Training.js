@@ -32,7 +32,7 @@ class Training {
     // TODO: delete
     // console.log('---');
     // console.log(pool);
-    // console.log(this.GUESSES);
+    console.log(this.GUESSES);
 
     this.TARGET = randomChoose(pool); // pool[0];
 
@@ -170,6 +170,9 @@ function toObj(str) {
     let pair = line.split(':');
     let key = pair[0].trim();
     let val = pair[1].trim();
+
+    if (!key || !val) continue;
+
     qa[key] = val;
   }
 
