@@ -93,6 +93,11 @@ const Main = Vue.createApp({
       this.edited = false;
     },
 
+    switchValues() {
+      this.valuesSwitched = !this.valuesSwitched;
+      this.edited = true;
+    },
+
     onEnter() {
       if (this.state === 'GUESSING') this.checkAnswer();
       else if (this.state === 'FINISHED') {
@@ -229,9 +234,9 @@ proprium: značilnost
 # dlagi odgovarjanja:
 
 # v začetku ima 0 točk, vsak pravilni
-# odgovor prinese 1 točko. 3 zapore-
-# dni pravilni odgovori se smatrajo
-# za znanje in so izključeni iz
+# odgovor prinese 1 točko. 2 zapore-
+# dna pravilna odgovora se smatrata
+# za znanje. par je nato izključen iz
 # nabora vprašanj.
 
 # vsaka zmota (dan odgovor je odgo-

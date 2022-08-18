@@ -29,11 +29,8 @@ body {
   background: lightcoral;
 }
 
-label,
-button {
-  &:active {
-    transform: translateY(2px);
-  }
+button:active {
+  transform: translateY(2px);
 }
 
 .boxed {
@@ -45,7 +42,8 @@ button {
   cursor: pointer;
   user-select: none;
 
-  &:hover {
+  &:hover,
+  &.checked {
     background: black;
     color: ivory;
   }
@@ -60,26 +58,17 @@ button {
     left: 1rem;
   }
 
-  input[type='checkbox'] {
-    accent-color: black;
-    display: none;
+  div.buttons-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 1rem;
 
-    &:checked ~ label {
-      background: black;
-      color: ivory;
+    display: flex;
+
+    & > * {
+      margin-left: 1rem;
     }
-  }
-
-  label.values-switch {
-    position: absolute;
-    bottom: 1rem;
-    left: 1rem;
-  }
-
-  label.help-switch {
-    position: absolute;
-    bottom: 1rem;
-    right: 1rem;
   }
 
   textarea {
@@ -176,15 +165,6 @@ button {
       background: black;
       transition: width 0.3s;
     }
-  }
-
-  .test {
-    position: fixed;
-    width: 20px;
-    height: 20px;
-    right: 0;
-    bottom: 0;
-    background: red;
   }
 }
 
