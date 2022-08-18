@@ -14,12 +14,14 @@
       <div class="textarea-container">
         <!-- prettier-ignore -->
         <button class="toggle-menu boxed" type="button" @click="toggleMenu">{{ menuBtnString }}</button>
-        
+
         <textarea v-if="menuOpen && !helpOpen" v-model="Qstring" @input="edited = true" spellcheck="false"></textarea>
         <textarea v-if="menuOpen && helpOpen" v-model="HELP_TEXT" spellcheck="false"></textarea>
-        
+
         <div class="buttons-container" v-if="menuOpen">
-          <button type="button" class="boxed" :class="{ checked: valuesSwitched }" @click="switchValues">q <=> a</button>
+          <button type="button" class="boxed" :class="{ checked: valuesSwitched }" @click="switchValues">
+            q <=> a
+          </button>
           <button type="button" class="boxed" :class="{ checked: helpOpen }" @click="helpOpen = !helpOpen">?</button>
         </div>
       </div>
@@ -43,7 +45,7 @@
       </div>
     </div>
 
-    <script src="https://unpkg.com/vue@3.2.37/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/vue@3.2.37/dist/vue.global.prod.js"></script>
     <script src="js/Training.js"></script>
     <script src="js/main.js"></script>
   </body>

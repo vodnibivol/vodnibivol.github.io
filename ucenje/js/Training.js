@@ -1,13 +1,21 @@
 class Training {
-  constructor({ qa = null, keys = null, values = null }) {
+  constructor({ qa = null, keys = null, values = null, reversed = false }) {
     if (!qa) throw new Error('QA must be provided.');
+
+    if (reversed) qa = reverseObject(qa);
 
     this.QA = Object.entries(qa);
     this.GUESSES = this._createGuesses(keys, values);
 
-    this.MAX_SCORE = 2;
+    this.MAX_SCORE = 2; // max quesiton score
+    this.totalScore = this.MAX_SCORE * this.QA.length; // max training score
 
-    this._shuffle(); // TODO: enable
+    this._shuffle();
+  }
+
+  get score() {
+    let remaining = this.GUESSES.reduce((acc, cur) => acc + (this.MAX_SCORE - cur.score), 0); // progress max
+    return Math.max(0, ((this.totalScore - remaining) / this.totalScore) * 100);
   }
 
   next() {
@@ -22,9 +30,9 @@ class Training {
     let pool = [..._5worstGuesses, ..._2oldestGuesses];
 
     // TODO: delete
-    console.log('---');
-    console.log(pool);
-    console.log(this.GUESSES);
+    // console.log('---');
+    // console.log(pool);
+    // console.log(this.GUESSES);
 
     this.TARGET = randomChoose(pool); // pool[0];
 
@@ -143,11 +151,12 @@ function shuffleArray(array) {
   return array;
 }
 
-function getKeyByValue(object, value) {
-  return Object.keys(object).find((key) => object[key] === value);
-}
+// function getKeyByValue(object, value) {
+//   return Object.keys(object).find((key) => object[key] === value);
+// }
 
 function toObj(str) {
+  // transforms questions in text form to object
   let lines = str.split('\n');
   let qa = {};
 

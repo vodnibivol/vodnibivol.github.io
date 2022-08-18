@@ -26,51 +26,42 @@ const Main = Vue.createApp({
     document.addEventListener('click', this.inputFocus);
 
     // init
-    let cachedQuestions = localStorage.getItem(this.STORAGE_KEY);
+    let savedQstring = localStorage.getItem(this.STORAGE_KEY);
 
-    if (cachedQuestions) {
-      this.Qstring = cachedQuestions;
+    if (savedQstring) {
+      this.Qstring = savedQstring;
     } else {
-      console.log('NO CACHE');
       this.Qstring = '';
       this.menuOpen = true;
       this.helpOpen = true;
     }
 
     this.init();
-    document.querySelector('.main').classList.remove('hidden');
   },
 
   computed: {
     menuBtnString() {
       if (this.menuOpen) return this.edited ? 'shrani' : 'zapri';
-      else return 'vprašanja'; // 'vprašanja'?
+      else return 'vprašanja';
     },
   },
 
   methods: {
     inputFocus() {
-      try {
-        document.querySelector('.guess input').focus();
-      } catch (e) {
-        console.log('not focusing on input');
-      }
-
-      // if (['GUESSING', 'INCORRECT', 'HELP'].includes(this.state)) document.querySelector('.guess input').focus();
+      if (!this.menuOpen) document.querySelector('.guess input').focus();
     },
 
     init() {
       let QA = toObj(this.Qstring);
 
-      if (this.valuesSwitched) QA = reverseObject(QA);
-
       T = new Training({
         qa: QA,
+        reversed: this.valuesSwitched,
       });
 
       this.nextGuess();
       this.inputFocus();
-      this.setProgress();
+      this.setProgress(); // reset
     },
 
     toggleMenu() {
@@ -147,21 +138,14 @@ const Main = Vue.createApp({
     },
 
     setProgress() {
-      if (this.state === 'FINISHED') {
-        this.score = 100;
-      } else {
-        let all = T.GUESSES.length * T.MAX_SCORE;
-        let remaining = T.GUESSES.reduce((acc, cur) => acc + (T.MAX_SCORE - cur.score), 0); // progress max
-        this.score = Math.max(0, ((all - remaining) / all) * 100);
-      }
-
-      console.log('set progress : ' + this.score); // TODO: delete
+      this.score = this.state === 'FINISHED' ? 100 : T.score;
     },
 
     onFinished() {
       this.state = 'FINISHED';
       this.targetKey = 'konecツ';
-      this.inputValue = 'ponovi?';
+      // this.inputValue = 'ponovi?';
+      this.inputValue = '';
       this.setProgress();
 
       let stats = T.GUESSES.sort((a, b) => {
