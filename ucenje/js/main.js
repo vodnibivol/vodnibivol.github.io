@@ -43,11 +43,8 @@ const Main = Vue.createApp({
 
   computed: {
     menuBtnString() {
-      if (this.menuOpen) {
-        return this.edited ? 'shrani' : 'zapri';
-      }
-
-      return 'vprašanja';
+      if (this.menuOpen) return this.edited ? 'shrani' : 'zapri';
+      else return 'vprašanja'; // 'vprašanja'?
     },
   },
 
@@ -76,21 +73,23 @@ const Main = Vue.createApp({
       this.setProgress();
     },
 
-    openMenu() {
-      this.menuOpen = true;
-    },
+    toggleMenu() {
+      if (this.menuOpen) {
+        // CLOSE menu
+        if (!this.Qstring) return;
 
-    closeMenu() {
-      if (!this.Qstring) return;
+        if (this.edited) {
+          localStorage.setItem(this.STORAGE_KEY, this.Qstring);
+          this.init();
+        }
 
-      if (this.edited) {
-        localStorage.setItem(this.STORAGE_KEY, this.Qstring);
-        this.init();
+        this.menuOpen = false;
+        this.helpOpen = false;
+        this.edited = false;
+      } else {
+        // OPEN menu
+        this.menuOpen = true;
       }
-
-      this.menuOpen = false;
-      this.helpOpen = false;
-      this.edited = false;
     },
 
     switchValues() {
