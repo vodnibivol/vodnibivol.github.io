@@ -100,12 +100,9 @@ button.toggle-menu {
     margin: 1rem;
     padding: 1rem;
 
-    // text-align: center;
-
     &.target {
       pointer-events: none;
       user-select: none;
-      // text-decoration: line-through;
 
       p {
         font-size: 3rem;
@@ -118,7 +115,7 @@ button.toggle-menu {
     }
 
     &.guess {
-      width: 250px;
+      // width: 250px;
 
       form {
         display: flex;
@@ -157,7 +154,6 @@ button.toggle-menu {
     bottom: 0;
     left: 0;
     width: 100vw;
-    // padding: 3px;
 
     #progressBar {
       width: 0; // will be set programatically

@@ -102,6 +102,13 @@ const Main = Vue.createApp({
       } else this.nextGuess();
     },
 
+    scrollToRight() {
+      setTimeout(function () {
+        let el = document.querySelector('.guess input');
+        el.scrollLeft = el.scrollWidth;
+      }, 0);
+    },
+
     checkAnswer() {
       if (this.inputValue === '') return;
 
@@ -110,6 +117,7 @@ const Main = Vue.createApp({
         T.onEmpty();
         this.state = 'HELP';
         this.inputValue = 'ODG: ' + T.TARGET.answer;
+        this.scrollToRight();
       } else if (T.isCorrect(this.inputValue)) {
         // NOTE: CORRECT
         T.onCorrect();
@@ -126,6 +134,7 @@ const Main = Vue.createApp({
           T.onIncorrect();
           this.state = 'INCORRECT';
           this.inputValue = `narobe .. [${this.inputValue}]`;
+          this.scrollToRight();
         }
       }
 
