@@ -51,13 +51,13 @@ button:active {
 
 // -- MAIN
 
-.textarea-container {
-  button.toggle-menu {
-    position: absolute;
-    top: 1rem;
-    left: 1rem;
-  }
+button.toggle-menu {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+}
 
+.menu-container {
   div.buttons-container {
     position: absolute;
     top: 0;

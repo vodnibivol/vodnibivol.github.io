@@ -10,18 +10,17 @@
   </head>
   <body class="flex-center">
     <div class="main flex-center">
-      <!-- MENU OPEN -->
-      <div class="textarea-container">
-        <!-- prettier-ignore -->
-        <button class="toggle-menu boxed" v-show="validQuestions" type="button" @click="toggleMenu">{{ menuBtnString }}</button>
+      <!-- prettier-ignore -->
+      <button class="toggle-menu boxed" v-show="validQuestions" type="button" @click="toggleMenu">{{ menuBtnString }}</button>
 
-        <textarea v-if="menuOpen && !helpOpen" v-model="Qstring" @input="edited = true" spellcheck="false"></textarea>
-        <textarea v-if="menuOpen && helpOpen" v-model="HELP_TEXT" spellcheck="false"></textarea>
+      <!-- MENU SCREEN -->
+      <div class="menu-container" v-if="menuOpen">
+        <textarea v-if="!helpOpen" v-model="Qstring" @input="edited = true" spellcheck="false"></textarea>
+        <textarea v-if="helpOpen" @keydown.prevent spellcheck="false">{{ HELP_TEXT }}</textarea>
 
-        <div class="buttons-container" v-if="menuOpen">
-          <button type="button" class="boxed" :class="{ checked: valuesSwitched }" @click="switchValues">
-            q <=> a
-          </button>
+        <div class="buttons-container">
+          <!-- prettier-ignore -->
+          <button type="button" class="boxed" :class="{ checked: valuesSwitched }" @click="switchValues">q <=> a</button>
           <button type="button" class="boxed" :class="{ checked: helpOpen }" @click="helpOpen = !helpOpen">?</button>
         </div>
       </div>
