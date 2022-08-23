@@ -75,15 +75,13 @@ const Main = Vue.createApp({
 
       let str = '### NAPAKE:';
 
-      let stats = T.GUESSES.sort((a, b) => b.badScore - a.badScore);
+      let worstScore = Math.max(...T.GUESSES.map((g) => g.badScore));
+      if (!worstScore) str += '\n\nbrez napak :)';
 
-      let theWorst = stats.filter((g) => g.badScore >= 4);
-      let bad = stats.filter((g) => !theWorst.includes(g) && g.badScore >= 1);
-
-      if (theWorst.length) str += '\n\n' + theWorst.map((g) => `[${g.badScore}] ${g.question}: ${g.answer}`).join('\n');
-      if (bad.length) str += '\n\n' + bad.map((g) => `[${g.badScore}] ${g.question}: ${g.answer}`).join('\n');
-      if (!theWorst.length && !bad.length) str += '\n\nbrez napak :)';
-
+      for (;worstScore;worstScore--) {
+        let subArr = T.GUESSES.filter(g => g.badScore === worstScore);
+        if (subArr.length) str += `\n\n# -${worstScore}t\n` + subArr.map((g) => `${g.question}: ${g.answer}`).join('\n');
+      }
       return str;
     },
   },
@@ -248,8 +246,7 @@ proprium: značilnost
 
 ### REŠEVANJE
 
-# POMOČ dobiš z odgovorom '?'. tak
-# odgovor se točkuje z -2 točkami.
+# POMOČ dobiš z odgovorom '?'.
 
 # po končanem reševanju lahko vajo
 # ponoviš z odgovorom 'ponovi' ali
