@@ -3,8 +3,8 @@ let T; // will be set in mounted();
 const Main = Vue.createApp({
   data() {
     return {
-      QSTRING_KEY: 'UCENJE_QSTRING',
-      SWITCH_KEY: 'UCENJE_SWITCHED',
+      QSTRING_KEY: 'UCENJE_QSTRING', // localStorage keys
+      SWITCH_KEY: 'UCENJE_SWITCHED', // localStorage keys
       HELP_TEXT: HELP,
 
       inputValue: '',
@@ -15,10 +15,8 @@ const Main = Vue.createApp({
       helpOpen: false,
       mistakesOpen: false,
       valuesSwitched: false,
-      edited: false,
 
       score: 0,
-
       state: '', // LOADING, GUESSING, INCORRECT, HELP, FINISHED
 
       isMobile: false,
@@ -226,7 +224,7 @@ function shake(selector) {
   el.style.animation = 'shake 0.4s';
 }
 
-let HELP = `\
+const HELP = `\
 ### NAVODILA:
 
 # vnesi pare v obliki:
@@ -248,28 +246,14 @@ proprium: značilnost
 # z gumbom '?' odpreš / zapreš
 # navodila.
 
-
-### TOČKOVANJE
-
-# vsak par besed je točkovan na po-
-# dlagi odgovarjanja:
-
-# v začetku ima 0 točk, vsak pravilni
-# odgovor prinese 1 točko. 2 zapore-
-# dna pravilna odgovora se smatrata
-# za znanje. par je nato izključen iz
-# nabora vprašanj.
-
-# vsaka zmota (dan odgovor je odgo-
-# vor na drugo vprašanje) se točkuje
-# z -1 točkami.
-
-# vsak napačen odgovor, ki ga ni med
-# odgovori, se ne točkuje: ostane,
-# dokler se ne odgovori nanj ali
-# uporabi pomoč:
+### REŠEVANJE
 
 # POMOČ dobiš z odgovorom '?'. tak
-# odgovor se točkuje z -2 točkami.`;
+# odgovor se točkuje z -2 točkami.
+
+# po končanem reševanju lahko vajo
+# ponoviš z odgovorom 'ponovi' ali
+# zgolj '+'.
+`;
 
 Main.mount('.main');

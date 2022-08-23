@@ -18,14 +18,9 @@
 
       <!-- MENU SCREEN -->
       <div class="menu-container" v-if="menuOpen">
-        <textarea
-          v-if="!helpOpen && !mistakesOpen"
-          v-model="Qstring"
-          @input="edited = true"
-          spellcheck="false"
-        ></textarea>
-        <textarea v-if="helpOpen" @keydown.prevent spellcheck="false">{{ HELP_TEXT }}</textarea>
-        <textarea v-if="mistakesOpen" spellcheck="false">{{ mistakes }}</textarea>
+        <textarea v-if="!helpOpen && !mistakesOpen" v-model="Qstring" spellcheck="false"></textarea>
+        <textarea v-if="helpOpen" spellcheck="false" readonly>{{ HELP_TEXT }}</textarea>
+        <textarea v-if="mistakesOpen" spellcheck="false" readonly>{{ mistakes }}</textarea>
 
         <div class="buttons-container">
           <!-- prettier-ignore -->
