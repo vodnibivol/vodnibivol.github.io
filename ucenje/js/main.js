@@ -20,10 +20,16 @@ const Main = Vue.createApp({
       score: 0,
 
       state: '', // LOADING, GUESSING, INCORRECT, HELP, FINISHED
+
+      isMobile: false,
     };
   },
 
   mounted() {
+    // check if mobile
+    this.isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if (this.isMobile) return;
+
     // events
     document.addEventListener('click', this.inputFocus);
 
@@ -53,7 +59,7 @@ const Main = Vue.createApp({
     },
 
     Qedited() {
-      // NOTE: trigger
+      // NOTE: just a trigger
       this.menuOpen === 'trigger'; // does nothing
 
       let lastValuesSwitched = localStorage.getItem(this.SWITCH_KEY) == 1; // must compare
@@ -66,7 +72,7 @@ const Main = Vue.createApp({
     },
 
     mistakes() {
-      // NOTE: trigger
+      // NOTE: just a trigger
       this.mistakesOpen === 'trigger'; // does nothing
 
       let str = '### NAPAKE:';

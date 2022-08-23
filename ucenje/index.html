@@ -11,6 +11,8 @@
   </head>
   <body class="flex-center">
     <div class="main flex-center">
+      <div class="mobile-screen flex-center" v-if="isMobile">[ mobile not supported ]</div>
+
       <!-- prettier-ignore -->
       <button class="toggle-menu boxed" v-show="validGuesses" type="button" @click="toggleMenu">{{ menuBtnString }}</button>
 

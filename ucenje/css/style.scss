@@ -164,6 +164,14 @@ button.toggle-menu {
   }
 }
 
+.mobile-screen {
+  z-index: 100;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background: ivory;
+}
+
 .flex-center {
   display: flex;
   justify-content: center;
