@@ -13,6 +13,7 @@ const Main = Vue.createApp({
 
       menuOpen: false,
       helpOpen: false,
+      mistakesOpen: false,
       valuesSwitched: false,
       edited: false,
 
@@ -43,12 +44,43 @@ const Main = Vue.createApp({
 
   computed: {
     menuBtnString() {
-      if (this.menuOpen) return this.edited ? 'shrani' : 'zapri';
+      if (this.menuOpen) return this.Qedited ? 'shrani' : 'zapri';
       else return 'vprašanja';
     },
 
-    validQuestions() {
+    validGuesses() {
       return !!Object.keys(toObj(this.Qstring)).length;
+    },
+
+    Qedited() {
+      // NOTE: trigger
+      this.menuOpen === 'trigger'; // does nothing
+
+      let lastValuesSwitched = localStorage.getItem(this.SWITCH_KEY) == 1; // must compare
+      let valuesChanged = lastValuesSwitched !== this.valuesSwitched;
+
+      let savedQstring = localStorage.getItem(this.QSTRING_KEY);
+      let Qchanged = savedQstring !== this.Qstring;
+
+      return Qchanged || valuesChanged;
+    },
+
+    mistakes() {
+      // NOTE: trigger
+      this.mistakesOpen === 'trigger'; // does nothing
+
+      let str = '### NAPAKE:';
+
+      let stats = T.GUESSES.sort((a, b) => b.badScore - a.badScore);
+
+      let theWorst = stats.filter((g) => g.badScore >= 4);
+      let bad = stats.filter((g) => !theWorst.includes(g) && g.badScore >= 1);
+
+      if (theWorst.length) str += '\n\n' + theWorst.map((g) => `[${g.badScore}] ${g.question}: ${g.answer}`).join('\n');
+      if (bad.length) str += '\n\n' + bad.map((g) => `[${g.badScore}] ${g.question}: ${g.answer}`).join('\n');
+      if (!theWorst.length && !bad.length) str += '\n\nbrez napak :)';
+
+      return str;
     },
   },
 
@@ -58,7 +90,8 @@ const Main = Vue.createApp({
     },
 
     init() {
-      let QA = toObj(this.Qstring);
+      console.log('INIT');
+      let QA = toObj(this.Qstring, true); // true for logging
 
       T = new Training({
         qa: QA,
@@ -75,7 +108,7 @@ const Main = Vue.createApp({
         // CLOSE menu
         if (!this.Qstring) return;
 
-        if (this.edited) {
+        if (this.Qedited) {
           localStorage.setItem(this.QSTRING_KEY, this.Qstring);
           localStorage.setItem(this.SWITCH_KEY, this.valuesSwitched ? '1' : '0');
           this.init();
@@ -83,7 +116,7 @@ const Main = Vue.createApp({
 
         this.menuOpen = false;
         this.helpOpen = false;
-        this.edited = false;
+        this.mistakesOpen = false;
       } else {
         // OPEN menu
         this.menuOpen = true;
@@ -92,20 +125,30 @@ const Main = Vue.createApp({
 
     switchValues() {
       this.valuesSwitched = !this.valuesSwitched;
-      this.edited = true;
+      this.helpOpen = false;
+      this.mistakesOpen = false;
+    },
+
+    openHelp() {
+      this.mistakesOpen = false; // close worst
+      this.helpOpen = !this.helpOpen;
+    },
+    openMistakes() {
+      this.helpOpen = false; // close help
+      this.mistakesOpen = !this.mistakesOpen;
     },
 
     onEnter() {
       if (this.state === 'GUESSING') this.checkAnswer();
       else if (this.state === 'FINISHED') {
-        if (/^ponovi\??$/.test(this.inputValue)) this.init();
+        if (/^(ponovi|\++)$/.test(this.inputValue)) this.init();
       } else this.nextGuess();
     },
 
     scrollToRight() {
       setTimeout(function () {
         let el = document.querySelector('.guess input');
-        el.scrollLeft = el.scrollWidth;
+        el.scrollLeft = el.scrollWidth; // lahko je tudi več, kot je mogoče
       }, 0);
     },
 
@@ -139,6 +182,7 @@ const Main = Vue.createApp({
       }
 
       this.setProgress();
+      console.log('slabi odgovori: ' + T.GUESSES.filter((g) => g.badScore > 1).map((g) => g.question));
     },
 
     nextGuess() {
@@ -158,44 +202,16 @@ const Main = Vue.createApp({
     },
 
     onFinished() {
+      let perfectScore = T.GUESSES.every((guess) => guess.badScore === 0);
       this.state = 'FINISHED';
       this.targetKey = 'konecツ';
-      // this.inputValue = 'ponovi?';
-      this.inputValue = '';
+      this.inputValue = perfectScore ? 'vse si imel prav!' : "napake: meni > '!'"; // 'ponovi?';
       this.setProgress();
-
-      let stats = T.GUESSES.sort((a, b) => {
-        // empty worst 2, other 1
-        // points: incorrect + empty + mistakes
-        // the worst: incorrect + empty
-        let Aworst = 2 * a.guesses.empty + a.guesses.incorrect + a.guesses.mistakes;
-        let Bworst = 2 * b.guesses.empty + b.guesses.incorrect + b.guesses.mistakes;
-        return Bworst - Aworst; // return lower
-      });
-
-      // FIRST print the worst (> 2 bad points)
-
-      let theWorst = stats.filter((s) => 2 * s.guesses.empty + s.guesses.incorrect + s.guesses.mistakes > 3);
-      let remains = stats.filter(
-        (s) => !theWorst.includes(s) && 2 * s.guesses.empty + s.guesses.incorrect + s.guesses.mistakes > 1
-      );
-
-      // THEN print remains
-
-      if (theWorst.length) console.log('NAJSLABŠE (VELIKO VADI):');
-      for (let i = 0; i < theWorst.length; i++) {
-        let stat = theWorst[i];
-        console.log(`[${i}] ${stat.question} - ${stat.answer} : ${JSON.stringify(stat.guesses)}`);
-      }
-
-      if (remains.length) console.log('OSTALO SLABO (VADI):');
-      for (let i = 0; i < remains.length; i++) {
-        let stat = remains[i];
-        console.log(`[${i}] ${stat.question} - ${stat.answer} : ${JSON.stringify(stat.guesses)}`);
-      }
     },
   },
 });
+
+// --- HELPER FUNCTIONS
 
 function shake(selector) {
   // shakes element (like shaking head)

@@ -7,21 +7,29 @@
     <title>učenje!</title>
     <link rel="stylesheet" href="css/style.css" />
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <script src="https://unpkg.com/vue@3.2.37/dist/vue.global.js"></script>
   </head>
   <body class="flex-center">
     <div class="main flex-center">
       <!-- prettier-ignore -->
-      <button class="toggle-menu boxed" v-show="validQuestions" type="button" @click="toggleMenu">{{ menuBtnString }}</button>
+      <button class="toggle-menu boxed" v-show="validGuesses" type="button" @click="toggleMenu">{{ menuBtnString }}</button>
 
       <!-- MENU SCREEN -->
       <div class="menu-container" v-if="menuOpen">
-        <textarea v-if="!helpOpen" v-model="Qstring" @input="edited = true" spellcheck="false"></textarea>
+        <textarea
+          v-if="!helpOpen && !mistakesOpen"
+          v-model="Qstring"
+          @input="edited = true"
+          spellcheck="false"
+        ></textarea>
         <textarea v-if="helpOpen" @keydown.prevent spellcheck="false">{{ HELP_TEXT }}</textarea>
+        <textarea v-if="mistakesOpen" spellcheck="false">{{ mistakes }}</textarea>
 
         <div class="buttons-container">
           <!-- prettier-ignore -->
           <button type="button" class="boxed" :class="{ checked: valuesSwitched }" @click="switchValues">q <=> a</button>
-          <button type="button" class="boxed" :class="{ checked: helpOpen }" @click="helpOpen = !helpOpen">?</button>
+          <button type="button" class="boxed" :class="{ checked: helpOpen }" @click="openHelp">?</button>
+          <button type="button" class="boxed" :class="{ checked: mistakesOpen }" @click="openMistakes">!</button>
         </div>
       </div>
 
@@ -44,7 +52,8 @@
       </div>
     </div>
 
-    <script src="https://unpkg.com/vue@3.2.37/dist/vue.global.prod.js"></script>
+    <!-- TODO: remove -->
+    <!-- <script src="js/vue@3.2.37.js"></script> -->
     <script src="js/Training.js"></script>
     <script src="js/main.js"></script>
   </body>
