@@ -45,10 +45,15 @@ const Fetch = (function () {
 
     let stream = response.addaptiveMedia?.hls || response.addaptiveMedia?.hls_sec;
 
+    if (!stream) {
+      let largestMedia = response.mediaFiles.reduce((acc, cur) => (cur.height > acc.height ? cur : acc));
+      stream = largestMedia.streams?.hls || largestMedia.streams?.hls_sec;
+    }
+
     console.log('URL found:');
     console.log(stream);
 
-    window.location.href = stream;
+    if (stream) window.location.href = stream;
   }
 
   function _getScript(url, functionName /* string */) {

@@ -11,23 +11,16 @@ body {
 
 .main {
   padding: 1rem;
-  // width: 60%;
-  // max-width: 400px;
-  // border: 2px solid black;
 
   input[type='text'] {
     outline: none;
     width: 240px;
-    
-    &:focus {
-      // background: #fafafa;
-    }
   }
 
   input[type='submit'] {
     cursor: pointer;
     background: #ddf;
-    
+
     &:hover {
       background: #ccf;
     }
