@@ -2,7 +2,7 @@ const LETTER_HEIGHT = 7; // TODO: lahko definiraš pri Letters.js
 const LETTER_WIDTH = 5;
 
 const ROTATE = true;
-const FR = 5;
+let FR = 5;
 
 let grid, display;
 
@@ -31,12 +31,12 @@ function draw() {
 
 function getMsg() {
   let urlParams = new URLSearchParams(location.search);
-  let msg = atob(urlParams.get('msg'));
+  let encodedMsg = urlParams.get('msg');
+  let msg = decodeURIComponent(atob(encodedMsg));
 
   if (msg === 'urica') {
     let d = new Date();
 
-    // let emoji = ['α', 'β', 'γ', 'δ', 'ε'][i % 5];
     let emoji = '%';
 
     let hours = d.getHours();
@@ -44,6 +44,9 @@ function getMsg() {
 
     return `${hours}:${minutes}   ${emoji}   `;
   }
+
+  let frameRate = urlParams.get('fr'); // string
+  FR = parseInt(frameRate);
 
   return msg;
 }

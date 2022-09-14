@@ -30,6 +30,64 @@ body {
   outline: none;
 }
 
+a.urica-link {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+
+  text-decoration: none;
+  color: black;
+
+  background: lightblue;
+
+  &:hover {
+    background: darken(lightblue, 3);
+  }
+
+  &:active {
+    background: darken(lightblue, 5);
+  }
+}
+
+.framerate {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+
+  background: #ddd;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  input[type='range'] {
+    -webkit-appearance: none;
+    margin-right: 15px;
+    width: 50px;
+    height: 2px;
+    background: black;
+    border-radius: 5px;
+
+    cursor: pointer;
+
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      height: 10px;
+      width: 10px;
+      border-radius: 50%;
+      background: white;
+      border: 2px solid black;
+    }
+
+    &::-webkit-slider-runnable-track {
+      -webkit-appearance: none;
+      box-shadow: none;
+      border: none;
+      background: transparent;
+    }
+  }
+}
+
 .main {
   form {
     input[type='text'] {
