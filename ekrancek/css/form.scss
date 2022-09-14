@@ -16,6 +16,10 @@ body {
   background: rgb(243, 243, 243);
 }
 
+::selection {
+  background: lightblue;
+}
+
 .flex-center {
   display: flex;
   justify-content: center;
