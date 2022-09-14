@@ -4,15 +4,24 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>enkrancek</title>
+    <title>ekrancek</title>
     <link rel="stylesheet" href="css/form.css" />
   </head>
   <body class="flex-center">
-    <a class="boxed urica-link" href="index.html?msg=dXJpY2E%3D&fr=5">urica</a>
+    <a class="boxed urica-link" href="./?urica">urica</a>
 
     <div class="main">
-      <form action="./">
-        <input class="boxed" type="text" name="msg" id="msg" spellcheck="false" placeholder="sporočilo" />
+      <form action="#">
+        <input
+          class="boxed"
+          type="text"
+          name="msg"
+          id="msg"
+          spellcheck="false"
+          autocomplete="off"
+          placeholder="sporočilo"
+          required
+        />
         <div class="boxed framerate">
           <span>hitrost:&nbsp;</span>
           <input type="range" name="fr" id="fr" min="5" max="30" step="5" value="30" />
@@ -24,18 +33,27 @@
     <script>
       const $ = (s) => document.querySelector(s);
 
+      window.onload = function () {
+        $('input#msg').select();
+      };
+
       $('form').onsubmit = function (e) {
+        e.preventDefault();
+
         let inputVal = $('input#msg').value;
+        let frameRate = $('input#fr').value;
 
         if (!inputVal.trim()) {
-          e.preventDefault();
+          $('input#msg').value = inputVal.trim();
           return;
         }
 
         let safeString = encodeURIComponent(inputVal);
-        $('input#msg').value = btoa(safeString);
+        let encodedString = btoa(safeString);
 
-        // TODO: ni tako vredu, da se value dejansko spremeni. moraš naredit manualno ..
+        let params = new URLSearchParams({ msg: encodedString, fr: frameRate });
+
+        location.href = './?' + params.toString();
       };
     </script>
   </body>

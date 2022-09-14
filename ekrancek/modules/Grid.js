@@ -33,7 +33,7 @@ class Grid {
 
 class Display {
   constructor() {
-    this.width = 100;
+    this.width = window.innerWidth < 425 ? 50 : 100; // control check for phone
     this.height = LETTER_HEIGHT;
 
     this.offset = 0;

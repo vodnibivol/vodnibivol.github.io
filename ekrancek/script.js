@@ -1,8 +1,14 @@
 const LETTER_HEIGHT = 7; // TODO: lahko definiraš pri Letters.js
 const LETTER_WIDTH = 5;
 
+const FR_MIN = 5;
+const FR_MAX = 30;
+const FR_DEFAULT = 30;
+
 const ROTATE = true;
-let FR = 5;
+
+let FR, CLOCK;
+let FIRST = true;
 
 let grid, display;
 
@@ -30,27 +36,43 @@ function draw() {
 }
 
 function getMsg() {
+  // TODO: uporabi FIRST, da samo prvič napravi nekatere reči
+
   let urlParams = new URLSearchParams(location.search);
-  let encodedMsg = urlParams.get('msg');
-  let msg = decodeURIComponent(atob(encodedMsg));
 
-  if (!encodedMsg) {
-    location.href = './form.html';
-  }
+  if (urlParams.has('urica')) {
+    history.replaceState({}, document.title, './?urica'); // clear params
+    FR = 5;
 
-  if (msg === 'urica') {
     let d = new Date();
-
-    let emoji = '%';
-
-    let hours = d.getHours();
+    let hours = d.getHours().toString().padStart(2, '0');
     let minutes = d.getMinutes().toString().padStart(2, '0');
+
+    let emoji = '%'; // ['α', 'β', 'γ', 'δ', 'ε'][(i %= 5)];
 
     return `${hours}:${minutes}   ${emoji}   `;
   }
 
+  let encodedMsg = urlParams.get('msg');
+  let msg = decodeURIComponent(atob(encodedMsg));
+
+  if (!encodedMsg) location.href = './form.html';
+
   let frameRate = urlParams.get('fr'); // string
-  FR = parseInt(frameRate);
+
+  frameRate = parseInt(frameRate) || FR_DEFAULT;
+  frameRate = Math.min(Math.max(frameRate, FR_MIN), FR_MAX); // bind to 0 => 30
+  frameRate = Math.round(frameRate / 5) * 5; // step == 5
+
+  if (frameRate !== FR_DEFAULT) {
+    urlParams.set('fr', frameRate);
+    history.replaceState({}, document.title, './?' + urlParams.toString());
+  } else {
+    urlParams.delete('fr');
+    history.replaceState({}, document.title, './?' + urlParams.toString());
+  }
+
+  FR = frameRate;
 
   return msg;
 }
