@@ -34,6 +34,10 @@ function getMsg() {
   let encodedMsg = urlParams.get('msg');
   let msg = decodeURIComponent(atob(encodedMsg));
 
+  if (!encodedMsg) {
+    location.href = './form.html';
+  }
+
   if (msg === 'urica') {
     let d = new Date();
 
