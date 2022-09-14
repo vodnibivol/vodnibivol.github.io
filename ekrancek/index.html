@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>enkrancek</title>
+    <link rel="stylesheet" href="css/form.css" />
+  </head>
+  <body class="flex-center">
+    <div class="main">
+      <form action="display.html">
+        <input class="boxed" type="text" name="msg" id="msg" spellcheck="false" autocomplete="off" required />
+        <input class="boxed" type="submit" value="ok" />
+      </form>
+      <!-- TODO: set framerate, click on "urica" -->
+    </div>
+
+    <script>
+      const $ = (s) => document.querySelector(s);
+
+      $('form').onsubmit = function (e) {
+        $('input#msg').value = btoa($('input#msg').value);
+      };
+    </script>
+  </body>
+</html>

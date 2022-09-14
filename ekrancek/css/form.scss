@@ -1,0 +1,52 @@
+* {
+  font-family: Menlo, Consolas, monospace;
+  /* font-weight: bold; */
+  font-size: 12px;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: rgb(243, 243, 243);
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.boxed {
+  /* height: 20px; */
+  padding: 5px 10px;
+  margin: 0;
+  border: 2px solid black;
+  outline: none;
+}
+
+.main {
+  form {
+    input[type='text'] {
+      width: 220px;
+    }
+
+    input[type='submit'] {
+      background: lightcoral;
+      cursor: pointer;
+
+      &:hover {
+        background: darken(lightcoral, 3);
+      }
+
+      &:active {
+        background: darken(lightcoral, 5);
+      }
+    }
+  }
+}
