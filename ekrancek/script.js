@@ -37,6 +37,7 @@ function draw() {
 
 function getMsg() {
   // TODO: uporabi FIRST, da samo prvič napravi nekatere reči
+  // TODO: naj preusmeri že prej na form, ne tako pozno in da se vse nalaga ..
 
   let urlParams = new URLSearchParams(location.search);
 
@@ -56,7 +57,11 @@ function getMsg() {
   let encodedMsg = urlParams.get('msg');
   let msg = decodeURIComponent(atob(encodedMsg));
 
-  if (!encodedMsg) location.href = './form.html';
+  if (!encodedMsg) {
+    location.href = './form.html';
+    FR = 20;
+    return '% '; // ker se ne nalozi dovolj hitro
+  }
 
   let frameRate = urlParams.get('fr'); // string
 
