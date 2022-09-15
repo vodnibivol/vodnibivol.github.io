@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>rtv_find</title>
+    <link rel="stylesheet" href="./css/normalize.css" />
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body class="flex-center">
+    <div class="main" x-data="search()">
+      <form class="boxed flex-center" @submit.prevent="onSubmit">
+        <!-- prettier-ignore -->
+        <input x-model="query" class="boxed" type="text" autocomplete="off" spellcheck="false" placeholder="iskanje ..">
+        <input type="submit" class="boxed" value="ok" />
+      </form>
+
+      <div class="results boxed" x-cloak>
+        <p x-show="!results.length" x-text="msg"></p>
+        <ul id="renderUl">
+          <template x-for="result in results">
+            <li>
+              <div class="title-wrapper">
+                <p class="title" x-text="'['+result.id+'] ' + result.title"></p>
+              </div>
+              <div class="links-wrapper">
+                <a :href="result.streamUrl" target="_blank">stream</a>
+              </div>
+            </li>
+          </template>
+        </ul>
+      </div>
+    </div>
+
+    <script src="./js/Fetch.js"></script>
+    <script src="./js/script.js"></script>
+    <script src="./js/alpinejs@3.10.3.min.js"></script>
+  </body>
+</html>
