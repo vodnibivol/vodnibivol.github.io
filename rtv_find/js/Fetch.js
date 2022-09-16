@@ -9,6 +9,7 @@ const Fetch = (function () {
   async function getStream(mediaId) {
     let metadata = await getMeta(mediaId);
     let { response } = metadata;
+    console.log(response)
 
     let khash = KHASH || (await _getKhash());
 
@@ -49,7 +50,7 @@ const Fetch = (function () {
     const r = await _getMedia(AUX_ID, jwt);
 
     const streams = r.response.mediaFiles[0].streams;
-    const khash = JSON.stringify(streams).match(/(?<=keylockhash=)[\w-]+/)[0]; // TODO: preveri, ali ni vec razlicnih keylockhashev
+    const khash = JSON.stringify(streams).match(/keylockhash=([\w-]+)/)[1]; // TODO: preveri, ali ni vec razlicnih keylockhashev
 
     KHASH = khash;
     setTimeout(() => (KHASH = null), 10 * 60 * 1000); // reset after 10 minutes
