@@ -20,6 +20,7 @@ function search() {
         all: this.query.includes('-a'),
         documentaries: this.query.includes('-d'),
         matching: this.query.includes('-m'),
+        none: !/-\w/.test(this.query),
       };
     },
 
@@ -40,10 +41,15 @@ function search() {
       urlComponent.searchParams.set('q', this.queryC);
       urlComponent.searchParams.set('client_id', '8c5205a95060a482f0fc96b9162d9e3f'); // 82013fb3a531d5414f478747c1aca622
       urlComponent.searchParams.set('unpublished', 1);
-      urlComponent.searchParams.set('pageSize', 12); // default: 12
+
+      // TODO: set size
+
+      const types = [];
+      if (this.flags.movies || this.flags.none) types.push(15890843);
+      if (this.flags.documentaries || this.flags.none) types.push(15890840);
+      urlComponent.searchParams.set('showTypeId', types.join());
 
       this.searchUrl = urlComponent.toString();
-
       this.getJSON();
     },
 
@@ -51,24 +57,12 @@ function search() {
       const regex = new RegExp(this.queryC, 'i');
       const data = await ffetch(this.searchUrl);
 
-      const recs = data.response?.recordings || [];
+      let recs = data.response?.recordings || [];
 
-      const movies = recs.filter((rec) => rec.showTypeId === '15890843' && !rec.promo); // ali rec.duration > npr. 300
-      const documentaries = recs.filter((rec) => rec.showTypeId === '15890840');
+      if (this.flags.movies || this.flags.none) recs = recs.filter((rec) => !rec.promo); //  && rec.duration > 300 (5 min)
+      if (this.flags.matching) recs = recs.filter((rec) => regex.test(rec.title));
 
-      // NOTE:  -m > -a > -f/-d
-
-      let selection = [];
-
-      if (this.flags.movies) selection.push(...movies);
-      if (this.flags.documentaries) selection.push(...documentaries);
-      if (!this.flags.movies && !this.flags.documentaries) selection = movies; // default selection: movies
-      if (this.flags.all) selection = recs;
-      if (this.flags.matching) selection = selection.filter((rec) => regex.test(rec.title));
-
-      console.log(selection);
-
-      this.getStreams(selection);
+      this.getStreams(recs);
     },
 
     async getStreams(recs) {
@@ -96,10 +90,9 @@ function search() {
 // --- JSONP Fetch function
 
 async function ffetch(url) {
-  const REMOVE = true;
-
   // prettier-ignore
   const HASH = new Array(16).fill().map((_) => Math.floor(Math.random() * 16).toString(16)).join('');
+
   const fooN = 'foo_' + HASH;
   const dataN = 'data_' + HASH;
 
@@ -110,15 +103,12 @@ async function ffetch(url) {
     };
 
     const el = document.createElement('script');
-    el.setAttribute('id', 'script_' + HASH);
+    el.src = url + '&callback=' + fooN;
+    el.onload = function () {
+      window[dataN] = window[fooN] = null;
+      el.remove();
+    };
 
-    if (REMOVE)
-      el.onload = function () {
-        window[dataN] = window[fooN] = null;
-        el.remove();
-      };
-
-    el.src = url + '&callback=' + fooN; // newUrl.toString();
     document.body.appendChild(el);
   });
 }

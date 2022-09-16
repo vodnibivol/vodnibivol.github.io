@@ -52,7 +52,7 @@ const Fetch = (function () {
     const khash = JSON.stringify(streams).match(/(?<=keylockhash=)[\w-]+/)[0]; // TODO: preveri, ali ni vec razlicnih keylockhashev
 
     KHASH = khash;
-    setTimeout(() => (KHASH = null), 5 * 60 * 1000); // reset after 5 minutes
+    setTimeout(() => (KHASH = null), 10 * 60 * 1000); // reset after 10 minutes
 
     return khash;
   }
