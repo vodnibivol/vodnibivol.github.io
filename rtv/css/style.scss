@@ -26,6 +26,24 @@ p {
   background: lightblue;
 }
 
+a {
+  &:link {
+    color: rgb(57, 57, 210);
+  }
+
+  &:visited {
+    color: rgb(88, 0, 156);
+  }
+
+  // &:hover {
+  //   color: hotpink;
+  // }
+
+  &:active {
+    color: rgb(193, 70, 70);
+  }
+}
+
 // --- GENERAL
 
 .boxed {
@@ -67,6 +85,12 @@ body {
   form {
     margin-bottom: 1rem;
     padding: 1rem;
+
+    input {
+      border-radius: 0;
+      appearance: none;
+      padding: 2px 6px;
+    }
 
     input[type='text'] {
       flex-grow: 1;

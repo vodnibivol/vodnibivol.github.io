@@ -4,6 +4,7 @@ function search() {
     query: '',
     searchUrl: '',
     loading: false,
+    dstore: new DStore('RTV_CACHE'),
     ID_REGEX: /\d{7,11}/,
 
     get msg() {
@@ -19,7 +20,7 @@ function search() {
         movies: this.query.includes('-f'),
         all: this.query.includes('-a'),
         documentaries: this.query.includes('-d'),
-        matching: this.query.includes('-m'),
+        // matching: this.query.includes('-m'),
         none: !/-\w/.test(this.query),
       };
     },
@@ -31,12 +32,12 @@ function search() {
       if (this.ID_REGEX.test(this.query)) {
         // search by id
         const id = this.query.match(this.ID_REGEX)[0];
-        const meta = await Fetch.getMeta(id);
+        const meta = await Rtv.getMeta(id);
         if (/error/i.test(meta.response.title)) return this.getStreams([]);
         return this.getStreams([meta.response]);
       }
 
-      let urlComponent = new URL('https://api.rtvslo.si/ava/getSearch2');
+      const urlComponent = new URL('https://api.rtvslo.si/ava/getSearch2');
 
       urlComponent.searchParams.set('q', this.queryC);
       urlComponent.searchParams.set('client_id', '8c5205a95060a482f0fc96b9162d9e3f'); // 82013fb3a531d5414f478747c1aca622
@@ -45,8 +46,8 @@ function search() {
       // TODO: set size
 
       const types = [];
-      if (this.flags.movies || this.flags.none) types.push(15890843);
-      if (this.flags.documentaries || this.flags.none) types.push(15890840);
+      if (this.flags.movies) types.push(15890843);
+      if (this.flags.documentaries) types.push(15890840);
       urlComponent.searchParams.set('showTypeId', types.join());
 
       this.searchUrl = urlComponent.toString();
@@ -55,12 +56,20 @@ function search() {
 
     async getJSON() {
       const regex = new RegExp(this.queryC, 'i');
-      const data = await ffetch(this.searchUrl);
+
+      let data;
+      const cached = this.dstore.get(this.searchUrl);
+      if (!!cached) {
+        data = cached.data;
+      } else {
+        data = await ffetch(this.searchUrl);
+        this.dstore.set(this.searchUrl, data, this.dstore.MINUTE * 15);
+      }
 
       let recs = data.response?.recordings || [];
 
-      if (this.flags.movies || this.flags.none) recs = recs.filter((rec) => !rec.promo); //  && rec.duration > 300 (5 min)
-      if (this.flags.matching) recs = recs.filter((rec) => regex.test(rec.title));
+      if (!this.flags.all) recs = recs.filter((rec) => regex.test(rec.title) && !rec.promo);
+      if (this.flags.movies) recs = recs.filter((rec) => !rec.promo);
 
       this.getStreams(recs);
     },
@@ -71,14 +80,23 @@ function search() {
 
       recs.forEach(async (rec, index) => {
         const id = rec.parent_id || rec.id;
-        const { title } = rec;
 
         try {
-          let url = await Fetch.getStream(id);
-          const streamUrl = 'https://www.hlsplayer.net/#type=m3u8&src=' + encodeURIComponent(url);
-          this.results.push({ id, title, streamUrl });
+          let url;
+          if (rec.mediaType === 'audio') {
+            console.info('audio');
+            console.log(rec);
+            this.results.push({ id: rec.id, title: rec.title, streamUrl: rec.link, length: rec.length });
+          } else {
+            console.info('video');
+            url = await Rtv.getStream(id);
+
+            const streamUrl = '/stream/?src=' + encodeURIComponent(url);
+            this.results.push({ id: rec.id, title: rec.title, streamUrl, length: rec.length });
+          }
         } catch (error) {
           console.warn('ERR:', id);
+          console.info(error);
         } finally {
           if (index === recs.length - 1) this.loading = false;
         }

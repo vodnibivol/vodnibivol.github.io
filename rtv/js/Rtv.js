@@ -1,64 +1,88 @@
-const Fetch = (function () {
+const Rtv = (function () {
   // vars
   const CLIENT_ID = '82013fb3a531d5414f478747c1aca622';
   const AUX_ID = 174821160;
-
-  let KHASH;
+  const dstore = new DStore('RTV_CACHE');
 
   // f(x)
   async function getStream(mediaId) {
-    let metadata = await getMeta(mediaId);
-    let { response } = metadata;
-    console.log(response)
+    const metadata = await getMeta(mediaId);
+    const { response } = metadata;
 
-    let khash = KHASH || (await _getKhash());
+    const khash = await _getKhash();
 
-    let recDateDash = response.recordingDate.match(/^[\d-]+/)[0];
-    let recDateSlash = recDateDash.replace(/-/g, '/');
+    const recDateDash = response.recordingDate.match(/^[\d-]+/)[0];
+    const recDateSlash = recDateDash.replace(/-/g, '/');
 
-    let streamUrl = `https://vodstr.rtvslo.si/{archive}/_definst_/${recDateSlash}/${mediaId}.smil/playlist.m3u8?keylockhash=${khash}`;
-    let correctUrl = await _getArchive(streamUrl, recDateDash);
+    const streamUrl = `https://vodstr.rtvslo.si/{archive}/_definst_/${recDateSlash}/${mediaId}.smil/playlist.m3u8?keylockhash=${khash}`;
+    const archive = await _getArchive(recDateDash);
+    const correctUrl = streamUrl.replace('{archive}', archive);
 
     return correctUrl;
+  }
+
+  async function getDownload(mediaId, jwt) {
+    let mediadata = await _getMedia(mediaId, jwt);
+    // TODO: jwt
+    console.info('media data:');
+    console.log(mediadata);
   }
 
   async function getMeta(mediaId) {
     const META_URL = `https://api.rtvslo.si/ava/getRecordingDrm/${mediaId}?client_id=${CLIENT_ID}`;
 
+    const cached = dstore.get('meta_' + mediaId);
+    if (!!cached) return cached.data;
+
     const r = await ffetch(META_URL);
+
+    dstore.set('meta_' + mediaId, r, dstore.NEVER);
     return r;
   }
 
   async function _getMedia(mediaId, jwt) {
     const MEDIA_URL = `https://api.rtvslo.si/ava/getMedia/${mediaId}?client_id=${CLIENT_ID}&jwt=${jwt}`;
 
+    const cached = dstore.get('media_' + mediaId);
+    if (!!cached) return cached.data;
+
     const r = await ffetch(MEDIA_URL);
+
+    dstore.set('media_' + mediaId, r, dstore.NEVER);
     return r;
   }
 
   async function _getJwt(mediaId = AUX_ID) {
     const AUX_URL = `https://api.rtvslo.si/ava/getRecordingDrm/${mediaId}?client_id=${CLIENT_ID}`;
 
-    const r = await ffetch(AUX_URL);
-    const jwt = r.response.jwt;
+    const cached = dstore.get('jwt');
+    if (!!cached) return cached.data;
 
+    const r = await ffetch(AUX_URL);
+    const { jwt } = r.response;
+
+    dstore.set('jwt', jwt, dstore.MINUTE * 15); // TODO: koliko?
     return jwt;
   }
 
   async function _getKhash() {
+    const cached = dstore.get('khash');
+    if (!!cached) return cached.data;
+
     const jwt = await _getJwt(AUX_ID);
     const r = await _getMedia(AUX_ID, jwt);
 
     const streams = r.response.mediaFiles[0].streams;
     const khash = JSON.stringify(streams).match(/keylockhash=([\w-]+)/)[1]; // TODO: preveri, ali ni vec razlicnih keylockhashev
 
-    KHASH = khash;
-    setTimeout(() => (KHASH = null), 10 * 60 * 1000); // reset after 10 minutes
-
+    dstore.set('khash', jwt, dstore.MINUTE * 10); // TODO: koliko?
     return khash;
   }
 
-  async function _getArchive(templateUrl, recDate) {
+  async function _getArchive(recDate) {
+    const cached = dstore.get('archive_' + recDate);
+    if (!!cached) return cached.data;
+
     for (let i = 0; i <= 5; i++) {
       const startDay = _dayDelta(recDate, i);
       const endDay = _dayDelta(recDate, i);
@@ -71,7 +95,8 @@ const Fetch = (function () {
       if (archives === null) continue;
       const correctArchive = _mostFreq(archives).replace('archive', 'encrypted');
 
-      return templateUrl.replace('{archive}', correctArchive);
+      dstore.set('archive_' + recDate, correctArchive, dstore.NEVER);
+      return correctArchive; // TODO: return correctArchive
     }
   }
 
@@ -89,10 +114,11 @@ const Fetch = (function () {
     if (!date) return null;
     const _1DAY = 24 * 60 * 60 * 1000;
     const oldDate = new Date(date);
+    console.log(date)
     const newDate = new Date(oldDate.valueOf() + days * _1DAY);
     const newDateString = newDate.toISOString().match(/\d{4}-\d{2}-\d{2}/)[0];
     return newDateString;
   }
 
-  return { getMeta, getStream };
+  return { getMeta, getStream, getDownload };
 })();

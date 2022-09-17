@@ -22,7 +22,7 @@
           <template x-for="result in results">
             <li>
               <div class="title-wrapper">
-                <p class="title" x-text="'['+result.id+'] ' + result.title"></p>
+                <p class="title" x-text="'['+result.length+'] ' + result.title"></p>
               </div>
               <div class="links-wrapper">
                 <a :href="result.streamUrl" target="_blank">stream</a>
@@ -35,7 +35,8 @@
 
     <!-- TODO: add info at the bottom -->
 
-    <script src="./js/Fetch.js"></script>
+    <script src="./js/DStore.js"></script>
+    <script src="./js/Rtv.js"></script>
     <script src="./js/script.js"></script>
     <script src="./js/alpinejs@3.10.3.min.js"></script>
   </body>
