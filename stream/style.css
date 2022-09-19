@@ -7,14 +7,14 @@ body {
 }
 
 .main {
-  width: 470px;
-  height: 280px;
+  width: 600px;
+  height: 370px;
   max-width: 80%;
 
   border: 2px solid black;
   background: black;
 
-  /* TODO: set ratio .. */
+  /* TODO: set ratio .. PREVERI */
 }
 
 video#video {

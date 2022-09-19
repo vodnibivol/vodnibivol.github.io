@@ -9,8 +9,9 @@ class DStore {
     this.DAY = this.HOUR * 24;
     this.WEEK = this.DAY * 7;
     this.MONTH = this.DAY * 30;
+    this.NEVER = this.DAY * 365; // FIXME: RENAME
 
-    this._syncUp();
+    this._load();
   }
 
   set(key, data, expires) {
@@ -22,12 +23,13 @@ class DStore {
     if (index === -1) index = this.storageData.length; // apend to back
     this.storageData[index] = element;
 
-    this._syncDown();
+    this._save();
   }
 
   get(foo) {
     // foo: function (default) or string
-    this._syncUp();
+    this._load();
+    this._cleanup();
 
     if (typeof foo === 'string') {
       const key = foo;
@@ -38,7 +40,7 @@ class DStore {
   }
 
   getAll(foo) {
-    this._syncUp();
+    this._load();
 
     if (!foo) {
       foo = () => true;
@@ -51,13 +53,21 @@ class DStore {
     localStorage.removeItem(this.namespace);
   }
 
+  _cleanup() {
+    const now = new Date().valueOf();
+    this.storageData.forEach((e) => {
+      // if (e.expires < now) console.log(e); // TODO: remove
+    });
+    this.storageData = this.storageData.filter((e) => e.expires > now);
+  }
+
   // --- utils
 
-  _syncDown() {
+  _save() {
     localStorage.setItem(this.namespace, JSON.stringify(this.storageData));
   }
 
-  _syncUp() {
+  _load() {
     this.storageData = JSON.parse(localStorage.getItem(this.namespace) || '[]');
   }
 }

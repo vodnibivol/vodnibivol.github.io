@@ -61,7 +61,7 @@ const Rtv = (function () {
     const r = await ffetch(AUX_URL);
     const { jwt } = r.response;
 
-    dstore.set('jwt', jwt, dstore.MINUTE * 15); // TODO: koliko?
+    dstore.set('jwt', jwt, dstore.MINUTE * 10); // TODO: koliko?
     return jwt;
   }
 
@@ -75,7 +75,7 @@ const Rtv = (function () {
     const streams = r.response.mediaFiles[0].streams;
     const khash = JSON.stringify(streams).match(/keylockhash=([\w-]+)/)[1]; // TODO: preveri, ali ni vec razlicnih keylockhashev
 
-    dstore.set('khash', jwt, dstore.MINUTE * 10); // TODO: koliko?
+    dstore.set('khash', khash, dstore.MINUTE * 10); // TODO: koliko?
     return khash;
   }
 
@@ -96,6 +96,8 @@ const Rtv = (function () {
       const correctArchive = _mostFreq(archives).replace('archive', 'encrypted');
 
       dstore.set('archive_' + recDate, correctArchive, dstore.NEVER);
+    console.log('archive_' + recDate, correctArchive, dstore.NEVER);
+
       return correctArchive; // TODO: return correctArchive
     }
   }
@@ -114,7 +116,6 @@ const Rtv = (function () {
     if (!date) return null;
     const _1DAY = 24 * 60 * 60 * 1000;
     const oldDate = new Date(date);
-    console.log(date)
     const newDate = new Date(oldDate.valueOf() + days * _1DAY);
     const newDateString = newDate.toISOString().match(/\d{4}-\d{2}-\d{2}/)[0];
     return newDateString;

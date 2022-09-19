@@ -1,7 +1,7 @@
 function search() {
   return {
     results: [],
-    query: '',
+    query: 'dogman -f',
     searchUrl: '',
     loading: false,
     dstore: new DStore('RTV_CACHE'),
@@ -80,6 +80,9 @@ function search() {
 
       recs.forEach(async (rec, index) => {
         const id = rec.parent_id || rec.id;
+
+        // TODO: preglej dstore in naredi dostopno (poglej, kako Alpine dobi data)
+        // TODO: popravi spodaj in naredi za mp3
 
         try {
           let url;
