@@ -1,10 +1,10 @@
 function search() {
   return {
     results: [],
-    query: 'dogman -f',
+    query: '',
     searchUrl: '',
     loading: false,
-    dstore: new DStore('RTV_CACHE'),
+    dstore: new DataStore('RTV_CACHE'),
     ID_REGEX: /\d{7,11}/,
 
     get msg() {

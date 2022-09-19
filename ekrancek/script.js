@@ -36,14 +36,16 @@ function draw() {
 }
 
 function getMsg() {
-  // TODO: uporabi FIRST, da samo prvič napravi nekatere reči
   // TODO: naj preusmeri že prej na form, ne tako pozno in da se vse nalaga ..
 
   let urlParams = new URLSearchParams(location.search);
 
   if (urlParams.has('urica')) {
-    history.replaceState({}, document.title, './?urica'); // clear params
-    FR = 5;
+    if (FIRST) {
+      history.replaceState({}, document.title, './?urica'); // clear params
+      FR = 5;
+      FIRST = false;
+    }
 
     let d = new Date();
     let hours = d.getHours().toString().padStart(2, '0');
@@ -57,27 +59,31 @@ function getMsg() {
   let encodedMsg = urlParams.get('msg');
   let msg = decodeURIComponent(atob(encodedMsg));
 
-  if (!encodedMsg) {
-    location.href = './form.html';
-    FR = 20;
-    return '% '; // ker se ne nalozi dovolj hitro
+  if (FIRST) {
+    if (!encodedMsg) {
+      location.href = './form.html';
+      FR = 20;
+      return '% '; // ker se ne nalozi dovolj hitro
+    }
+
+    let frameRate = urlParams.get('fr'); // string
+
+    frameRate = parseInt(frameRate) || FR_DEFAULT;
+    frameRate = Math.min(Math.max(frameRate, FR_MIN), FR_MAX); // bind to 0 => 30
+    frameRate = Math.round(frameRate / 5) * 5; // step == 5
+
+    if (frameRate !== FR_DEFAULT) {
+      urlParams.set('fr', frameRate);
+      history.replaceState({}, document.title, './?' + urlParams.toString());
+    } else {
+      urlParams.delete('fr');
+      history.replaceState({}, document.title, './?' + urlParams.toString());
+    }
+
+    FR = frameRate;
   }
 
-  let frameRate = urlParams.get('fr'); // string
-
-  frameRate = parseInt(frameRate) || FR_DEFAULT;
-  frameRate = Math.min(Math.max(frameRate, FR_MIN), FR_MAX); // bind to 0 => 30
-  frameRate = Math.round(frameRate / 5) * 5; // step == 5
-
-  if (frameRate !== FR_DEFAULT) {
-    urlParams.set('fr', frameRate);
-    history.replaceState({}, document.title, './?' + urlParams.toString());
-  } else {
-    urlParams.delete('fr');
-    history.replaceState({}, document.title, './?' + urlParams.toString());
-  }
-
-  FR = frameRate;
+  FIRST = false;
 
   return msg;
 }

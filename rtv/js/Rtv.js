@@ -2,7 +2,7 @@ const Rtv = (function () {
   // vars
   const CLIENT_ID = '82013fb3a531d5414f478747c1aca622';
   const AUX_ID = 174821160;
-  const dstore = new DStore('RTV_CACHE');
+  const dstore = new DataStore('RTV_CACHE');
 
   // f(x)
   async function getStream(mediaId) {
@@ -96,7 +96,6 @@ const Rtv = (function () {
       const correctArchive = _mostFreq(archives).replace('archive', 'encrypted');
 
       dstore.set('archive_' + recDate, correctArchive, dstore.NEVER);
-    console.log('archive_' + recDate, correctArchive, dstore.NEVER);
 
       return correctArchive; // TODO: return correctArchive
     }
