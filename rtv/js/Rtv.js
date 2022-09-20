@@ -1,8 +1,8 @@
-const Rtv = (function () {
+const Rtv = (function (cache = true) {
   // vars
   const CLIENT_ID = '82013fb3a531d5414f478747c1aca622';
   const AUX_ID = 174821160;
-  const dstore = new DataStore('RTV_CACHE');
+  const dstore = cache && new DataStore('RTV_CACHE');
 
   // f(x)
   async function getStream(mediaId) {
@@ -28,54 +28,59 @@ const Rtv = (function () {
     console.log(mediadata);
   }
 
-  async function getMeta(mediaId) {
-    const META_URL = `https://api.rtvslo.si/ava/getRecordingDrm/${mediaId}?client_id=${CLIENT_ID}`;
+  // ---
 
+  async function getSearch(searchUrl) {
+    const cached = dstore.get(searchUrl);
+    if (!!cached) return cached.data;
+
+    const r = await ffetch(searchUrl);
+
+    dstore.set(searchUrl, r, dstore.MINUTE * 15);
+    return r;
+  }
+
+  async function getMeta(mediaId) {
     const cached = dstore.get('meta_' + mediaId);
     if (!!cached) return cached.data;
 
+    const META_URL = `https://api.rtvslo.si/ava/getRecordingDrm/${mediaId}?client_id=${CLIENT_ID}`;
     const r = await ffetch(META_URL);
 
-    dstore.set('meta_' + mediaId, r, dstore.NEVER);
+    dstore.set('meta_' + mediaId, r, dstore.DAY);
     return r;
   }
 
   async function _getMedia(mediaId, jwt) {
-    const MEDIA_URL = `https://api.rtvslo.si/ava/getMedia/${mediaId}?client_id=${CLIENT_ID}&jwt=${jwt}`;
-
     const cached = dstore.get('media_' + mediaId);
     if (!!cached) return cached.data;
 
+    const MEDIA_URL = `https://api.rtvslo.si/ava/getMedia/${mediaId}?client_id=${CLIENT_ID}&jwt=${jwt}`;
     const r = await ffetch(MEDIA_URL);
 
-    dstore.set('media_' + mediaId, r, dstore.NEVER);
+    dstore.set('media_' + mediaId, r, dstore.MINUTE * 15);
     return r;
   }
 
   async function _getJwt(mediaId = AUX_ID) {
-    const AUX_URL = `https://api.rtvslo.si/ava/getRecordingDrm/${mediaId}?client_id=${CLIENT_ID}`;
-
     const cached = dstore.get('jwt');
     if (!!cached) return cached.data;
 
+    const AUX_URL = `https://api.rtvslo.si/ava/getRecordingDrm/${mediaId}?client_id=${CLIENT_ID}`;
     const r = await ffetch(AUX_URL);
     const { jwt } = r.response;
 
-    dstore.set('jwt', jwt, dstore.MINUTE * 10); // TODO: koliko?
+    dstore.set('jwt', jwt, dstore.MINUTE * 15);
     return jwt;
   }
 
   async function _getKhash() {
-    const cached = dstore.get('khash');
-    if (!!cached) return cached.data;
-
     const jwt = await _getJwt(AUX_ID);
     const r = await _getMedia(AUX_ID, jwt);
 
     const streams = r.response.mediaFiles[0].streams;
     const khash = JSON.stringify(streams).match(/keylockhash=([\w-]+)/)[1]; // TODO: preveri, ali ni vec razlicnih keylockhashev
 
-    dstore.set('khash', khash, dstore.MINUTE * 10); // TODO: koliko?
     return khash;
   }
 
@@ -88,16 +93,15 @@ const Rtv = (function () {
       const endDay = _dayDelta(recDate, i);
 
       // prettier-ignore
-      const searchUrl = `https://api.rtvslo.si/ava/getSearch2?client_id=${CLIENT_ID}&from=${startDay}&to=${endDay}&pageSize=${i*12}`;
-      const search = await ffetch(searchUrl);
+      const SEARCH_URL = `https://api.rtvslo.si/ava/getSearch2?client_id=${CLIENT_ID}&from=${startDay}&to=${endDay}&pageSize=${i*12}`;
+      const search = await ffetch(SEARCH_URL);
 
       const archives = JSON.stringify(search).match(/archive(\d)+/g);
       if (archives === null) continue;
       const correctArchive = _mostFreq(archives).replace('archive', 'encrypted');
 
-      dstore.set('archive_' + recDate, correctArchive, dstore.NEVER);
-
-      return correctArchive; // TODO: return correctArchive
+      dstore.set('archive_' + recDate, correctArchive, dstore.YEAR);
+      return correctArchive;
     }
   }
 
@@ -120,5 +124,31 @@ const Rtv = (function () {
     return newDateString;
   }
 
-  return { getMeta, getStream, getDownload };
+  return { getSearch, getMeta, getStream, getDownload };
 })();
+
+// --- JSONP Fetch function
+
+async function ffetch(url) {
+  // prettier-ignore
+  const HASH = new Array(16).fill().map((_) => Math.floor(Math.random() * 16).toString(16)).join('');
+
+  const fooN = 'foo_' + HASH;
+  const dataN = 'data_' + HASH;
+
+  return new Promise(function (resolve, reject) {
+    window[fooN] = function (data) {
+      window[dataN] = data;
+      resolve(window[dataN]);
+    };
+
+    const el = document.createElement('script');
+    el.src = url + '&callback=' + fooN;
+    el.onload = function () {
+      window[dataN] = window[fooN] = null;
+      el.remove();
+    };
+
+    document.body.appendChild(el);
+  });
+}

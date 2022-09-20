@@ -7,14 +7,18 @@ body {
 }
 
 .main {
-  width: 600px;
-  height: 370px;
+  width: 640px;
+  height: 360px;
   max-width: 80%;
 
-  border: 2px solid black;
+  /* border: 2px solid black; */
   background: black;
+}
 
-  /* TODO: set ratio .. PREVERI */
+.main.fullscreen {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
 }
 
 video#video {
@@ -22,7 +26,12 @@ video#video {
   height: 100%;
 }
 
-.loading {
+.msg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
   font-family: Menlo, Consolas, monospace;
   font-size: 12px;
   color: white;
@@ -32,6 +41,10 @@ video#video {
 
 .hidden {
   display: none !important;
+}
+
+.invisible {
+  opacity: 0 !important;
 }
 
 .flex-center {

@@ -1,36 +1,41 @@
 const Main = function () {
   return {
     state: 'INIT', // INIT, LOADING, LOADED, ERROR
+    invisible: true,
     error: '',
     video: document.getElementById('video'),
     videoSrc: '',
+    fullscreen: false,
 
     get msg() {
-      if (this.state === 'LOADING') return '[ loading .. ]';
+      if (this.state === 'LOADING') return 'loading ..';
       if (this.state === 'ERROR') {
-        if (this.error === 404) {
-          return '[ 404 - not found ]';
-        }
-        return '[ error ]';
+        if (this.error === 404) return '404 - not found';
+        return 'error';
       }
       return '';
     },
 
     init() {
-      this.videoSrc = this.getSrc();
+      this.getSrc();
+
+      if (!this.videoSrc) return (this.state = 'ERROR');
 
       if (Hls.isSupported()) {
-        this.state = 'LOADING';
-
         // --- setup
         window.hlsComponent = new Hls();
         // bind them together
         window.hlsComponent.attachMedia(video);
         window.hlsComponent.on(Hls.Events.MEDIA_ATTACHED, () => {
           console.log('video and hls.js are now bound together !');
+          this.state = 'LOADING';
+
+          video.onloadeddata = () => {
+            this.state = 'LOADED';
+          };
+
           window.hlsComponent.loadSource(this.videoSrc);
           window.hlsComponent.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
-            this.state = 'LOADED';
             console.log('manifest loaded, found ' + data.levels.length + ' quality level');
           });
         });
@@ -43,7 +48,6 @@ const Main = function () {
             if (data.response.code === 404) {
               this.error = 404;
             }
-
             console.log(data);
           }
         });
@@ -54,8 +58,8 @@ const Main = function () {
 
     getSrc() {
       const urlComponent = new URLSearchParams(location.search);
-      const src = urlComponent.get('src');
-      return src;
+      this.videoSrc = urlComponent.get('src');
+      this.fullscreen = urlComponent.has('fs');
     },
   };
 };

@@ -3,13 +3,11 @@ class DataStore {
     if (!namespace) throw new Error('namespace must be provided.');
     this.namespace = namespace; // localStorage key
 
-    this.SECOND = 1000; // 1 second in mx // TODO: _SECOND? ali da je readonly
+    this.SECOND = 1000; // 1 second in ms
     this.MINUTE = this.SECOND * 60;
     this.HOUR = this.MINUTE * 60;
     this.DAY = this.HOUR * 24;
-    this.WEEK = this.DAY * 7;
-    this.MONTH = this.DAY * 30;
-    this.NEVER = this.DAY * 365; // FIXME: RENAME
+    this.YEAR = this.DAY * 356;
 
     this._load();
   }
@@ -55,10 +53,7 @@ class DataStore {
 
   _cleanup() {
     const now = new Date().valueOf();
-    this.storageData.forEach((e) => {
-      // if (e.expires < now) console.log(e); // TODO: remove
-    });
-    this.storageData = this.storageData.filter((e) => e.expires > now);
+    this.storageData = this.storageData.filter((el) => el.expires > now);
   }
 
   // --- utils

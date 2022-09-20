@@ -8,9 +8,9 @@
     <link rel="stylesheet" href="style.css">
   </head>
   <body class="flex-center">
-    <div class="main flex-center" x-data="Main()" x-cloak>
-      <video x-show="state === 'LOADED'" id="video" controls></video>
-      <p x-show="!!msg" class="loading" x-text="msg"></p>
+    <div class="main flex-center" :class="{fullscreen}" x-data="Main()" x-cloak>
+      <video :class="{ invisible: state !== 'LOADED' }" id="video" controls></video>
+      <p x-show="!!msg" class="msg" x-text="'[ '+msg+' ]'"></p>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
