@@ -24,6 +24,10 @@ function search() {
       };
     },
 
+    init() {
+      document.querySelector('form input[type="text"]').select();
+    },
+
     async onSubmit() {
       this.loading = true;
       this.results = [];
