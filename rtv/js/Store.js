@@ -1,4 +1,4 @@
-class DataStore {
+class Store {
   constructor(namespace) {
     if (!namespace) throw new Error('namespace must be provided.');
     this.namespace = namespace; // localStorage key

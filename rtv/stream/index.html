@@ -26,9 +26,16 @@
       }
 
       iframe {
-        width: 100%;
-        height: 100%;
+        width: 640px;
+        height: 390px; /* 360px */
+        max-width: 80%;
+
+        background: black;
         border: none;
+      }
+
+      audio {
+        width: 400px;
       }
 
       .flex-center {
@@ -36,26 +43,35 @@
         justify-content: center;
         align-items: center;
       }
+
+      .hidden {
+        display: none !important;
+      }
     </style>
   </head>
   <body class="flex-center">
-    <div class="main flex-center">
-      <iframe id="iframe" src=""></iframe>
-    </div>
+    <iframe class="hidden" src=""></iframe>
+    <audio class="hidden" src="" controls></audio>
 
-    <script src="../js/DataStore.js"></script>
+    <script src="../js/Store.js"></script>
     <script src="../js/Rtv.js"></script>
     <script>
-      async function main() {
-        const id = new URLSearchParams(location.search).get('id');
-        const streamUrl = await Rtv.getStream(id);
-        const iframe = document.querySelector('iframe#iframe');
-        const completeUrl = '/stream/?fs=1&src=' + encodeURIComponent(streamUrl);
-        console.log(completeUrl);
-        iframe.setAttribute('src', completeUrl);
-      }
+      const $ = (sel) => document.querySelector(sel);
 
-      main();
+      (async function () {
+        const id = new URLSearchParams(location.search).get('id');
+        const { response } = await Rtv.getMeta(id);
+
+        if (response.mediaType === 'audio') {
+          const audioUrl = await Rtv.getAudio(id, response.jwt); // mp3
+          $('audio').classList.remove('hidden');
+          $('audio').src = audioUrl;
+        } else {
+          const streamUrl = await Rtv.getStream(id);
+          $('iframe').src = '/stream/?fs=1&src=' + encodeURIComponent(streamUrl);
+          $('iframe').classList.remove('hidden');
+        }
+      })();
     </script>
   </body>
 </html>

@@ -1,10 +1,11 @@
-const Rtv = (function (cache = true) {
+const Rtv = (function () {
   // vars
   const CLIENT_ID = '82013fb3a531d5414f478747c1aca622';
   const AUX_ID = 174821160;
-  const dstore = cache && new DataStore('RTV_CACHE');
+  const dstore = new Store('RTV_CACHE');
 
-  // f(x)
+  // --- higher level functions
+
   async function getStream(mediaId) {
     const metadata = await getMeta(mediaId);
     const { response } = metadata;
@@ -21,14 +22,13 @@ const Rtv = (function (cache = true) {
     return correctUrl;
   }
 
-  async function getDownload(mediaId, jwt) {
-    let mediadata = await _getMedia(mediaId, jwt);
-    // TODO: jwt
-    console.info('media data:');
-    console.log(mediadata);
+  async function getAudio(mediaId, jwt) {
+    let mediadata = await _getMedia(mediaId); // + jwt
+    const streams = mediadata.response.mediaFiles[0].streams;
+    return streams.https || streams.http;
   }
 
-  // ---
+  // --- lower level functions
 
   async function getSearch(searchUrl) {
     const cached = dstore.get(searchUrl);
@@ -54,6 +54,8 @@ const Rtv = (function (cache = true) {
   async function _getMedia(mediaId, jwt) {
     const cached = dstore.get('media_' + mediaId);
     if (!!cached) return cached.data;
+
+    if (!jwt) jwt = await _getJwt(mediaId);
 
     const MEDIA_URL = `https://api.rtvslo.si/ava/getMedia/${mediaId}?client_id=${CLIENT_ID}&jwt=${jwt}`;
     const r = await ffetch(MEDIA_URL);
@@ -105,7 +107,7 @@ const Rtv = (function (cache = true) {
     }
   }
 
-  // --- utils
+  // --- utility functions
 
   function _mostFreq(arr) {
     const hashmap = arr.reduce((acc, val) => {
@@ -124,7 +126,7 @@ const Rtv = (function (cache = true) {
     return newDateString;
   }
 
-  return { getSearch, getMeta, getStream, getDownload };
+  return { getSearch, getMeta, getStream, getAudio };
 })();
 
 // --- JSONP Fetch function
