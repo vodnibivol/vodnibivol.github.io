@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>stream</title>
     <style>
+      * {
+        font-family: Menlo, Consolas, monospace;
+        font-size: 12px;
+      }
+
       html,
       body {
         margin: 0;
@@ -38,6 +43,10 @@
         width: 400px;
       }
 
+      p#msg {
+        pointer-events: none;
+      }
+
       .flex-center {
         display: flex;
         justify-content: center;
@@ -52,26 +61,37 @@
   <body class="flex-center">
     <iframe class="hidden" src=""></iframe>
     <audio class="hidden" src="" controls></audio>
+    <p id="msg" class="hidden"></p>
 
-    <script src="../js/Store.js"></script>
-    <script src="../js/Rtv.js"></script>
+    <script src="./js/Store.js"></script>
+    <script src="./js/Rtv.js"></script>
     <script>
       const $ = (sel) => document.querySelector(sel);
 
       (async function () {
         const id = new URLSearchParams(location.search).get('id');
+        if (!id) return err();
         const { response } = await Rtv.getMeta(id);
 
-        if (response.mediaType === 'audio') {
-          const audioUrl = await Rtv.getAudio(id, response.jwt); // mp3
-          $('audio').classList.remove('hidden');
-          $('audio').src = audioUrl;
-        } else {
+        if (response.mediaType === 'video') {
           const streamUrl = await Rtv.getStream(id);
+          if (/preroll|expired|dummy|null/.test(streamUrl)) return err();
           $('iframe').src = '/stream/?fs=1&src=' + encodeURIComponent(streamUrl);
           $('iframe').classList.remove('hidden');
         }
+
+        if (response.mediaType === 'audio') {
+          const audioUrl = await Rtv.getAudio(id, response.jwt); // mp3
+          if (/preroll|expired|dummy|null/.test(audioUrl)) return err();
+          $('audio').src = audioUrl;
+          $('audio').classList.remove('hidden');
+        }
       })();
+
+      function err() {
+        $('#msg').innerText = '[ error ]';
+        $('#msg').classList.remove('hidden');
+      }
     </script>
   </body>
 </html>

@@ -1,65 +1,82 @@
-const Main = function () {
-  return {
-    state: 'INIT', // INIT, LOADING, LOADED, ERROR
-    invisible: true,
-    error: '',
-    video: document.getElementById('video'),
-    videoSrc: '',
-    fullscreen: false,
+const Main = (function () {
+  // vars
+  const $ = (sel) => document.querySelector(sel);
 
-    get msg() {
-      if (this.state === 'LOADING') return 'loading ..';
-      if (this.state === 'ERROR') {
-        if (this.error === 404) return '404 - not found';
-        return 'error';
-      }
-      return '';
-    },
+  let state = 'INIT'; // INIT, LOADING, LOADED, ERROR
+  let error = '';
 
-    init() {
-      this.getSrc();
+  // init
+  init();
 
-      if (!this.videoSrc) return (this.state = 'ERROR');
+  // f(x)
+  function init() {
+    const fs = getFullscreen();
+    if (fs) $('.main').classList.add('fullscreen');
 
-      if (Hls.isSupported()) {
-        // --- setup
-        window.hlsComponent = new Hls();
-        // bind them together
-        window.hlsComponent.attachMedia(video);
-        window.hlsComponent.on(Hls.Events.MEDIA_ATTACHED, () => {
-          console.log('video and hls.js are now bound together !');
-          this.state = 'LOADING';
+    const src = getSrc();
+    if (!src) return updateMsg((state = 'ERROR'));
 
-          video.onloadeddata = () => {
-            this.state = 'LOADED';
-          };
+    if (Hls.isSupported()) {
+      // --- setup
+      window.hlsComponent = new Hls();
+      // bind them together
+      window.hlsComponent.attachMedia($('video'));
+      window.hlsComponent.on(Hls.Events.MEDIA_ATTACHED, () => {
+        console.log('video and hls.js are now bound together !');
+        state = 'LOADING';
+        updateMsg();
 
-          window.hlsComponent.loadSource(this.videoSrc);
-          window.hlsComponent.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
-            console.log('manifest loaded, found ' + data.levels.length + ' quality level');
-          });
+        $('video').onloadeddata = () => {
+          state = 'LOADED';
+          updateMsg();
+          $('video').classList.remove('invisible');
+        };
+
+        window.hlsComponent.loadSource(src);
+        window.hlsComponent.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
+          console.log('manifest loaded, found ' + data.levels.length + ' quality level');
         });
+      });
 
-        // --- error handling
-        window.hlsComponent.on(Hls.Events.ERROR, (event, data) => {
-          if (data.fatal) {
-            this.state = 'ERROR';
-            window.hlsComponent.destroy();
-            if (data.response.code === 404) {
-              this.error = 404;
-            }
-            console.log(data);
+      // --- error handling
+      window.hlsComponent.on(Hls.Events.ERROR, (event, data) => {
+        if (data.fatal) {
+          state = 'ERROR';
+          updateMsg();
+          window.hlsComponent.destroy();
+          if (data.response.code === 404) {
+            error = 404;
           }
-        });
-      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        this.video.src = videoSrc;
-      }
-    },
+          console.log(data);
+        }
+      });
+    } else if ($('video').canPlayType('application/vnd.apple.mpegurl')) {
+      $('video').src = src;
+    }
+  }
 
-    getSrc() {
-      const urlComponent = new URLSearchParams(location.search);
-      this.videoSrc = urlComponent.get('src');
-      this.fullscreen = urlComponent.has('fs');
-    },
-  };
-};
+  function getSrc() {
+    const urlComponent = new URLSearchParams(location.search);
+    return urlComponent.get('src');
+  }
+
+  function getFullscreen() {
+    const urlComponent = new URLSearchParams(location.search);
+    return urlComponent.has('fs');
+  }
+
+  function updateMsg() {
+    let msg;
+
+    if (state === 'LOADING') msg = 'loading ..';
+    if (state === 'ERROR') {
+      if (error === 404) msg = '404 - not found';
+      msg = 'error';
+    }
+
+    $('#msg').innerText = '[ ' + msg + ' ]';
+
+    if (!!msg) $('#msg').classList.remove('hidden');
+    else $('#msg').classList.add('hidden');
+  }
+})();

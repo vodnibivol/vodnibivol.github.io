@@ -82,15 +82,15 @@ function search() {
       for (const rec of recs) {
         const id = rec.parent_id || rec.id;
 
-        if (rec.mediaType === 'audio') {
-          // TODO: naredi za mp3
-          console.info('audio');
-          this.results.push({ id: rec.id, title: rec.title, streamUrl: rec.link, length: rec.length });
-        } else {
-          console.info('video');
-          const streamUrl = './stream/?id=' + id;
-          this.results.push({ id: rec.id, title: rec.title, streamUrl, length: rec.length });
-        }
+        // if (rec.mediaType === 'audio') {
+        //   // TODO: naredi za mp3
+        //   console.info('audio');
+        //   this.results.push({ id: rec.id, title: rec.title, streamUrl: rec.link, length: rec.length });
+        // } else {
+        //   console.info('video');
+        const streamUrl = './stream?id=' + id;
+        this.results.push({ id: rec.id, title: rec.title, streamUrl, length: rec.length });
+        // }
 
         await timer(10);
       }

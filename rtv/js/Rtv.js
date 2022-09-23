@@ -23,7 +23,8 @@ const Rtv = (function () {
   }
 
   async function getAudio(mediaId, jwt) {
-    let mediadata = await _getMedia(mediaId); // + jwt
+    let mediadata = await _getMedia(mediaId, jwt);
+    console.log(mediadata);
     const streams = mediadata.response.mediaFiles[0].streams;
     return streams.https || streams.http;
   }
