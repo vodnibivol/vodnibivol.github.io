@@ -6,11 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>stream</title>
     <style>
-      * {
-        font-family: Menlo, Consolas, monospace;
-        font-size: 12px;
-      }
-
       html,
       body {
         margin: 0;
@@ -19,24 +14,13 @@
         height: 100%;
       }
 
-      .main {
-        width: 640px;
-        height: 390px;
-        /* 360px */
-        max-width: 80%;
-
-        background: black;
-
-        /* TODO: set ratio .. PREVERI */
-      }
-
       iframe {
         width: 640px;
         height: 390px; /* 360px */
         max-width: 80%;
 
         background: black;
-        border: none;
+        border: none !important;
       }
 
       audio {
@@ -44,6 +28,8 @@
       }
 
       p#msg {
+        font-family: Menlo, Consolas, monospace;
+        font-size: 12px;
         pointer-events: none;
       }
 
@@ -55,6 +41,12 @@
 
       .hidden {
         display: none !important;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #141414;
+        }
       }
     </style>
   </head>
