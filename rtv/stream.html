@@ -48,6 +48,7 @@
       @media (prefers-color-scheme: dark) {
         body {
           background: #141414;
+          color: white;
         }
       }
     </style>
@@ -71,6 +72,7 @@
           const streamUrl = await Rtv.getStream(id);
           if (/preroll|expired|dummy|null/.test(streamUrl)) return err();
           $('iframe').src = '/stream/?fs=1&src=' + encodeURIComponent(streamUrl);
+          console.log($('iframe').src);
           $('iframe').classList.remove('hidden');
         }
 

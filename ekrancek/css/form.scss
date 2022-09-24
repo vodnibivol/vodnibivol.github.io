@@ -16,6 +16,10 @@ body {
   background: rgb(243, 243, 243);
 }
 
+input, button {
+  appearance: none;
+}
+
 ::selection {
   background: lightblue;
 }
@@ -28,7 +32,7 @@ body {
 
 .boxed {
   /* height: 20px; */
-  padding: 5px 10px;
+  padding: 4px 9px;
   margin: 0;
   border: 2px solid black;
   outline: none;
@@ -69,8 +73,7 @@ a.urica-link {
   }
 
   input[type='range'] {
-    -webkit-appearance: none;
-    // margin-right: 15px;
+    appearance: none;
     width: 50px;
     height: 2px;
     background: black;
@@ -79,7 +82,7 @@ a.urica-link {
     cursor: pointer;
 
     &::-webkit-slider-thumb {
-      -webkit-appearance: none;
+      appearance: none;
       height: 10px;
       width: 10px;
       border-radius: 50%;
@@ -88,7 +91,7 @@ a.urica-link {
     }
 
     &::-webkit-slider-runnable-track {
-      -webkit-appearance: none;
+      appearance: none;
       box-shadow: none;
       border: none;
       background: transparent;

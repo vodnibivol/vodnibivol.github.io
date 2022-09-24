@@ -29,6 +29,7 @@ const Main = (function () {
         $('video').onloadeddata = () => {
           state = 'LOADED';
           updateMsg();
+          $('video').setAttribute('controls', true);
           $('video').classList.remove('invisible');
         };
 
