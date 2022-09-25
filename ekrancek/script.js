@@ -6,6 +6,7 @@ const FR_MAX = 30;
 const FR_DEFAULT = 30;
 
 const ROTATE = true;
+const LOCAL = /localhost|127\.0\.0\.1/.test(location.href) ? '.html' : '';
 
 let FR, CLOCK;
 let FIRST = true;
@@ -62,7 +63,7 @@ function getMsg() {
 
   if (FIRST) {
     if (!encodedMsg) {
-      location.href = './form.html';
+      location.href = './form' + LOCAL;
       FR = 20;
       return '% '; // ker se ne nalozi dovolj hitro
     }

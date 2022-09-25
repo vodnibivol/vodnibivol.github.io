@@ -76,10 +76,11 @@ body {
 
 .main {
   $color-primary: lightsalmon; // lightsalmon
-
-  margin-top: 33vh;
+  
   width: 500px;
   max-width: 80%;
+  margin-top: 33vh;
+  padding-bottom: 5rem;
 
   form {
     margin-bottom: 1rem;
