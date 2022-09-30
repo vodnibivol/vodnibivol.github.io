@@ -31,21 +31,23 @@ body {
   max-width: 300px;
 }
 
-.bg {
+#bg {
   position: absolute;
   z-index: -1;
   width: 100vw;
   height: 100vh;
-  background: url('pattern1.webp');
+  background: url('pattern.webp');
   background-size: 200px;
-  background-blend-mode: multiply;
-  opacity: 0.05;
+  opacity: 0.04;
 }
 
 textarea {
   width: 100%;
+  height: 120px;
+
   padding: 1rem;
   margin: 3rem 0;
+
   word-break: keep-all;
   resize: none;
 
