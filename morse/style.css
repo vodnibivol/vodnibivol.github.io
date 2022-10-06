@@ -38,7 +38,7 @@ body {
   height: 100vh;
   background: url('pattern.webp');
   background-size: 200px;
-  opacity: 0.04;
+  opacity: 0.05;
 }
 
 textarea {

@@ -19,7 +19,7 @@ const Morse = (function () {
   // functions
   function _onInput(e) {
     if (e.target === inputBox) {
-      outputBox.value = morseString(inputBox.value);
+      outputBox.value = morseString(inputBox.value.toLowerCase());
     } else if (e.target === outputBox) {
       inputBox.value = plainString(outputBox.value);
     }
