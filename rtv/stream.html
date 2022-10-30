@@ -74,13 +74,14 @@
           $('iframe').src = '/stream/?fs=1&src=' + encodeURIComponent(streamUrl);
           console.log($('iframe').src);
           $('iframe').classList.remove('hidden');
-        }
-
-        if (response.mediaType === 'audio') {
+        } else if (response.mediaType === 'audio') {
           const audioUrl = await Rtv.getAudio(id, response.jwt); // mp3
           if (/preroll|expired|dummy|null/.test(audioUrl)) return err();
           $('audio').src = audioUrl;
           $('audio').classList.remove('hidden');
+        } else {
+          console.warn('exception');
+          console.log(response);
         }
       })();
 

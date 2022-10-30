@@ -2,6 +2,7 @@ const Main = (function () {
   // vars
   const $ = (sel) => document.querySelector(sel);
 
+  const urlParams = new URLSearchParams(location.search);
   let state = 'INIT'; // INIT, LOADING, LOADED, ERROR
   let error = '';
 
@@ -10,10 +11,10 @@ const Main = (function () {
 
   // f(x)
   function init() {
-    const fs = getFullscreen();
-    if (fs) $('.main').classList.add('fullscreen');
+    const isFullScreen = urlParams.has('fs');
+    if (isFullScreen) $('.main').classList.add('fullscreen');
 
-    const src = getSrc();
+    const src = urlParams.get('src');
     if (!src) return updateMsg((state = 'ERROR'));
 
     if (Hls.isSupported()) {
@@ -52,18 +53,15 @@ const Main = (function () {
         }
       });
     } else if ($('video').canPlayType('application/vnd.apple.mpegurl')) {
+      console.warn('hls not available .. playing in apple native player');
+
       $('video').src = src;
+      $('video').setAttribute('controls', true);
+      $('video').classList.remove('invisible');
+    } else {
+      alert('error. see logs ..');
+      console.error('Hls not supported and cannot play ..');
     }
-  }
-
-  function getSrc() {
-    const urlComponent = new URLSearchParams(location.search);
-    return urlComponent.get('src');
-  }
-
-  function getFullscreen() {
-    const urlComponent = new URLSearchParams(location.search);
-    return urlComponent.has('fs');
   }
 
   function updateMsg() {
