@@ -104,7 +104,7 @@ function printMatches(letters) {
     output += "<hr>";
     output += "<h3>" + word + "</h3>";
     output += "<p>" + expl;
-    output += ` - <a target="_blank" href="//fran.si/133/sskj2-slovar-slovenskega-knjiznega-jezika-2/${index}/${word}">fran.si</a>`;
+    output += ` - <a target="_blank" href="https://www.fran.si/iskanje?View=1&Query=${word}">fran.si</a>`;
   }
 
   if (matches == false) {
