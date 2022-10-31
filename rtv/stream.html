@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>stream</title>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     <style>
       html,
       body {
@@ -67,12 +68,13 @@
         const id = new URLSearchParams(location.search).get('id');
         if (!id) return err();
         const { response } = await Rtv.getMeta(id);
+        document.title = response.title ? response.title.toLowerCase() + ' | vodnibivol' : 'stream | vodnibivol';
 
         if (response.mediaType === 'video') {
           const streamUrl = await Rtv.getStream(id);
           if (/preroll|expired|dummy|null/.test(streamUrl)) return err();
           $('iframe').src = '/stream/?fs=1&src=' + encodeURIComponent(streamUrl);
-          console.log($('iframe').src);
+          // console.log($('iframe').src);
           $('iframe').classList.remove('hidden');
         } else if (response.mediaType === 'audio') {
           const audioUrl = await Rtv.getAudio(id, response.jwt); // mp3
@@ -80,14 +82,16 @@
           $('audio').src = audioUrl;
           $('audio').classList.remove('hidden');
         } else {
-          console.warn('exception');
+          alert('exception: check logs.');
           console.log(response);
+          err();
         }
       })();
 
       function err() {
         $('#msg').innerText = '[ error ]';
         $('#msg').classList.remove('hidden');
+        document.title = 'error';
       }
     </script>
   </body>
