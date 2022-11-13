@@ -63,22 +63,31 @@
     <script src="./js/Rtv.js"></script>
     <script>
       const $ = (sel) => document.querySelector(sel);
+      const IS_DEV = /localhost|127\.0\.0\.1|dev/.test(location.href);
 
-      (async function () {
+      async function run() {
         const id = new URLSearchParams(location.search).get('id');
         if (!id) return err();
         const { response } = await Rtv.getMeta(id);
         document.title = response.title ? response.title.toLowerCase() + ' | vodnibivol' : 'stream | vodnibivol';
 
+        if (IS_DEV) console.log(response);
+
         if (response.mediaType === 'video') {
-          const streamUrl = await Rtv.getStream(id);
+          let streamUrl;
+          try {
+            streamUrl = await Rtv.getStream(id);
+          } catch (error) {
+            return err(error);
+          }
+
           if (/preroll|expired|dummy|null/.test(streamUrl)) return err();
           $('iframe').src = '/stream/?fs=1&src=' + encodeURIComponent(streamUrl);
-          // console.log($('iframe').src);
+          if (IS_DEV) console.log($('iframe').src);
           $('iframe').classList.remove('hidden');
         } else if (response.mediaType === 'audio') {
           const audioUrl = await Rtv.getAudio(id, response.jwt); // mp3
-          if (/preroll|expired|dummy|null/.test(audioUrl)) return err();
+          if (/preroll|expired|dummy|null/.test(audioUrl)) return err('expired');
           $('audio').src = audioUrl;
           $('audio').classList.remove('hidden');
         } else {
@@ -86,13 +95,18 @@
           console.log(response);
           err();
         }
-      })();
+      }
 
-      function err() {
+      function err(e = null) {
         $('#msg').innerText = '[ error ]';
         $('#msg').classList.remove('hidden');
         document.title = 'error';
+        if (e) console.error(e);
       }
+
+      try {
+        run();
+      } catch (error) {}
     </script>
   </body>
 </html>

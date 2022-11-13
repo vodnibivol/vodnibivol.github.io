@@ -82,8 +82,7 @@ const Rtv = (function () {
     const r = await _getMedia(AUX_ID, jwt);
 
     const streams = r.response.mediaFiles[0].streams;
-    const khash = JSON.stringify(streams).match(/keylockhash=([\w-]+)/)[1]; // TODO: preveri, ali ni vec razlicnih keylockhashev
-
+    const khash = JSON.stringify(streams).match(/sig=([\w-]+)/)[1]; // TODO: preveri, ali ni vec razlicnih keylockhashev
     return khash;
   }
 

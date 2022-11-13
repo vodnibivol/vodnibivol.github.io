@@ -26,6 +26,7 @@ function search() {
 
     init() {
       document.querySelector('form input[type="text"]').select();
+      this.isLocal = /localhost|127\.0\.0\.1/.test(location.hostname);
     },
 
     async onSubmit() {
@@ -82,7 +83,7 @@ function search() {
       for (const rec of recs) {
         const id = rec.parent_id || rec.id;
 
-        const streamUrl = './stream?id=' + id;
+        const streamUrl = this.isLocal ? './stream.html?id=' + id : './stream?id=' + id;
         this.results.push({ id: rec.id, title: rec.title, streamUrl, length: rec.length });
 
         await timer(10);

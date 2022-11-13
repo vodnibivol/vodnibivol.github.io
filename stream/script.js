@@ -1,6 +1,7 @@
 const Main = (function () {
   // vars
   const $ = (sel) => document.querySelector(sel);
+  const IS_DEV = /localhost|127\.0\.0\.1|dev/.test(location.href);
 
   const urlParams = new URLSearchParams(location.search);
   let state = 'INIT'; // INIT, LOADING, LOADED, ERROR
@@ -11,11 +12,13 @@ const Main = (function () {
 
   // f(x)
   function init() {
-    const isFullScreen = urlParams.has('fs');
-    if (isFullScreen) $('.main').classList.add('fullscreen');
+    const IS_FULLSCREEN = urlParams.has('fs');
+    if (IS_FULLSCREEN) $('.main').classList.add('fullscreen');
 
     const src = urlParams.get('src');
     if (!src) return updateMsg((state = 'ERROR'));
+
+    if (IS_DEV) console.log(src);
 
     if (Hls.isSupported()) {
       // --- setup
