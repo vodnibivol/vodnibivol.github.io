@@ -1,7 +1,7 @@
 const Rtv = (function () {
   // vars
   const CLIENT_ID = '82013fb3a531d5414f478747c1aca622';
-  const AUX_ID = 174821160;
+  const AUX_ID = 174773721; // 174821160
   const dstore = new Store('RTV_CACHE');
 
   // --- higher level functions
@@ -82,7 +82,7 @@ const Rtv = (function () {
     const r = await _getMedia(AUX_ID, jwt);
 
     const streams = r.response.mediaFiles[0].streams;
-    const khash = JSON.stringify(streams).match(/sig=([\w-]+)/)[1]; // TODO: preveri, ali ni vec razlicnih keylockhashev
+    const khash = JSON.stringify(streams).match(/keylockhash=([\w-]+)/)[1]; // TODO: preveri, ali ni vec razlicnih keylockhashev
     return khash;
   }
 
