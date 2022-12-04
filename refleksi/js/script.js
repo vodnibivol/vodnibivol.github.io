@@ -3,7 +3,7 @@ function Reflex() {
     state: 'INIT', // INIT, COUNTDOWN, TIMER, RESULT
 
     startTime: 0,
-    endTime: 10 ** 9,
+    endTime: 10 ** 9, // must be high, because of best
 
     best: Alpine.$persist(500),
     isNewBest: false,
@@ -19,15 +19,17 @@ function Reflex() {
         case 'COUNTDOWN':
           return 'počakaj ..';
         case 'TIMER':
-          return `${this.elapsed} ms`;
+          return `${String(this.elapsed).padStart(3, 0)} ms`;
         case 'RESULT':
-          return `${this.elapsed} ms`;
+          return `${String(this.elapsed).padStart(3, 0)} ms`;
       }
     },
 
     get msg2() {
       if (this.state === 'RESULT') {
         if (this.isNewBest) return 'rekord!';
+
+        if (this.elapsed === 314) return 'π';
         else if (this.elapsed <= 250) return random(['zelo dobro!', 'čestitam!', 'odlično!']);
         else if (this.elapsed >= 250 && this.elapsed < 300) return '&nbsp;';
         else return random(['velik luzer', 'odidi', 'dovolj bo', 'pankrt']);
@@ -37,16 +39,19 @@ function Reflex() {
     },
 
     get bgcolor() {
+      const IKB = '#1F18C0';
+      const GOLD = 'rgb(250, 210, 0)';
+
       switch (this.state) {
         case 'INIT':
           return 'black';
         case 'COUNTDOWN':
           return 'black';
         case 'TIMER':
-          return 'red';
+          return IKB; // 'red';
         case 'RESULT':
-          if (this.isNewBest) return 'rgb(250, 210, 0)'; // gold
-          return '#1F18C0';
+          if (this.isNewBest) return GOLD; // gold
+          return IKB;
       }
     },
 
@@ -62,7 +67,6 @@ function Reflex() {
     },
 
     onKeyDown(e) {
-      console.log('key down');
       if (e.key !== ' ') return;
       if (this.state === 'COUNTDOWN') return alert('poraz');
 
@@ -71,21 +75,20 @@ function Reflex() {
     },
 
     startCountdown() {
-      this.state = 'COUNTDOWN';
       setTimeout(this.startTimer.bind(this), 2000 + Math.random() * 5000);
+      this.state = 'COUNTDOWN';
     },
 
     startTimer() {
-      this.state = 'TIMER';
       this.startTime = new Date();
+      this.state = 'TIMER';
+
       this.refresh();
     },
 
     endTimer() {
       this.isNewBest = this.elapsed < this.best;
-      console.log(this.isNewBest);
       this.best = Math.min(this.elapsed, this.best);
-
       this.state = 'RESULT';
     },
   };
