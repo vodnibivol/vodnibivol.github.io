@@ -15,11 +15,10 @@ const Rtv = (function () {
     const recDateDash = response.recordingDate.match(/^[\d-]+/)[0];
     const recDateSlash = recDateDash.replace(/-/g, '/');
 
-    const streamUrl = `https://vodstr.rtvslo.si/{archive}/_definst_/${recDateSlash}/${mediaId}.smil/playlist.m3u8?keylockhash=${khash}`;
     const archive = await _getArchive(recDateDash);
-    const correctUrl = streamUrl.replace('{archive}', archive);
+    const streamUrl = `https://vodstr.rtvslo.si/${archive}/_definst_/${recDateSlash}/${mediaId}.smil/playlist.m3u8?keylockhash=${khash}`;
 
-    return correctUrl;
+    return streamUrl;
   }
 
   async function getAudio(mediaId, jwt) {
