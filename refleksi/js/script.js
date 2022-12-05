@@ -62,8 +62,10 @@ function Reflex() {
     },
 
     refresh() {
-      this.endTime = new Date();
-      if (this.state === 'TIMER') requestAnimationFrame(this.refresh.bind(this));
+      if (this.state === 'TIMER') {
+        this.endTime = new Date();
+        requestAnimationFrame(this.refresh.bind(this));
+      }
     },
 
     onKeyDown(e) {
