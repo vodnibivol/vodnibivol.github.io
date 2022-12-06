@@ -3,7 +3,7 @@ function Reflex() {
     state: 'INIT', // INIT, COUNTDOWN, TIMER, RESULT
 
     startTime: 0,
-    endTime: 10 ** 9, // must be high, because of best
+    endTime: 10 ** 9, // must be high, because of isNewBest
 
     best: Alpine.$persist(500),
     isNewBest: false,
@@ -31,8 +31,8 @@ function Reflex() {
 
         if (this.elapsed === 314) return 'π';
         else if (this.elapsed <= 250) return random(['zelo dobro!', 'čestitam!', 'odlično!']);
-        else if (this.elapsed >= 250 && this.elapsed < 300) return '&nbsp;';
-        else return random(['velik luzer', 'odidi', 'dovolj bo', 'pankrt']);
+        // else if (this.elapsed >= 250 && this.elapsed < 300) return '&nbsp;';
+        // else return random(['velik luzer', 'odidi', 'dovolj bo', 'pankrt']);
       }
 
       return '&nbsp;';
@@ -55,7 +55,7 @@ function Reflex() {
       }
     },
 
-    // methods
+    // --- methods
 
     init() {
       document.addEventListener('keydown', this.onKeyDown.bind(this));
@@ -77,7 +77,10 @@ function Reflex() {
     },
 
     startCountdown() {
-      setTimeout(this.startTimer.bind(this), 2000 + Math.random() * 5000);
+      setTimeout(() => {
+        requestAnimationFrame(this.startTimer.bind(this));
+      }, 2000 + Math.random() * 5000);
+
       this.state = 'COUNTDOWN';
     },
 
@@ -89,22 +92,21 @@ function Reflex() {
     },
 
     endTimer() {
+      this.state = 'RESULT';
+      this.endTime = new Date();
       this.isNewBest = this.elapsed < this.best;
       this.best = Math.min(this.elapsed, this.best);
-      this.state = 'RESULT';
     },
   };
 }
 
-// utils
+// --- utils
 
 function random(arr) {
   // arr can be empty, integer or array
   const randFloat = Math.random();
   if (arr === undefined) return randFloat;
-  else if (Number.isInteger(arr)) return Math.floor(randFloat * arr);
-  else if (Array.isArray(arr)) {
-    const randInt = Math.floor(randFloat * arr.length);
-    return arr[randInt];
-  }
+  const randInt = Math.floor(randFloat * arr.length);
+  if (Number.isInteger(arr)) return randInt;
+  else if (Array.isArray(arr)) return arr[randInt];
 }
