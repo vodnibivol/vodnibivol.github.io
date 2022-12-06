@@ -52,7 +52,7 @@ function getMsg() {
     let hours = d.getHours().toString().padStart(2, '0');
     let minutes = d.getMinutes().toString().padStart(2, '0');
 
-    let emoji = '%'; // ['α', 'β', 'γ', 'δ', 'ε'][(i %= 5)];
+    let emoji = '@'; // ['α', 'β', 'γ', 'δ', 'ε'][(i %= 5)];
     let colon = d.getSeconds() % 2 === 0 ? ':' : ' ';
 
     return `${hours}${colon}${minutes}   ${emoji}   `;
