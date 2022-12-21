@@ -6,8 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>larica</title>
     <style>
-      body {
+      * {
+        box-sizing: border-box;
+      }
+
+      body,
+      html {
+        width: 100%;
+        height: 100%;
         background: #000;
+        margin: 0;
+        padding: 0;
       }
 
       iframe {
@@ -40,8 +49,7 @@
       const shuffled = (arr) => [...arr].sort(() => nextRand() - 0.5);
       const sites = ['lucke', 'uran3'];
       iframe.src = shuffled(sites)[TODAY % sites.length];
-
-      window.onload = () => (bg.style.opacity = 0);
+      iframe.onload = setTimeout(() => ((bg.style.opacity = 0)), 500);
     </script>
   </body>
 </html>
