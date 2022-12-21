@@ -8,9 +8,6 @@
     <style>
       body {
         background: #000;
-        width: 100%;
-        height: 100%;
-        animation: show 3s forwards;
       }
 
       iframe {
@@ -21,13 +18,20 @@
         left: 0;
       }
 
-      @keyframes show {
-        from { opacity: 0; }
-        to { opacity: 1; }
+      #bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 100;
+        width: 100%;
+        height: 100%;
+        background: #000;
+        transition: opacity 3s;
       }
     </style>
   </head>
   <body>
+    <div id="bg"></div>
     <iframe id="iframe" src="" frameborder="0"></iframe>
     <script src="alea.min.js"></script>
     <script>
@@ -36,6 +40,8 @@
       const shuffled = (arr) => [...arr].sort(() => nextRand() - 0.5);
       const sites = ['lucke', 'uran3'];
       iframe.src = shuffled(sites)[TODAY % sites.length];
+
+      window.onload = () => (bg.style.opacity = 0);
     </script>
   </body>
 </html>
