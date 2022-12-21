@@ -15,7 +15,7 @@ let ITER = Math.pow(10, 10);
 
 function draw() {
   blendMode(BLEND); // "NORMAL"
-  background(19, 20, 41);
+  background(19, 20, 40);
   
   for (let j = 0; j < DOTS_NO; j++) {
     for (let i = 0; i < DOTS_NO; i++) {
@@ -23,7 +23,6 @@ function draw() {
       let y = MARGIN + j * d;
       
       let relD = dist(x, y, width/2, height/2);
-      //relD = dist(x, y, 0, 0); // mouseX, mouseY
       
       if ((relD + ITER) % 100 < 30) {
         drawPoint(x,y)
