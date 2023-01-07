@@ -137,7 +137,7 @@ function chooseWord() {
 
   setMainWord(selectedWord);
   setFontSize(selectedWord);
-  setInfo(randId, selectedWord);
+  setInfo(selectedWord);
 }
 
 function setMainWord(word) {
@@ -167,8 +167,8 @@ function setFontSize(word) {
   }
 }
 
-function setInfo(id, word) {
-  infoButton.href = `//fran.si/133/sskj2-slovar-slovenskega-knjiznega-jezika-2/${id}/${word}?Query=${word}`;
+function setInfo(word) {
+  infoButton.href = `https://fran.si/iskanje?View=1&Query=${word}`;
 }
 
 /* -------- main game logic -------- */

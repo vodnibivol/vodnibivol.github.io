@@ -41,8 +41,6 @@ function search() {
         return this.getStreams([meta.response]);
       }
 
-      console.log(this.flags.size);
-
       if (this.query === 'clear') {
         this.loading = false;
         this.query = '';

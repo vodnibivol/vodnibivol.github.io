@@ -8,11 +8,6 @@ const Morse = (function () {
   const DOT_CHAR = '.';
   const SPACE = '/';
 
-  // const SEPARATOR = '... '; // "... " => 3, 2, 1, 4
-  // const DASH_CHAR = '.. ';
-  // const DOT_CHAR = '. ';
-  // const SPACE = '.... ';
-
   // event listeners
   document.addEventListener('input', _onInput);
 
