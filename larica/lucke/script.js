@@ -24,13 +24,11 @@ function draw() {
       
       let relD = dist(x, y, width/2, height/2);
       
-      if ((relD + ITER) % 100 < 30) {
+      if ((relD + ITER--) % 100 < 30) {
         drawPoint(x,y)
       }
     }
   }
-  
-  ITER--;
 }
 
 function drawPoint(x, y) {
