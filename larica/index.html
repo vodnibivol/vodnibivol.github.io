@@ -42,16 +42,13 @@
   <body>
     <div id="bg"></div>
     <iframe id="iframe" frameborder="0"></iframe>
-    <script src="alea.min.js"></script>
     <script>
       const TODAY = Math.floor(new Date() / 86400000);
-      const nextRand = new alea();
-      const shuffled = (arr) => [...arr].sort(() => nextRand() - 0.5);
-      const sites = ['lucke', 'uran3'];
+      const sites = ['kresnicke'];
 
       window.onload = function () {
         iframe.onload = setTimeout(() => (bg.style.opacity = 0), 500);
-        iframe.src = shuffled(sites)[TODAY % sites.length];
+        iframe.src = sites[TODAY % sites.length];
       };
     </script>
   </body>
