@@ -18,7 +18,7 @@ body {
   place-items: center;
   flex-direction: column;
   background: #ddd;
-  /* background: black; */
+  // background: ivory;
 }
 
 .main {
@@ -78,11 +78,12 @@ body {
 
     input[type='range'] {
       transform-origin: right;
-      transform: rotate(90deg);
+      transform: rotate(-90deg);
       appearance: none;
       width: 50px;
       position: absolute;
       right: 13px;
+      bottom: 80px;
 
       &::-webkit-slider-runnable-track {
         height: 4px;
