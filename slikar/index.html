@@ -3,15 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
     <title>slikar</title>
     <link rel="stylesheet" href="./css/style.css" />
-
-    <!-- <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script> -->
-    <!-- <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script> -->
   </head>
   <body>
     <div class="main" x-data="Slikar">
@@ -21,7 +15,7 @@
           <div
             class="color"
             :class="index === currentColor && 'selected'"
-            :style="'background:'+color"
+            :style="'background:' + color"
             @click="selectColor(index)"
             @dblclick="removeColor(index)"
           ></div>
@@ -31,26 +25,11 @@
       </div>
       <div class="extra">
         <input type="range" min="1" max="10" x-model="strokeWidth" />
-        <br />
         <input type="color" />
       </div>
     </div>
 
-    <footer
-      x-data="{
-      download() {
-        const link = document.createElement('a');
-        link.download = 'slikica.png';
-        link.href = $('#canvas').toDataURL();
-        link.click();
-      }
-    }"
-    >
-      <!-- <button @click="download">shrani</button> -->
-    </footer>
-
     <script src="./js/slikar.js"></script>
     <script src="./js/alpinejs@3.11.1.min.js"></script>
-    <script src="./js/persist@3.x.x.min.js"></script>
   </body>
 </html>

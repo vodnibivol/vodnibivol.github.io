@@ -84,6 +84,8 @@ body {
       position: absolute;
       right: 13px;
       bottom: 80px;
+      cursor: pointer;
+
 
       &::-webkit-slider-runnable-track {
         height: 4px;
@@ -99,7 +101,6 @@ body {
         border-radius: 50%;
         background: white;
         margin-top: -5px;
-        cursor: pointer;
       }
     }
 

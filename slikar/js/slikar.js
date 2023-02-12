@@ -10,6 +10,13 @@ const Slikar = {
     $('input[type="range"]').onchange = ({ target: t }) => (this.strokeWidth = t.value);
   },
 
+  download() {
+    const link = document.createElement('a');
+    link.download = 'slikica.png';
+    link.href = $('#canvas').toDataURL();
+    link.click();
+  },
+
   selectColor(index) {
     this.currentColor = index;
     $('input[type="color"]').value = convertHex(this.colors[this.currentColor]);
@@ -36,13 +43,16 @@ const Canvas = (function () {
   const ctx = canvas.getContext('2d');
   let rect = canvas.getBoundingClientRect();
 
+  let active = true;
   let prevX, prevY;
 
-  ctx.fillStyle = 'white';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  // --- init
+  background('white');
 
   // --- events
   window.onresize = () => (rect = canvas.getBoundingClientRect());
+  window.onblur = () => (active = false);
+  window.onfocus = () => (active = true);
   document.onmousedown = (e) => {
     ctx.fillStyle = Slikar.colors[Slikar.currentColor];
     rect = canvas.getBoundingClientRect();
@@ -50,7 +60,7 @@ const Canvas = (function () {
     const currX = e.clientX;
     const currY = e.clientY;
 
-    point(currX, currY);
+    active && point(currX, currY);
   };
 
   document.onmousemove = (e) => {
@@ -58,11 +68,17 @@ const Canvas = (function () {
     const currY = e.clientY;
 
     const mouseIsDown = e.button || e.buttons;
-    mouseIsDown && line(prevX, prevY, currX, currY);
+    active && mouseIsDown && line(prevX, prevY, currX, currY);
 
     prevX = currX;
     prevY = currY;
   };
+
+  // --- functions
+  function background(color) {
+    ctx.fillStyle = color;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
 
   function point(x, y) {
     const bw = 4; // canvas border width
@@ -79,15 +95,15 @@ const Canvas = (function () {
     for (let y = 0; y < r; ++y) {
       for (let x = 0; x < r; ++x) {
         if (dist(x, y, (r - 1) / 2, (r - 1) / 2) < (r / 3) * Math.SQRT2) {
-          // dont't know why this works
-          ctx.fillRect(x0 + x, y0 + y, 1, 1);
+          // dont't know why the math is right
+          setPixel(x0 + x, y0 + y);
         }
       }
     }
   }
 
-  function dist(x0, y0, x1, y1) {
-    return Math.sqrt(Math.pow(x1 - x0, 2) + Math.pow(y1 - y0, 2));
+  function setPixel(x, y) {
+    ctx.fillRect(x, y, 1, 1);
   }
 
   function line(x0, y0, x1, y1) {
@@ -100,7 +116,6 @@ const Canvas = (function () {
     let count = 0;
     while (count++ < 10000) {
       point(x0, y0);
-      // circle(x0, y0, 4);
 
       if (x0 === x1 && y0 === y1) break;
       var e2 = 2 * err;
@@ -113,6 +128,12 @@ const Canvas = (function () {
         y0 += sy;
       }
     }
+  }
+
+  // --- helpers
+
+  function dist(x0, y0, x1, y1) {
+    return Math.sqrt(Math.pow(x1 - x0, 2) + Math.pow(y1 - y0, 2));
   }
 
   return { canvas, ctx, circle };
