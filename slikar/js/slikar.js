@@ -71,23 +71,23 @@ const Canvas = (function () {
     const xPos = x - Math.round(rect.x) - bw;
     const yPos = y - Math.round(rect.y) - bw;
 
-    circle(xPos - lw, yPos - lw, lw, lw);
+    circle(Math.round(xPos - lw / 2), Math.round(yPos - lw / 2), lw, lw);
     // ctx.fillRect(xPos - Math.round(lw / 2), yPos - Math.round(lw / 2), lw, lw);
   }
 
   function circle(x0, y0, r) {
-    for (let y = 0; y <= 2 * r; ++y) {
-      for (let x = 0; x <= 2 * r; ++x) {
-        const deltaX = r - x;
-        const deltaY = r - y;
-        const distance = Math.sqrt(deltaX ** 2 + deltaY ** 2);
-
-        // Point lies outside of the circle || edge treshold
-        if (distance <= r && r / distance > 1.2) {
+    for (let y = 0; y < r; ++y) {
+      for (let x = 0; x < r; ++x) {
+        if (dist(x, y, (r - 1) / 2, (r - 1) / 2) < (r / 3) * Math.SQRT2) {
+          // dont't know why this works
           ctx.fillRect(x0 + x, y0 + y, 1, 1);
         }
       }
     }
+  }
+
+  function dist(x0, y0, x1, y1) {
+    return Math.sqrt(Math.pow(x1 - x0, 2) + Math.pow(y1 - y0, 2));
   }
 
   function line(x0, y0, x1, y1) {
@@ -115,7 +115,7 @@ const Canvas = (function () {
     }
   }
 
-  return { canvas, ctx };
+  return { canvas, ctx, circle };
 })();
 
 function convertHex(colorName) {
