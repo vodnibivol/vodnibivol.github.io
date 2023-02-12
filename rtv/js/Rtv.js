@@ -90,7 +90,7 @@ const Rtv = (function () {
     if (!!cached) return cached.data;
 
     for (let i = 0; i <= 5; i++) {
-      const startDay = _dayDelta(recDate, i);
+      const startDay = _dayDelta(recDate, -i);
       const endDay = _dayDelta(recDate, i);
 
       // prettier-ignore
@@ -104,6 +104,8 @@ const Rtv = (function () {
       dstore.set('archive_' + recDate, correctArchive, dstore.YEAR);
       return correctArchive;
     }
+
+    throw new Error('archive not found.');
   }
 
   // --- utility functions
