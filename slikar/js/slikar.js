@@ -65,13 +65,29 @@ const Canvas = (function () {
   };
 
   function point(x, y) {
-    const bw = 4; // border width
+    const bw = 4; // canvas border width
     const lw = Slikar.strokeWidth; // line width
 
     const xPos = x - Math.round(rect.x) - bw;
     const yPos = y - Math.round(rect.y) - bw;
 
-    ctx.fillRect(xPos - Math.round(lw / 2), yPos - Math.round(lw / 2), lw, lw);
+    circle(xPos - lw, yPos - lw, lw, lw);
+    // ctx.fillRect(xPos - Math.round(lw / 2), yPos - Math.round(lw / 2), lw, lw);
+  }
+
+  function circle(x0, y0, r) {
+    for (let y = 0; y <= 2 * r; ++y) {
+      for (let x = 0; x <= 2 * r; ++x) {
+        const deltaX = r - x;
+        const deltaY = r - y;
+        const distance = Math.sqrt(deltaX ** 2 + deltaY ** 2);
+
+        // Point lies outside of the circle || edge treshold
+        if (distance <= r && r / distance > 1.2) {
+          ctx.fillRect(x0 + x, y0 + y, 1, 1);
+        }
+      }
+    }
   }
 
   function line(x0, y0, x1, y1) {
@@ -84,6 +100,7 @@ const Canvas = (function () {
     let count = 0;
     while (count++ < 10000) {
       point(x0, y0);
+      // circle(x0, y0, 4);
 
       if (x0 === x1 && y0 === y1) break;
       var e2 = 2 * err;
@@ -97,6 +114,8 @@ const Canvas = (function () {
       }
     }
   }
+
+  return { canvas, ctx };
 })();
 
 function convertHex(colorName) {

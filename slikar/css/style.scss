@@ -99,6 +99,7 @@ body {
         border-radius: 50%;
         background: white;
         margin-top: -5px;
+        cursor: pointer;
       }
     }
 
@@ -126,14 +127,10 @@ body {
   canvas {
     border: 4px solid black;
     image-rendering: pixelated;
-    cursor: url(../pencil.cur), auto;
-  }
-}
+    cursor: url(../img/pencil.cur), auto;
 
-.input[type='range'] {
-  border: 4px solid black;
-  padding: 0.25rem;
-  margin-top: 1rem;
+    // box-shadow: 5px 5px pink;
+  }
 }
 
 footer {
@@ -144,12 +141,18 @@ footer {
   padding: 1rem;
 
   button {
+    display: contents;
     background: #eee;
     border: 3px solid black;
     cursor: pointer;
 
     &:active {
       background: #ccc;
+    }
+
+    img {
+      width: 30px;
+      image-rendering: pixelated;
     }
   }
 }
