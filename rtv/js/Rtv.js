@@ -21,6 +21,13 @@ const Rtv = (function () {
     return streamUrl;
   }
 
+  async function getDownload(mediaId) {
+    const streamUrl = getStream(mediaId);
+
+    // ...
+    return streamUrl;
+  }
+
   async function getAudio(mediaId, jwt) {
     let mediadata = await _getMedia(mediaId, jwt);
     console.log(mediadata);
@@ -81,7 +88,7 @@ const Rtv = (function () {
     const r = await _getMedia(AUX_ID, jwt);
 
     const streams = r.response.mediaFiles[0].streams;
-    const khash = JSON.stringify(streams).match(/keylockhash=([\w-]+)/)[1]; // TODO: preveri, ali ni vec razlicnih keylockhashev
+    const khash = JSON.stringify(streams).match(/wowzatokenhash=([\w-]+)/)[1]; // TODO: preveri, ali ni vec razlicnih keylockhashev
     return khash;
   }
 
@@ -127,7 +134,7 @@ const Rtv = (function () {
     return newDateString;
   }
 
-  return { getSearch, getMeta, getStream, getAudio };
+  return { getSearch, getMeta, getStream, getDownload, getAudio };
 })();
 
 // --- JSONP Fetch function

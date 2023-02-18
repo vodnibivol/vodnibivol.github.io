@@ -19,11 +19,16 @@ const Slikar = {
 
   selectColor(index) {
     this.currentColor = index;
-    $('input[type="color"]').value = convertHex(this.colors[this.currentColor]);
+    $('input[type="color"]').value = colorToHex(this.colors[this.currentColor]);
   },
 
   pickColor() {
     $('input[type="color"]').click();
+  },
+
+  addColor() {
+    this.colors.push('pink');
+    this.currentColor = this.colors.length - 1; // optional
   },
 
   removeColor() {
@@ -139,13 +144,13 @@ const Canvas = (function () {
   return { canvas, ctx, circle };
 })();
 
-function convertHex(colorName) {
+function colorToHex(cssColorName) {
   const toHex = (str) => parseInt(str).toString(16).padStart(2, 0);
 
   const el = document.createElement('div');
-  el.style.color = colorName;
+  el.style.color = cssColorName;
   el.style.display = 'none';
-  document.head.appendChild(el);
+  document.body.appendChild(el);
 
   const style = getComputedStyle(el).color;
   const [_, r, g, b] = style.match(/(\d+), (\d+), (\d+)/);
@@ -153,4 +158,17 @@ function convertHex(colorName) {
 
   el.remove();
   return hex;
+}
+
+function colorToRgb(cssColorName) {
+  const el = document.createElement('div');
+  el.style.color = cssColorName;
+  el.style.display = 'none';
+  document.body.appendChild(el);
+
+  const style = getComputedStyle(el).color;
+  const [_, r, g, b] = style.match(/(\d+), (\d+), (\d+)/);
+
+  el.remove();
+  return [r, g, b].map(parseFloat);
 }
