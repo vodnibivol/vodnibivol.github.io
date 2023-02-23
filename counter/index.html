@@ -16,7 +16,7 @@
       const h = new Counter({ width: 2, el: '#counterH' });
       const m = new Counter({ width: 2, el: '#counterM' });
 
-      function setTime() {
+      (function setTime() {
         const d = new Date();
 
         // render time
@@ -27,9 +27,7 @@
         const millis = d.getSeconds() * 1000 + d.getMilliseconds();
         const minute = 60 * 1000;
         setTimeout(setTime, minute - millis);
-      }
-
-      setTime();
+      })();
     </script>
   </body>
 </html>
