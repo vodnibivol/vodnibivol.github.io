@@ -15,7 +15,7 @@ body {
 
 .counter {
   position: relative;
-  border-radius: 7px;
+  border-radius: 8px;
   
   margin: 10px;
   display: flex;
@@ -23,7 +23,7 @@ body {
   background: #fff;
   box-shadow: 5px 5px 0 rgba(132, 155, 237, 0.65);
   
-  div.num-window {
+  div.num-cell {
     position: relative;
     overflow: hidden;
     
@@ -53,11 +53,11 @@ body {
 
     .num {
       position: absolute;
-      top: 5px;
+      top: 5px; // 5
       width: 50%;
       word-wrap: anywhere;
       text-align: center;
-      line-height: 1.6;
+      line-height: 1.5; //n 1.6
 
       transition: transform 4s; // 1 => 1.2; počasi: 5s
       transition-timing-function: cubic-bezier(0.65, 0.05, 0.36, 1);
