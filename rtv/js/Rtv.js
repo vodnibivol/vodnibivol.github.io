@@ -22,10 +22,10 @@ const Rtv = (function () {
   }
 
   async function getDownload(mediaId) {
-    const streamUrl = getStream(mediaId);
-
-    // ...
-    return streamUrl;
+    const data = await _getSmil(mediaId);
+    const dlUrl = data.match(/mp4:(.+?\.mp4)/)?.[1]; // matchAll, če želiš primerjat kvalitete
+    console.log(dlUrl);
+    return dlUrl; // samo filename .. ne vem, če sploh dela
   }
 
   async function getAudio(mediaId, jwt) {
@@ -47,7 +47,7 @@ const Rtv = (function () {
     return r;
   }
 
-  async function getMeta(mediaId) {
+  async function getMeta(mediaId = AUX_ID) {
     const cached = dstore.get('meta_' + mediaId);
     if (!!cached) return cached.data;
 
@@ -56,6 +56,22 @@ const Rtv = (function () {
 
     dstore.set('meta_' + mediaId, r, dstore.DAY);
     return r;
+  }
+
+  // --- internal
+
+  async function _getSmil(mediaId) {
+    const cached = dstore.get('smil_' + mediaId);
+    if (!!cached) return cached.data;
+
+    const streamUrl = await getStream(mediaId);
+    const smilUrl = streamUrl.replace('playlist.m3u8', 'jwplayer.smil');
+
+    const r = await fetch(smilUrl);
+    const data = await r.text();
+
+    dstore.set('smil_' + mediaId, data, dstore.MINUTE * 15);
+    return data;
   }
 
   async function _getMedia(mediaId, jwt) {
@@ -154,6 +170,7 @@ async function ffetch(url) {
 
     const el = document.createElement('script');
     el.src = url + '&callback=' + fooN;
+    el.id = HASH;
     el.onload = function () {
       window[dataN] = window[fooN] = null;
       el.remove();

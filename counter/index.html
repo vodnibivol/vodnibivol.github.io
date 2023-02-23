@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>counter</title>
+  </head>
+  <body class="flex-center">
+    <div class="counter" id="counterH"></div>
+    <div class="counter" id="counterM"></div>
+
+    <script src="counter.js"></script>
+    <script>
+      const h = new Counter({ width: 2, el: '#counterH' });
+      const m = new Counter({ width: 2, el: '#counterM' });
+
+      function setTime() {
+        const d = new Date();
+
+        // render time
+        h.setValue(d.getHours());
+        m.setValue(d.getMinutes());
+
+        // set timeout for next minute
+        const millis = d.getSeconds() * 1000 + d.getMilliseconds();
+        const minute = 60 * 1000;
+        setTimeout(setTime, minute - millis);
+      }
+
+      setTime();
+    </script>
+  </body>
+</html>
