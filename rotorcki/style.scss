@@ -1,0 +1,117 @@
+* {
+  box-sizing: border-box;
+  pointer-events: none;
+  user-select: none;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: ivory;
+}
+
+@for $i from 1 through 4 {
+  p#rotor#{$i} {
+    // animation: rotate (15s + $i) linear infinite;
+
+    &::before {
+      width: 95px + (60px * $i);
+      height: 95px + (60px * $i);
+    }
+
+    &::after {
+      width: 155px + (60px * $i);
+      height: 155px + (60px * $i);
+    }
+
+    span {
+      width: 70px + (30px * $i);
+    }
+  }
+}
+
+@for $i from 1 through 25 {
+  p span:nth-of-type(#{$i}) {
+    transform: translate(0, -50%) rotate((($i - 1) * 360/25) + deg);
+  }
+}
+
+// --- general
+
+#rotors {
+  position: relative;
+  // height: 100px;
+  // width: 100px;
+  // border: 1px solid red;
+
+  #window {
+    position: absolute;
+    left: 72px;
+    top: 16px;
+    width: 130px;
+    // height: 34px;
+    border-bottom: 2px dashed;
+    box-sizing: content-box;
+  }
+}
+
+p[id*='rotor'] {
+  position: absolute;
+  top: 0;
+  transition: rotate 1s cubic-bezier(0.215, 0.610, 0.355, 1);
+
+  &::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    content: '';
+    border: 2px solid;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+  }
+
+  &:last-of-type::after{
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    content: '';
+    border: 2px solid;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+  }
+
+  span {
+    // border: 1px solid red;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    font: 23px Courier, monospace;
+    text-align: right;
+    transform-origin: center left;
+  }
+}
+
+// ---
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

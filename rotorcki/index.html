@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>rotors</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="flex-center">
+    <div id="rotors">
+      <div id="window"></div>
+
+      <p id="rotor1"></p>
+      <p id="rotor2"></p>
+      <p id="rotor3"></p>
+      <p id="rotor4"></p>
+    </div>
+
+    <script>
+      // --- vars
+      const ALPHABET = 'ABCČDEFGHIJKLMNOPRSŠTUVZŽ';
+      let iter = 0;
+
+      // --- init
+      [...rotors.querySelectorAll('p')].forEach((r) => {
+        [...ALPHABET].forEach((l) => {
+          r.insertAdjacentHTML('beforeend', `<span>${l}</span>`);
+        });
+      });
+
+      // --- events
+      document.onkeydown = (e) => {
+        if (btoa(e.key) === 'bA==') {
+          let word = atob(['bGFyYQ==', 'bW9qYQ==', 'c2lpaQ=='][iter++ % 3]);
+          write(word);
+        } else {
+          shuffle();
+        }
+      };
+
+      // --- f(x)
+      function write(word = '') {
+        [...rotors.querySelectorAll('p')].forEach((r, index) => {
+          const letter = (word[index] || 'a').toUpperCase();
+          const offset = [...ALPHABET].indexOf(letter);
+          r.style.rotate = -offset * (360 / 25) + 'deg';
+        });
+      }
+
+      function shuffle() {
+        [...rotors.querySelectorAll('p')].forEach((r) => {
+          r.style.rotate = -25 * Math.random() * (360 / 25) + 'deg';
+        });
+      }
+    </script>
+  </body>
+</html>
