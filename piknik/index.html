@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>piknik</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body class="flex-center">
+    <div id="container" x-data="Piknik">
+      <div id="loader" x-show="!loaded"></div>
+
+      <div id="main" x-show="loaded" x-cloak>
+        <div class="row">
+          <!-- CANVAS & WORDS -->
+          <div id="letters" class="flex-center">
+            <canvas id="canvas" width="200" height="200"></canvas>
+            <template x-for="letter, index in letters">
+              <div
+                class="letter"
+                x-text="letter"
+                :data-index="index"
+                :class="{'selected':draggedLetters.includes(index)}"
+                :style="computeStyle(index)"
+              ></div>
+            </template>
+          </div>
+
+          <div id="words" class="flex-center" :class="{'solved':allGuessed}">
+            <ol>
+              <template x-for="entry in words.sort((a, b) => b.length - a.length)">
+                <li
+                  class="word"
+                  x-text="entry.guess || '-'.repeat(entry.length)"
+                  @click="entry.guess && showDef(entry.guess)"
+                  :data-clickable="!!entry.guess"
+                ></li>
+              </template>
+            </ol>
+          </div>
+        </div>
+
+        <div class="row">
+          <!-- WRITTEN LETTERS -->
+          <div id="written">
+            <span>&gt;</span>
+            <span x-text="draggedWord||(allGuessed?'':'_')" x-show="!allGuessed"></span>
+            <span x-show="allGuessed" @click="chooseWords" data-clickable>naslednja</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/canvas.js"></script>
+    <script src="js/piknik.js"></script>
+    <script src="js/alpinejs@3.11.1.min.js"></script>
+  </body>
+</html>

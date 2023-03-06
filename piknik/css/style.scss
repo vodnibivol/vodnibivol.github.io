@@ -1,0 +1,137 @@
+* {
+  box-sizing: border-box;
+  user-select: none;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+
+  font-family: Courier, Consolas, monospace;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+body {
+  background: linen;
+}
+
+#main {
+  $border-style: 3px solid black;
+
+  border: $border-style;
+  // border-radius: 16px;
+  overflow: hidden;
+  cursor: default;
+
+  box-shadow: 8px 8px 0 #00000022;
+
+
+  .row {
+    display: flex;
+  }
+
+  #words {
+    // width: 200px;
+    background: lightsalmon;
+    border-left: $border-style;
+
+    // transition: background 0.3s;
+
+    &.solved {
+      background: lightgreen;
+    }
+
+    ol {
+      margin: 2rem;
+      padding-left: 16px;
+    }
+  }
+
+  #letters {
+    position: relative;
+    width: 200px;
+    // height: 200px;
+
+    background: lightblue;
+
+    .letter {
+      box-sizing: content-box;
+      padding: 2px;
+
+      position: absolute;
+      border: 3px solid;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      text-align: center;
+
+      text-transform: uppercase;
+
+      background: lightgoldenrodyellow;
+
+      &.selected {
+        background: black;
+        border-color: black;
+        color: lightgoldenrodyellow;
+      }
+    }
+  }
+
+  #written {
+    background: #ddd;
+    height: 50px;
+    font-size: 22px;
+    width: 100%;
+    border-top: $border-style;
+
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 1rem;
+
+    span {
+      text-transform: uppercase;
+      letter-spacing: 5px;
+      margin: 0 5px;
+    }
+  }
+}
+
+// --- canvas
+
+canvas#canvas {
+  image-rendering: pixelated;
+  pointer-events: none;
+  touch-action: auto;
+}
+
+#main, #main * {
+  touch-action: none;
+}
+
+#loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+// --- general styles
+
+.flex-center {
+  display: flex;
+  place-content: center;
+  place-items: center;
+}
+
+[x-cloak] {
+  visibility: hidden;
+}
+
+[data-clickable]:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}

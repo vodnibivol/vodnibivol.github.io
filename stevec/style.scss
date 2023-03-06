@@ -69,6 +69,25 @@ body {
   }
 }
 
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #181818;
+
+    .counter {
+      background: #555;
+      box-shadow: 5px 5px 0 rgba(52, 68, 126, 0.65);
+
+      .num-cell {
+        background: #999;
+
+        &::after {
+          background: rgba(167, 46, 80, 0.523);
+        }
+      }
+    }
+  }
+}
+
 .flex-center {
   display: flex;
   justify-content: center;
