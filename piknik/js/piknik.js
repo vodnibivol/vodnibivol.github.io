@@ -61,11 +61,12 @@ const Piknik = {
     const subwords = [];
     for (let [word, freq] of this.SSKJ) {
       if (freq < 1000) break;
-      if (word !== targetWord && word.length >= 3 && isSubset(targetWord, word)) subwords.push(word);
+      if (word !== targetWord && word.length >= 3 && isSubset(targetWord, word) && !/\p{Lu}/u.test(word))
+        subwords.push(word);
     }
 
+    console.log('MOŽNOSTI: ' + [targetWord, ...subwords.sort((a, b) => b.length - a.length)].join(', '));
     this.words = [targetWord, ...subwords].map((w) => ({ length: w.length, guess: '' })).splice(0, 6);
-    // .sort((a, b) => b.length - a.length); // in html
 
     this.letters = shuffled([...targetWord]);
   },
@@ -75,7 +76,7 @@ const Piknik = {
 
     if (isDictWord) {
       // 1. že uganil
-      if (this.words.some((w) => w.guess === this.draggedWord)) return console.log('ALREADY GUESSED');
+      if (this.words.some((w) => w.guess === this.draggedWord)) return;
 
       // 2. prosto
       const match = this.words.find((entry) => !entry.guess && entry.length === this.draggedWord.length);

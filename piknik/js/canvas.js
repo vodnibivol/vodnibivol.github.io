@@ -75,7 +75,7 @@ const Canvas = {
       const y = rect.y - canvasRect.y + rect.height / 2;
 
       return { x: 0.5 + Math.round(x), y: 0.5 + Math.round(y) }; // 0.5 ker je lineWidth = 3
-      return { x, y };
+      // return { x, y };
     });
 
     if (this.draggedLetters.length < Piknik.$data.letters.length) {
