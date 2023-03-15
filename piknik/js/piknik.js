@@ -20,7 +20,7 @@ const Piknik = {
   },
 
   init() {
-    let count = 0;
+    let count = 9; // TODO: 0
     const maxCount = 10;
 
     fetch('./SSKJ_freqs_leposlovje.json')
@@ -45,8 +45,8 @@ const Piknik = {
 
   chooseWords() {
     function isSubset(osnova, primerjava) {
-      const counted1 = charCount(osnova);
-      const counted2 = charCount(primerjava);
+      const counted1 = utils.charCount(osnova);
+      const counted2 = utils.charCount(primerjava);
 
       for (let letter of primerjava) {
         if (!osnova.includes(letter)) return false;
@@ -56,7 +56,7 @@ const Piknik = {
     }
 
     // glavna (najdaljša) beseda, ki jo ugibaš
-    const targetWord = randomChoose(this.TARGETS)[0];
+    const targetWord = utils.randomChoose(this.TARGETS)[0];
 
     const subwords = [];
     for (let [word, freq] of this.SSKJ) {
@@ -68,7 +68,7 @@ const Piknik = {
     console.log('MOŽNOSTI: ' + [targetWord, ...subwords.sort((a, b) => b.length - a.length)].join(', '));
     this.words = [targetWord, ...subwords].map((w) => ({ length: w.length, guess: '' })).splice(0, 6);
 
-    this.letters = shuffled([...targetWord]);
+    this.letters = utils.shuffled([...targetWord]);
   },
 
   checkWord() {

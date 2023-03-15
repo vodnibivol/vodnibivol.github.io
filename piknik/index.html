@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>piknik</title>
     <link rel="stylesheet" href="css/style.css" />
+
+    <!-- external scripts -->
+    <script src="js/alpinejs@3.11.1.min.js" defer></script>
+    <script src="js/persist@3.11.1.min.js" defer></script>
+    <script src="js/p5.min.js" defer></script>
   </head>
   <body class="flex-center">
     <div id="container" x-data="Piknik">
@@ -42,7 +47,7 @@
         </div>
 
         <div class="row">
-          <!-- WRITTEN LETTERS -->
+          <!-- MESSAGE -->
           <div id="written">
             <span>&gt;</span>
             <span x-text="draggedWord||(allGuessed?'':'_')" x-show="!allGuessed"></span>
@@ -52,10 +57,9 @@
       </div>
     </div>
 
+    <!-- internal scripts -->
     <script src="js/utils.js"></script>
     <script src="js/canvas.js"></script>
     <script src="js/piknik.js"></script>
-    <!-- <script src="js/persist@3.11.1.min.js"></script> -->
-    <script src="js/alpinejs@3.11.1.min.js"></script>
   </body>
 </html>

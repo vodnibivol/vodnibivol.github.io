@@ -22,7 +22,7 @@ body {
   $border-style: 3px solid black;
 
   border: $border-style;
-  // border-radius: 16px;
+  border-radius: 12px;
   overflow: hidden;
   cursor: default;
 
@@ -83,7 +83,7 @@ body {
   #written {
     background: #ddd;
     height: 50px;
-    font-size: 22px;
+    font-size: 21px;
     width: 100%;
     border-top: $border-style;
 
