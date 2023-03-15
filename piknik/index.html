@@ -6,21 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>piknik</title>
     <link rel="stylesheet" href="css/style.css" />
-
-    <!-- external scripts -->
-    <script src="js/alpinejs@3.11.1.min.js" defer></script>
-    <script src="js/persist@3.11.1.min.js" defer></script>
-    <script src="js/p5.min.js" defer></script>
   </head>
   <body class="flex-center">
     <div id="container" x-data="Piknik">
-      <div id="loader" x-show="!loaded"></div>
+      <div id="loader" x-show="!loaded">loading ..</div>
 
       <div id="main" x-show="loaded" x-cloak>
         <div class="row">
           <!-- CANVAS & WORDS -->
           <div id="letters" class="flex-center">
-            <canvas id="canvas" width="200" height="200"></canvas>
+            <div id="canvasContainer"></div>
             <template x-for="letter, index in letters">
               <div
                 class="letter"
@@ -57,9 +52,13 @@
       </div>
     </div>
 
-    <!-- internal scripts -->
+    <!-- scripts -->
     <script src="js/utils.js"></script>
-    <script src="js/canvas.js"></script>
     <script src="js/piknik.js"></script>
+    <!-- <script src="js/persist@3.11.1.min.js"></script> -->
+    <script src="js/alpinejs@3.11.1.min.js"></script>
+    <!-- these can wait -->
+    <script src="js/p5.min.js"></script>
+    <script src="js/canvas.js"></script>
   </body>
 </html>

@@ -1,93 +1,65 @@
-const Canvas = {
-  canvas: $('#canvas'),
-  ctx: $('#canvas').getContext('2d'),
+const setup = (p) => {
+  const PD = Piknik.$data;
 
-  draggedLetters: [],
-  dragging: false,
+  p.setup = function () {
+    const canvas = p.createCanvas(200, 200);
+    canvas.parent('canvasContainer');
 
-  mouseCoords: {},
+    p.strokeWeight(3);
+    p.strokeCap('round');
+    p.strokeJoin('round');
+    p.noFill();
+  };
 
-  init() {
-    this.ctx.lineWidth = 3;
-    this.ctx.lineJoin = 'round';
-    this.ctx.lineCap = 'round';
+  p.draw = function () {
+    p.clear();
 
-    // events
-    document.addEventListener('mousedown', this._onmousedown.bind(this));
-    document.addEventListener('touchstart', this._onmousedown.bind(this));
+    if (!p.mouseIsPressed) return;
 
-    document.addEventListener('mouseup', this._onmouseup.bind(this));
-    document.addEventListener('touchend', this._onmouseup.bind(this));
-    document.addEventListener('touchcancel', this._onmouseup.bind(this));
-
-    document.addEventListener('mousemove', this._onmousemove.bind(this));
-    document.addEventListener('touchmove', this._onmousemove.bind(this));
-  },
-
-  _onmousedown(e) {
-    this.dragging = true;
-    this._onmousemove(e);
-  },
-
-  _onmouseup() {
-    this.dragging = false;
-
-    if (this.draggedLetters.length >= 3) Piknik.$data.checkWord();
-
-    this.draggedLetters = [];
-    Piknik.$data.draggedLetters = [];
-
-    this.draw();
-  },
-
-  _onmousemove(e) {
-    if (!this.dragging) return;
-
-    if (e.target.matches('#letters .letter:not(.selected)')) {
-      // if mouse over letter
-      const index = parseInt(e.target.dataset.index);
-      this.draggedLetters.push(index);
-      Piknik.$data.draggedLetters = [...this.draggedLetters];
-    }
-
-    const canvasRect = this.canvas.getBoundingClientRect();
-    const [x, y] = [e.clientX - canvasRect.x, e.clientY - canvasRect.y];
-
-    this.mouseCoords = { x, y };
-
-    this.draw();
-  },
-
-  draw() {
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-    if (!this.draggedLetters.length) return;
-    // console.log(this.draggedLetters);
-
-    const points = this.draggedLetters.map((dl) => {
+    const canvasRect = p.canvas.getBoundingClientRect();
+    const points = PD.draggedLetters.map((index) => {
       // get coordinates
-      const el = [...$$('#letters .letter')][dl];
+      const el = $(`.letter[data-index="${index}"]`);
       const rect = el.getBoundingClientRect();
-
-      const canvasRect = this.canvas.getBoundingClientRect();
 
       const x = rect.x - canvasRect.x + rect.width / 2;
       const y = rect.y - canvasRect.y + rect.height / 2;
 
-      return { x: 0.5 + Math.round(x), y: 0.5 + Math.round(y) }; // 0.5 ker je lineWidth = 3
-      // return { x, y };
+      return { x: Math.round(x), y: Math.round(y) };
     });
 
-    if (this.draggedLetters.length < Piknik.$data.letters.length) {
-      points.push({ x: this.mouseCoords.x, y: this.mouseCoords.y });
+    if (PD.draggedLetters.length < PD.letters.length) {
+      points.push({ x: p.mouseX, y: p.mouseY });
     }
 
-    this.ctx.beginPath();
-    this.ctx.moveTo(points[0].x, points[0].y);
-    for (let p of points) {
-      this.ctx.lineTo(p.x, p.y);
-    }
+    p.beginShape();
+    points.forEach((po) => p.vertex(po.x, po.y));
+    p.endShape();
+  };
 
-    this.ctx.stroke();
-  },
+  // --- events
+
+  window.onmousemove = (e) => checkLetters(e, e.target);
+  window.ontouchmove = (e) => {
+    const t = e.touches[0];
+    const currentTarget = document.elementFromPoint(t.clientX, t.clientY);
+    checkLetters(e, currentTarget);
+  };
+
+  p.mousePressed = (e) => checkLetters(e, e.target);
+  p.mouseReleased = () => {
+    if (PD.draggedLetters.length >= 3) PD.checkWord();
+    PD.draggedLetters = [];
+  };
+
+  // --- f(x)
+
+  function checkLetters(event, target) {
+    event.preventDefault();
+    if (p.mouseIsPressed && target.matches('#letters .letter:not(.selected)')) {
+      PD.draggedLetters.push(parseInt(target.dataset.index));
+    }
+  }
 };
+
+const myp5 = new p5(setup);

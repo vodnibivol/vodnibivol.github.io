@@ -20,9 +20,6 @@ const Piknik = {
   },
 
   init() {
-    let count = 9; // TODO: 0
-    const maxCount = 10;
-
     fetch('./SSKJ_freqs_leposlovje.json')
       .then((res) => res.json())
       .then((data) => {
@@ -31,16 +28,8 @@ const Piknik = {
         this.TARGETS = this.SSKJ.filter(([word, freq]) => word.length >= 5 && word.length <= 7 && freq > 1000);
 
         this.chooseWords();
-        if (count === maxCount) this.loaded = true;
+        this.loaded = true;
       });
-
-    (function load() {
-      // fake loading ampak izgleda dobro
-      $('#loader').innerText = '[' + 'x'.repeat(count) + '.'.repeat(maxCount - count) + ']';
-
-      if (count++ < maxCount) setTimeout(load, 50 + Math.random() * 50);
-      else if (Piknik.$data.SSKJ.length) Piknik.$data.loaded = true;
-    })();
   },
 
   chooseWords() {
@@ -96,5 +85,3 @@ const Piknik = {
     window.open('https://www.fran.si/iskanje?FilteredDictionaryIds=133&View=1&Query=' + word, '_blank');
   },
 };
-
-Canvas.init();
