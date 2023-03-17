@@ -41,7 +41,7 @@ const Piknik = {
 
     Promise.all(promises).then(() => {
       this.TARGETS = this.SSKJ.filter(([word, freq]) => {
-        return word.length >= 5 && word.length <= 7 && freq > 1000 && !this.BLACKLIST.has(word);
+        return word.length >= 5 && word.length <= 8 && freq > 1000 && !this.BLACKLIST.has(word);
       }).map((e) => e[0]);
 
       this.chooseWords();
@@ -70,13 +70,7 @@ const Piknik = {
     const subwords = [];
     for (let [word, freq] of this.SSKJ) {
       if (freq < 1000) break;
-      if (
-        word !== targetWord &&
-        word.length >= 3 &&
-        isSubset(targetWord, word) &&
-        !/\p{Lu}/u.test(word) &&
-        !this.BLACKLIST.has(word)
-      ) {
+      if (word !== targetWord && isSubset(targetWord, word) && !this.BLACKLIST.has(word)) {
         subwords.push(word);
       }
     }
