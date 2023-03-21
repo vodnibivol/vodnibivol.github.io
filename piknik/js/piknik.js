@@ -81,7 +81,7 @@ const Piknik = {
       return this.chooseWords();
     }
 
-    console.log('MOŽNOSTI: ' + [targetWord, ...subwords.sort((a, b) => b.length - a.length)].join(', '));
+    // console.log('MOŽNOSTI: ' + [targetWord, ...subwords.sort((a, b) => b.length - a.length)].join(', '));
     this.words = [targetWord, ...subwords].map((w) => ({ length: w.length, guess: '' })).splice(0, 6);
 
     this.letters = utils.shuffled([...targetWord]);
