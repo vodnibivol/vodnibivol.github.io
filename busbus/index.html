@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>busbus</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="shortcut icon" href="img/bus.png" type="image/x-icon" />
+
+    <style>
+      * {
+        font-family: Menlo, Consolas, monospace;
+        font-size: 11px;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+      }
+
+      input,
+      button {
+        border: 2px solid black;
+        padding: 3px 5px;
+        outline: none;
+      }
+
+      input {
+        width: 100px;
+      }
+
+      button {
+        background: lightgreen;
+      }
+    </style>
+  </head>
+  <body class="flex-center">
+    <div class="main">
+      <form action="/map.html">
+        <input type="text" name="line" placeholder="linija" autocomplete="off" />
+        <button type="submit">ok</button>
+      </form>
+    </div>
+
+    <script>
+      window.onload = () => document.querySelector('input').select();
+    </script>
+  </body>
+</html>

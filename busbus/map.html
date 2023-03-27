@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>busbus</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="shortcut icon" href="img/bus.png" type="image/x-icon" />
+
+    <!-- prettier-ignore -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css" integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14=" crossorigin="" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
+    <style>
+      .live-dot {
+        box-sizing: border-box;
+        z-index: 1000;
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        width: 12px;
+        height: 12px;
+        background: red;
+        border: 2px solid black;
+        border-radius: 50%;
+        animation: blink 1s ease-in infinite alternate;
+        opacity: 0.9;
+      }
+
+      @keyframes blink {
+        from {
+          background: rgb(253, 52, 52);
+        }
+        to {
+          background: rgb(150, 52, 52);
+        }
+      }
+    </style>
+  </head>
+  <body class="flex-center">
+    <div id="map"></div>
+    <div class="live-dot"></div>
+
+    <script>
+      // const BUS_SERVER = 'http://localhost:2200';
+      const BUS_SERVER = 'http://86.61.74.195:2200';
+    </script>
+
+    <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js"></script>
+    <!-- prettier-ignore -->
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js" charset="utf-8"></script>
+    <script src="js/leaflet.rotatedMarker.js"></script>
+    <script src="js/Lines.js"></script>
+    <script src="js/Bus.js"></script>
+    <script src="js/map.js"></script>
+  </body>
+</html>
