@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/galerija.css" />
+    <title>galerija</title>
+  </head>
+  <body>
+    <div id="main" x-data="Galerija">
+      <form action="#" @submit.prevent="onSubmit">
+        <div id="search-container" class="flex-center">
+          <input type="text" x-model="searchString" placeholder="iskanje .." />
+          <button type="submit">ok</button>
+        </div>
+      </form>
+
+      <!-- <hr /> -->
+
+      <div id="results-container" x-show="results.length">
+        <template x-for="rec in results">
+          <a :href="'/rtv/stream.html?id='+rec.id">
+            <div class="recording">
+              <img :src="rec.images.wide1 || rec.images.orig" :alt="rec.showName" />
+              <div class="title" x-text="rec.title"></div>
+            </div>
+          </a>
+        </template>
+      </div>
+
+      
+      <!-- <hr x-show="loading" /> -->
+      <div id="msg-container" class="flex-center" x-show="!!msgText">
+        <span x-text="msgText">nalaganje ..</span>
+      </div>
+    </div>
+
+    <script src="./js/Store.js"></script>
+    <script src="./js/Rtv.js"></script>
+    <script src="./js/Galerija.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.12.0/dist/cdn.min.js"></script>
+  </body>
+</html>
