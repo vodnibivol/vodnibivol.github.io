@@ -3,10 +3,11 @@ const Galerija = {
   searchString: '', // ali *
   page: 0,
 
-  categories: [
-    { name: 'filmi', id: 00000000000 },
-    { name: 'dokumentarci', id: 00000000000 },
-  ],
+  genre: 15890843,
+  // genres: [
+  //   { name: 'filmi', id: 00000000000 },
+  //   { name: 'dokumentarci', id: 00000000000 },
+  // ],
 
   results: [],
   maxResults: Infinity, // will be added later
@@ -49,10 +50,12 @@ const Galerija = {
     // urlComponent.searchParams.set('clip', 'show');
     // urlComponent.searchParams.set('from', '2023-01-01');
 
-    const types = [];
-    types.push(15890843); // FILMI
+    // const types = [];
+    // types.push(15890843); // FILMI
     // types.push(15890840); // DOKUMENTARCI
-    urlComponent.searchParams.set('showTypeId', types.join());
+    // urlComponent.searchParams.set('showTypeId', types.join());
+
+    urlComponent.searchParams.set('showTypeId', this.genre);
 
     const searchUrl = urlComponent.toString();
     this.loading = true;
@@ -88,5 +91,10 @@ const Galerija = {
       this.page++;
       this.getSearch();
     }
+  },
+
+  selectGenre(genreId) {
+    this.genre = genreId;
+    this.onSubmit();
   },
 };

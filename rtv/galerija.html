@@ -5,14 +5,23 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./css/galerija.css" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     <title>galerija</title>
   </head>
   <body>
     <div id="main" x-data="Galerija">
+      <!-- FILMI/DOK -->
+      <div id="genre-selector">
+        <button class="boxed filmi" :class="genre===15890843&&'black'" @click="selectGenre(15890843)">filmi</button>
+        <button class="boxed dokumentarci" :class="genre===15890840&&'black'" @click="selectGenre(15890840)">
+          dokumentarci
+        </button>
+      </div>
+
       <form action="#" @submit.prevent="onSubmit">
         <div id="search-container" class="flex-center">
-          <input type="text" x-model="searchString" placeholder="iskanje .." />
-          <button type="submit">ok</button>
+          <input class="boxed" type="text" x-model="searchString" placeholder="iskanje .." />
+          <button class="boxed black" type="submit">ok</button>
         </div>
       </form>
 
@@ -20,16 +29,24 @@
 
       <div id="results-container" x-show="results.length">
         <template x-for="rec in results">
-          <a :href="'/rtv/stream.html?id='+rec.id">
-            <div class="recording">
-              <img :src="rec.images.wide1 || rec.images.orig" :alt="rec.showName" />
-              <div class="title" x-text="rec.title"></div>
-            </div>
-          </a>
+          <div
+            class="recording"
+            :disabled="rec.payTv||rec.payable||rec.promo||rec.expiresInDays<2||new Date()>new Date(rec.expirationDate)"
+          >
+            <a :href="rec.link" target="_blank">
+              <div class="img-container">
+                <img :src="rec.images.wide1 || rec.images.orig" :alt="rec.showName" />
+
+                <div class="disabled-screen flex-center">
+                  <span>[ ni na voljo ]</span>
+                </div>
+              </div>
+            </a>
+            <div class="title" x-text="rec.title"></div>
+          </div>
         </template>
       </div>
 
-      
       <!-- <hr x-show="loading" /> -->
       <div id="msg-container" class="flex-center" x-show="!!msgText">
         <span x-text="msgText">nalaganje ..</span>
