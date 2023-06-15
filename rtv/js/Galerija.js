@@ -3,11 +3,7 @@ const Galerija = {
   searchString: '', // ali *
   page: 0,
 
-  genre: 15890843,
-  // genres: [
-  //   { name: 'filmi', id: 00000000000 },
-  //   { name: 'dokumentarci', id: 00000000000 },
-  // ],
+  genre: 15890843, // FILMI
 
   results: [],
   maxResults: Infinity, // will be added later
@@ -15,7 +11,8 @@ const Galerija = {
   flags: {
     movies: false,
     documentaries: true,
-    size: 36, // 12 * n
+    // size: 36, // 12 * n
+    size: 12,
   },
 
   get msgText() {
@@ -39,8 +36,8 @@ const Galerija = {
   async getSearch() {
     const urlComponent = new URL('https://api.rtvslo.si/ava/getSearch2?client_id=8c5205a95060a482f0fc96b9162d9e3f');
 
-    urlComponent.searchParams.set('q', this.searchString);
-    urlComponent.searchParams.set('unpublished', 1);
+    // urlComponent.searchParams.set('q', this.searchString);
+    // urlComponent.searchParams.set('unpublished', 1);
     urlComponent.searchParams.set('pageSize', this.flags.size || 12);
 
     // urlComponent.searchParams.set('promo', '0');
@@ -50,13 +47,14 @@ const Galerija = {
     // urlComponent.searchParams.set('clip', 'show');
     // urlComponent.searchParams.set('from', '2023-01-01');
 
-    // const types = [];
-    // types.push(15890843); // FILMI
-    // types.push(15890840); // DOKUMENTARCI
-    // urlComponent.searchParams.set('showTypeId', types.join());
+    const types = [];
+    types.push(15890843); // FILMI
+    types.push(15890840); // DOKUMENTARCI
+    urlComponent.searchParams.set('showTypeId', types.join());
 
     urlComponent.searchParams.set('showTypeId', this.genre);
 
+    // TODO: remove
     const searchUrl = urlComponent.toString();
     this.loading = true;
     this.searchResults = await Rtv.getSearch(searchUrl);

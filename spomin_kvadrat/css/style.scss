@@ -1,0 +1,143 @@
+* {
+  box-sizing: border-box;
+  font-family: Menlo, Consolas, monospace;
+  user-select: none;
+  outline: none;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+$color-primary: #e8e8e8;
+$color-secondary: lightblue;
+$color-ok: lightgreen;
+$color-wrong: lightsalmon;
+
+:root {
+  --grid-size: 10;
+  --cell-size: 40px;
+}
+
+body {
+  background: ivory;
+  font-size: 13px;
+}
+
+.grid {
+  cursor: default;
+
+  display: grid;
+  grid-template-columns: repeat(var(--grid-size), var(--cell-size));
+  grid-template-rows: repeat(var(--grid-size), var(--cell-size));
+
+  // gap: 3px;
+
+  .cell {
+    background: $color-primary;
+
+    &:active {
+      background: darken($color-primary, 2);
+    }
+
+    &[data-target].guessed {
+      background: $color-secondary;
+      pointer-events: none !important;
+    }
+    
+    &.guessed {
+      // WRONG
+      background: $color-wrong;
+      pointer-events: none !important;
+    }
+  }
+
+  &.animating .cell[data-target] {
+    background: $color-secondary;
+    pointer-events: none !important;
+  }
+
+  &.finished .cell[data-target] {
+    background: $color-ok;
+    pointer-events: none !important;
+  }
+}
+
+.boxed {
+  border: medium ridge;
+  padding: 2px 7px;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  padding: 1rem;
+
+  display: flex;
+  justify-content: space-between;
+
+  div.button {
+    background: lightgoldenrodyellow;
+    cursor: default;
+
+    &:active {
+      background: darken(lightgoldenrodyellow, 10);
+    }
+  }
+
+  input[type='number'] {
+    background: lightyellow;
+    height: 25px;
+    padding-right: 2px;
+  }
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// --- MODAL
+
+#modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 200; /* 100 je msg */
+  background: #ffffffbb;
+
+  .frame {
+    min-width: 300px;
+    max-width: 600px;
+
+    background: ivory;
+    /* background: #ebfaff; */
+    padding: 1rem;
+    border: thick ridge;
+  }
+
+  .buttons {
+    text-align: end;
+  }
+
+  label#remember {
+    font-weight: normal;
+    user-select: none;
+  }
+
+  button {
+    background: lightblue;
+
+    &:active {
+      background: darken(lightblue, 10);
+    }
+  }
+}

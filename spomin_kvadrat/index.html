@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>spomin</title>
+    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="shortcut icon" href="brain.png" type="image/x-icon" />
+  </head>
+  <body class="flex-center">
+    <!-- MAIN -->
+    <div id="main" x-data="gridd">
+      <div class="grid" :class="{ finished: isFinished || isGameOver, animating: animating }">
+        <template x-for="n, i in squareSize ** 2">
+          <div
+            class="cell boxed flex-center"
+            x-text="i"
+            :data-target="targets.includes(i)"
+            :class="{ guessed: guesses.includes(i) }"
+            @click="onClick(i)"
+          ></div>
+        </template>
+      </div>
+
+      <footer>
+        <div class="button animate boxed" @click="animate">namig</div>
+        <input type="number" class="boxed" min="3" max="20" x-model="size" @change="reset" disabled>
+        <!-- <div class="animate">animiraj</div> -->
+      </footer>
+    </div>
+
+    <!-- MODAL -->
+    <div id="modal" class="flex-center" style="display: none">
+      <div class="frame">
+        <span class="msg"></span>
+        <hr />
+        <div class="buttons">
+          <label id="remember">ne prikaži več <input type="checkbox" /> |</label>
+          <button type="button" class="cancel boxed">prekliči</button>
+          <button type="submit" class="ok boxed">OK</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="./js/alea.min.js"></script>
+    <script src="./js/modal.js"></script>
+    <script src="./js/script.js"></script>
+    <script src="./js/persist@3.x.x.min.js"></script>
+    <script src="./js/alpinejs@3.12.2.min.js"></script>
+  </body>
+</html>
