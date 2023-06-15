@@ -24,8 +24,7 @@
 
       <footer>
         <div class="button animate boxed" @click="animate">namig</div>
-        <input type="number" class="boxed" min="3" max="20" x-model="size" @change="reset" disabled>
-        <!-- <div class="animate">animiraj</div> -->
+        <input type="number" class="boxed" min="3" max="20" pattern="\d*" x-model="size" @change="reset">
       </footer>
     </div>
 

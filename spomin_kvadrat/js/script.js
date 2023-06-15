@@ -43,7 +43,7 @@ window.gridd = function () {
     },
 
     reset(init = this.isFinished) {
-      this.size = Math.max(Math.min(this.size, 20), 3); // TODO: če je modal, se kar sproti spreminja
+      // this.size = Math.max(Math.min(this.size, 20), 3); // TODO: če je modal, se kar sproti spreminja
       // TODO: probaj: da je 3x3, pa vpišeš npr 10. vidiš, kaj je problem ..
       // ne sme se takoj spremenit, ampak onchange komaj ...
 
@@ -85,7 +85,7 @@ window.gridd = function () {
       }
 
       if (e.key === 's') {
-        random = alea(new Date().valueOf());
+        // random = alea(new Date().valueOf());
         clearTimeout(this.animationTimeout);
         this.reset(true);
       }
@@ -101,7 +101,9 @@ window.gridd = function () {
 
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
-let random = alea();
+// let random = alea();
+
+random = Math.random;
 
 function shuffled(array, inPlace = false) {
   if (!inPlace) array = [...array]; // create a duplicate array

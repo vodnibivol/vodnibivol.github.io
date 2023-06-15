@@ -1,8 +1,8 @@
 * {
   box-sizing: border-box;
   font-family: Menlo, Consolas, monospace;
-  user-select: none;
   outline: none;
+  // touch-action: none !important;
 }
 
 html,
@@ -29,6 +29,7 @@ body {
 
 .grid {
   cursor: default;
+  user-select: none;
 
   display: grid;
   grid-template-columns: repeat(var(--grid-size), var(--cell-size));
@@ -47,7 +48,7 @@ body {
       background: $color-secondary;
       pointer-events: none !important;
     }
-    
+
     &.guessed {
       // WRONG
       background: $color-wrong;
@@ -70,6 +71,8 @@ body {
   border: medium ridge;
   padding: 2px 7px;
 }
+
+// --- FOOTER
 
 footer {
   position: fixed;
@@ -94,6 +97,7 @@ footer {
     background: lightyellow;
     height: 25px;
     padding-right: 2px;
+    border-radius: 0;
   }
 }
 
