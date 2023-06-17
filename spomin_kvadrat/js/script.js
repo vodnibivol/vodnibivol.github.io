@@ -128,3 +128,22 @@ function shuffled(array, inPlace = false) {
 
   return array;
 }
+
+/// Service Worker
+// If this browser supports service workers
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker
+    .register('sw.js', {
+      scope: location.pathname || '/',
+    })
+    .then(function (reg) {
+      // Registration worked
+      console.log('Registration succeeded. Scope is ', reg.scope);
+      // // Attempt to update
+      // reg.update();
+    })
+    .catch(function (error) {
+      // Registration failed
+      console.log('Registration failed with ' + error);
+    });
+}
