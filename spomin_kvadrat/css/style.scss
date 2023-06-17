@@ -68,7 +68,7 @@ body {
 }
 
 .boxed {
-  border: medium ridge;
+  border: 4px ridge;
   padding: 2px 7px;
 }
 
@@ -99,7 +99,22 @@ footer {
     padding-right: 2px;
     border-radius: 0;
   }
+
+  // --- SIZE INPUT
+
+  .size-input {
+    cursor: default;
+    background: lightyellow;
+    user-select: none;
+
+    .button {
+      // background: red;
+      // padding: 3px 5px;
+    }
+  }
 }
+
+// ---
 
 .flex-center {
   display: flex;

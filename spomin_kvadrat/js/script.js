@@ -12,8 +12,17 @@ window.gridd = function () {
 
     init() {
       this.reset();
+      this.$watch('size', (val) => {
+        if (val < 3) this.size = 3;
+        else if (val > 20) this.size = 20;
+        else this.reset(true);
+      });
 
       window.addEventListener('keydown', this.onKeyDown.bind(this));
+    },
+
+    $watch() {
+      this.size;
     },
 
     get squareSize() {
