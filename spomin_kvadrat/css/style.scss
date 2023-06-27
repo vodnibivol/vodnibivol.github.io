@@ -2,7 +2,7 @@
   box-sizing: border-box;
   font-family: Menlo, Consolas, monospace;
   outline: none;
-  // touch-action: none !important;
+  touch-action: none !important;
 }
 
 html,
@@ -25,11 +25,16 @@ $color-wrong: lightsalmon;
 body {
   background: ivory;
   font-size: 13px;
+  user-select: none;
+}
+
+#main {
+  display: contents;
 }
 
 .grid {
   cursor: default;
-  user-select: none;
+  // user-select: none;
 
   display: grid;
   grid-template-columns: repeat(var(--grid-size), var(--cell-size));
@@ -103,18 +108,16 @@ footer {
   // --- SIZE INPUT
 
   .size-input {
-    cursor: default;
     background: lightyellow;
     user-select: none;
-
-    .button {
-      // background: red;
-      // padding: 3px 5px;
-    }
   }
 }
 
 // ---
+
+.button {
+  cursor: default;
+}
 
 .flex-center {
   display: flex;
@@ -158,5 +161,40 @@ footer {
     &:active {
       background: darken(lightblue, 10);
     }
+  }
+}
+
+#settings {
+  display: contents;
+
+  #settings-modal {
+    position: fixed;
+
+    z-index: 100;
+    padding: 1rem;
+
+    background: lightyellow;
+    width: 270px;
+    max-width: 80vw;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .settings-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  .bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #ffffee88;
+    z-index: 10;
   }
 }

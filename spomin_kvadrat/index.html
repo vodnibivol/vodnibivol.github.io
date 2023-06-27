@@ -11,7 +11,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="./img/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="./img/favicon-16x16.png" />
     <link rel="manifest" href="./img/site.webmanifest" />
-    <link rel="mask-icon" href="./img/safari-pinned-tab.svg" color="#5bbad5" />
+    <!-- <link rel="mask-icon" href="./img/safari-pinned-tab.svg" color="#5bbad5" /> -->
     <link rel="shortcut icon" href="./img/favicon.ico" />
     <meta name="apple-mobile-web-app-title" content="Spomin" />
     <meta name="application-name" content="Spomin" />
@@ -23,7 +23,7 @@
     <!-- MAIN -->
     <div id="main" x-data="gridd">
       <div class="grid" :class="{ finished: isFinished || isGameOver, animating: animating }">
-        <template x-for="n, i in squareSize ** 2">
+        <template x-for="n, i in gridSize ** 2">
           <div
             class="cell boxed flex-center"
             x-text="i"
@@ -34,15 +34,35 @@
         </template>
       </div>
 
+      <div id="settings" x-show="settingsOpen">
+        <div class="bg" @click="settingsOpen = false"></div>
+
+        <div id="settings-modal" class="boxed">
+          <div class="settings-item">
+            <span>velikost mreže</span>
+
+            <div class="size-input boxed">
+              <span class="button" @click="gridSize > 2 && gridSize--">-</span>
+              <span x-text="gridSize"></span>
+              <span class="button" @click="gridSize < 10 && gridSize++">+</span>
+            </div>
+          </div>
+
+          <div class="settings-item">
+            <span>št. kvadratkov</span>
+
+            <div class="size-input boxed">
+              <span class="button" @click="size > 1 && size--">-</span>
+              <span x-text="size"></span>
+              <span class="button" @click="size < 20 && size++">+</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <footer>
         <div class="button animate boxed" @click="animate">namig</div>
-        <!-- <input type="number" id="sizeInput" class="boxed" min="3" max="20" pattern="\d*" required x-model.number.lazy="size" @change="reset"> -->
-
-        <div class="size-input boxed">
-          <span class="button" @click="size--">-</span>
-          <span class="" x-model.number="size" x-text="size"></span>
-          <span class="button" @click="size++">+</span>
-        </div>
+        <div class="button open-settings boxed" @click="settingsOpen = true">nastavitve</div>
       </footer>
     </div>
 

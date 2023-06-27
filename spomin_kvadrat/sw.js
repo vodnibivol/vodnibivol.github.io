@@ -3,7 +3,7 @@
  * Copyright (c) 2018 Ian Jones
  */
 
-const CACHE_VERSION = 'beta.001';
+const CACHE_VERSION = 'beta.002';
 
 this.addEventListener('install', (event) => {
   event.waitUntil(

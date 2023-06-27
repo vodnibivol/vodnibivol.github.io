@@ -1,6 +1,8 @@
 window.gridd = function () {
   return {
     size: Alpine.$persist(3), // how many squares to show
+    gridSize: Alpine.$persist(3), // grid cols/rows
+    settingsOpen: false,
 
     guesses: [],
     targets: [],
@@ -11,23 +13,16 @@ window.gridd = function () {
     animationTimeout: null,
 
     init() {
-      this.reset();
-      this.$watch('size', (val) => {
-        if (val < 3) this.size = 3;
-        else if (val > 20) this.size = 20;
-        else this.reset(true);
-      });
+      this.$watch('size', () => this.reset(true));
+      this.$watch('gridSize', () => this.reset(true));
 
       window.addEventListener('keydown', this.onKeyDown.bind(this));
+      this.reset();
     },
 
-    $watch() {
-      this.size;
-    },
-
-    get squareSize() {
-      return Math.ceil(Math.sqrt(this.size * 2)); // rows/cols
-    },
+    // get squareSize() {
+    //   return Math.ceil(Math.sqrt(this.size * 2)); // rows/cols
+    // },
 
     get isFinished() {
       return this.targets.every((i) => this.guesses.includes(i));
@@ -60,7 +55,7 @@ window.gridd = function () {
         this.guesses = [];
         this.isGameOver = false;
 
-        const indexes = new Array(this.squareSize ** 2).fill().map((_, i) => i);
+        const indexes = new Array(this.gridSize ** 2).fill().map((_, i) => i);
         this.targets = shuffled(indexes).slice(0, this.size);
 
         this.setSize(); // css
@@ -72,7 +67,7 @@ window.gridd = function () {
 
     setSize() {
       const r = document.querySelector(':root');
-      r.style.setProperty('--grid-size', this.squareSize); // row/col
+      r.style.setProperty('--grid-size', this.gridSize); // row/col
     },
 
     async animate() {
@@ -131,19 +126,19 @@ function shuffled(array, inPlace = false) {
 
 /// Service Worker
 // If this browser supports service workers
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker
-    .register('sw.js', {
-      scope: location.pathname || '/',
-    })
-    .then(function (reg) {
-      // Registration worked
-      console.log('Registration succeeded. Scope is ', reg.scope);
-      // // Attempt to update
-      // reg.update();
-    })
-    .catch(function (error) {
-      // Registration failed
-      console.log('Registration failed with ' + error);
-    });
-}
+// if ('serviceWorker' in navigator) {
+//   navigator.serviceWorker
+//     .register('sw.js', {
+//       scope: location.pathname || '/',
+//     })
+//     .then(function (reg) {
+//       // Registration worked
+//       console.log('Registration succeeded. Scope is ', reg.scope);
+//       // // Attempt to update
+//       // reg.update();
+//     })
+//     .catch(function (error) {
+//       // Registration failed
+//       console.log('Registration failed with ' + error);
+//     });
+// }
