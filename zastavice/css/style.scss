@@ -2,6 +2,7 @@
   font-family: Menlo, Consolas, monospace;
   font-size: 13px;
   box-sizing: border-box;
+  text-transform: uppercase;
 }
 
 html,
@@ -54,8 +55,7 @@ body {
       height: $size / 2;
       // width: $size;
 
-      // border: 2px dashed hsl(0, 0%, 60%);
-      border-radius: 8px;
+      border-radius: 10px;
       overflow: hidden;
 
       pointer-events: none;
@@ -67,6 +67,7 @@ body {
     }
   }
 
+  // MENU
   .form-container {
     flex-grow: 1;
 
@@ -78,6 +79,7 @@ body {
     label {
       color: #aaa;
       user-select: none;
+      cursor: pointer;
     }
 
     input {
@@ -161,12 +163,20 @@ body {
   }
 }
 
-.open-menu-btn {
+.btn-dim {
   background: #333;
+}
 
+.open-menu-btn {
   position: absolute;
   top: 2rem;
   left: 2rem;
+}
+
+button.preload-imgs-btn {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 1.5rem;
 }
 
 .progress-container {
@@ -186,7 +196,7 @@ body {
   progress[value]::-webkit-progress-bar {
     background: #444;
   }
-  
+
   progress[value]::-webkit-progress-value {
     background-color: #aaa;
   }
@@ -200,4 +210,22 @@ body {
 
 .opacity-0 {
   opacity: 0;
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(10px);
+  }
+  50% {
+    transform: translateX(-7px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }

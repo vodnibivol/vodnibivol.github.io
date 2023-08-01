@@ -21,7 +21,7 @@
   </head>
   <body class="flex-center">
     <!-- MAIN -->
-    <div id="main" x-data="gridd">
+    <div id="main" x-data="grid">
       <div class="grid" :class="{ finished: isFinished || isGameOver, animating: animating }">
         <template x-for="n, i in gridSize ** 2">
           <div

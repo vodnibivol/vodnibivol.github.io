@@ -11,10 +11,11 @@
   <body>
     <div class="main hidden">
       <!-- OPEN MENU BTN -->
-      <button class="btn open-menu-btn" type="button" v-if="!menuOpen && ['GUESSING', 'HELP', 'INCORRECT'].includes(state)" @click="openMenu">regions</button>
+      <!-- prettier-ignore -->
+      <button class="btn open-menu-btn btn-dim" v-if="!menuOpen && ['GUESSING', 'HELP', 'INCORRECT'].includes(state)" @click="openMenu">options</button>
 
       <!-- LOADING BAR -->
-      <div class="progress-container" v-show="state === 'LOADING' && !menuOpen">
+      <div class="progress-container" v-show="state === 'LOADING'">
         <progress min="0" :max="allImgs" :value="loadedImgs"></progress>
       </div>
 
@@ -29,8 +30,11 @@
       </div>
 
       <!-- MENU -->
-      <div class="form-container" v-show="menuOpen">
-        <label v-for="r in allRegions"><input type="checkbox" :value="r" v-model="selectedRegions" />{{ r }}</label>
+      <div class="form-container" v-show="menuOpen && state !== 'LOADING'">
+        <!-- preload button -->
+        <button type="button" class="btn preload-imgs-btn btn-dim" @click="preloadImages()">preload images</button>
+
+        <label v-for="r in allRegions"> <input type="checkbox" :value="r" v-model="selectedRegions" />{{ r }} </label>
         <br />
         <!-- prettier-ignore -->
         <button type="button" class="btn submit-menu-btn" @click="selectedRegions.length && closeMenu()">ok</button>
@@ -55,10 +59,11 @@
     </div>
 
     <!-- Vue -->
-    <!-- <script src="js/vue3.js"></script> -->
-    <script src="https://unpkg.com/vue@3.2.37/dist/vue.global.js"></script>
+    <script src="js/vue@3.2.37.js"></script>
+    <!-- <script src="https://unpkg.com/vue@3.2.37/dist/vue.global.js"></script> -->
     <!-- main questions object -->
     <script src="js/Questions.js"></script>
+    <script src="js/Training.js"></script>
     <!-- list of questions and answers -->
     <script src="flags/flag_data.js"></script>
     <!-- site logic -->

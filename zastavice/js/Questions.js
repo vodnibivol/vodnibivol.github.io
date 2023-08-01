@@ -1,20 +1,20 @@
 class Questions {
-  constructor({ qa = null, keys = null, values = null }) {
+  constructor({ qa = null, questions = null, answers = null }) {
     if (!qa) throw new Error('QA must be provided.');
 
-    this.QA = Object.entries(qa); // all provided (not filtered)
-    this.GUESSES = this._createGuesses(keys, values);
+    this.QA = qa; // all provided (not filtered)
+    this.GUESSES = this._createGuesses(questions, answers);
 
-    this._shuffle(); // TODO: enable
+    this._shuffle();
   }
 
   next() {
     const POOL_SIZE = 5;
-    const MIN_DISTANCE = 1;
+    const MIN_DISTANCE = 3;
 
     let guesses = this.GUESSES.sort((a, b) => a.score - b.score).filter((t) => t.score < 3);
     if (guesses.length >= 3) {
-      guesses = guesses.filter((t) => t.distance > MIN_DISTANCE);
+      guesses = guesses.filter((t) => t.distance >= MIN_DISTANCE);
     }
 
     let pool = guesses.slice(0, POOL_SIZE);
@@ -53,8 +53,10 @@ class Questions {
     this.TARGET.score++;
   }
 
-  onIncorrect() {
+  onIncorrect(inputValue) {
     this.TARGET.score = -1;
+    const q = this.GUESSES.find((g) => this._equals(g.answer, inputValue));
+    if (q) q.score = -1;
   }
 
   onInvalid() {
@@ -84,15 +86,15 @@ class Questions {
 
   // --- helper functions
 
-  _createGuesses(keys, values) {
+  _createGuesses(questions, answers) {
     let QA;
 
-    if (!keys && !values) {
+    if (!questions && !answers) {
       QA = this.QA;
-    } else if (keys) {
-      QA = this.QA.filter((e) => this._includes(keys, e[0]));
-    } else if (values) {
-      QA = this.QA.filter((e) => this._includes(values, e[1]));
+    } else if (questions) {
+      QA = this.QA.filter((e) => this._includes(questions, e[0]));
+    } else if (answers) {
+      QA = this.QA.filter((e) => this._includes(answers, e[1]));
     }
 
     // TODO: check for missing entries
@@ -138,8 +140,8 @@ function toObj(str) {
     }, {});
 }
 
-function reverseObject(obj) {
-  let arr = Object.entries(obj);
-  let reversed = arr.map(([a, b]) => [b, a]);
-  return reversed;
-}
+// function reverseObject(obj) {
+//   let arr = Object.entries(obj);
+//   let reversed = arr.map(([a, b]) => [b, a]);
+//   return reversed;
+// }

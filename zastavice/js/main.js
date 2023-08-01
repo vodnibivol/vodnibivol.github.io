@@ -1,4 +1,5 @@
 let Q; // will be set in mounted();
+window.$ = window.$ || ((sel) => document.querySelector(sel));
 
 const Main = Vue.createApp({
   data() {
@@ -15,10 +16,12 @@ const Main = Vue.createApp({
       guessImg: '',
 
       allRegions: ['europe', 'asia', 'africa', 'americas', 'oceania', 'antarctic'],
-      selectedRegions: ['europe', 'asia', 'africa', 'americas', 'oceania', 'antarctic'],
+      selectedRegions: null, // in mounted
 
-      allImgs: 0,
+      allImgs: 0, // for preload
       loadedImgs: 0,
+      imgSource: './flags/img/webp/', // 'https://flagcdn.com/w1280/'
+      imgExtension: '.webp', // .png
     };
   },
 
@@ -27,13 +30,13 @@ const Main = Vue.createApp({
     document.addEventListener('click', this.inputFocus);
 
     // init
-    let cachedRegions = localStorage.getItem(this.STORAGE_KEY);
+    const cachedRegions = localStorage.getItem(this.STORAGE_KEY);
 
-    if (cachedRegions !== null) {
+    if (cachedRegions) {
       this.selectedRegions = JSON.parse(cachedRegions);
     } else {
       this.selectedRegions = this.allRegions;
-      this.menuIsOpen = true;
+      this.menuOpen = true;
     }
 
     this.init();
@@ -46,10 +49,15 @@ const Main = Vue.createApp({
     },
 
     init() {
-      Q = new Questions({
-        qa: QA,
-        values: this.selectedRegions.map((r) => FLAGS[r]).flat(),
+      // called on reset (menu change ..)
+      Q = new Training({
+        qa: QA, // all questions and answers
+        values: this.selectedRegions.map((r) => COUNTRIES[r]).flat(), // selected qa
       });
+      // Q = new Questions({
+      //   qa: Object.entries(QA), // all questions and answers
+      //   answers: this.selectedRegions.map((r) => COUNTRIES[r]).flat(), // selected qa
+      // });
 
       this.preloadImages(() => {
         this.nextGuess();
@@ -61,19 +69,24 @@ const Main = Vue.createApp({
 
     preloadImages(callback) {
       // called only on beginning (size of all not too large < 3mb)
+      const prevState = this.state; // save state
       this.state = 'LOADING';
 
-      let urls = Q.QA.map((q) => './flags/img/' + q[0]);
+      const urls = Q.QA.map(([q, a]) => this.imgSource + q + this.imgExtension);
       this.allImgs = urls.length;
       this.loadedImgs = 0;
 
       for (let url of urls) {
-        let img = new Image();
+        const img = new Image();
         img.onload = () => {
           this.loadedImgs++;
-          // console.log(`loaded image ${this.loadedImgs} of ${this.allImgs} ..`);
-
-          this.loadedImgs === this.allImgs && callback(); // no of images
+          if (this.loadedImgs === this.allImgs) {
+            if (callback) callback();
+            else this.state = prevState;
+          }
+        };
+        img.onerror = (e) => {
+          console.error(e);
         };
         img.src = url;
       }
@@ -100,35 +113,40 @@ const Main = Vue.createApp({
     },
 
     checkAnswer() {
+      if (this.inputValue === '') return;
+
       if (this.inputValue === '?') {
+        // EMPTY
+        Q.onEmpty();
         this.state = 'HELP';
-        Q.TARGET.score = -2;
-        this.score = 0; // reset score
         this.inputValue = 'ANSWER: ' + Q.TARGET.answer.toUpperCase();
         return;
-      }
-
-      if (Q.isCorrect(this.inputValue)) {
-        // NOTE: CORRECT
+      } else if (Q.isCorrect(this.inputValue.trim())) {
+        // CORRECT
         Q.onCorrect();
         this.score++;
         this.nextGuess();
       } else {
-        let question = Q.getQuestion(this.inputValue); // what you wrote
+        let question = Q.getQuestion(this.inputValue); // question to your answer (image)
 
         if (question === undefined) {
-          // NOTE: INVALID
-          alert('INVALID ANSWER');
+          // INVALID
+          Q.onInvalid();
+          shake('.target');
         } else {
-          // NOTE: INCORRECT
-          this.score = 0;
-          Q.onIncorrect();
-          this.guessImg = './flags/img/' + question; // render guess
-
+          // INCORRECT
+          Q.onIncorrect(this.inputValue);
+          this.guessImg = this.imgSource + question + this.imgExtension; // render guess
           this.state = 'INCORRECT';
           this.inputValue = 'FALSE. PRESS ENTER TO CONTINUE';
         }
       }
+
+      this.setProgress();
+    },
+
+    setProgress() {
+      this.score = this.state === 'FINISHED' ? 100 : Q.score;
     },
 
     nextGuess() {
@@ -137,7 +155,7 @@ const Main = Vue.createApp({
 
       if (!!Q.TARGET) {
         this.state = 'GUESSING';
-        this.targetImg = './flags/img/' + Q.TARGET.question; // render question
+        this.targetImg = this.imgSource + Q.TARGET.question + this.imgExtension; // render question
       } else {
         this.state = 'FINISHED';
         alert('konec:)');
@@ -145,5 +163,14 @@ const Main = Vue.createApp({
     },
   },
 });
+
+// --- HELPER FUNCTIONS
+
+function shake(selector) {
+  // shakes element (like shaking head)
+  let el = document.querySelector(selector);
+  el.addEventListener('animationend', () => (el.style.animation = ''), { once: true });
+  el.style.animation = 'shake 0.4s';
+}
 
 Main.mount('.main');

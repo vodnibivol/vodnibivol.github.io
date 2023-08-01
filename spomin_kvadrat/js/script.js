@@ -1,4 +1,4 @@
-window.gridd = function () {
+window.grid = function () {
   return {
     size: Alpine.$persist(3), // how many squares to show
     gridSize: Alpine.$persist(3), // grid cols/rows
@@ -11,6 +11,7 @@ window.gridd = function () {
     isGameOver: false,
 
     animationTimeout: null,
+    seed: Alpine.$persist(0),
 
     init() {
       this.$watch('size', () => this.reset(true));
@@ -36,11 +37,13 @@ window.gridd = function () {
       if (!this.targets.includes(i)) {
         this.isGameOver = true;
 
+        ++this.seed;
         await delay(2000);
         this.reset(true);
       }
-
+      
       if (this.isFinished) {
+        ++this.seed;
         await delay(2000);
         this.reset(true);
       }
@@ -56,7 +59,7 @@ window.gridd = function () {
         this.isGameOver = false;
 
         const indexes = new Array(this.gridSize ** 2).fill().map((_, i) => i);
-        this.targets = shuffled(indexes).slice(0, this.size);
+        this.targets = shuffled(indexes, false, this.seed).slice(0, this.size);
 
         this.setSize(); // css
         this.animate();
@@ -78,25 +81,11 @@ window.gridd = function () {
     },
 
     onKeyDown(e) {
-      if (e.key === '+') {
-        ++this.size;
-        this.reset(true);
-      }
-
-      if (e.key === '-') {
-        --this.size;
-        this.reset(true);
-      }
-
-      if (e.key === 's') {
-        // random = alea(new Date().valueOf());
-        clearTimeout(this.animationTimeout);
-        this.reset(true);
-      }
-
-      if (e.key === 'Enter') {
-        Modal.close();
-      }
+      if (e.metaKey || e.ctrlKey) return;
+      else if (e.key === '+') ++this.size;
+      else if (e.key === '-') --this.size;
+      else if (e.key === 's') clearTimeout(this.animationTimeout);
+      else if (e.key === 'Enter') Modal.close();
     },
   };
 };
@@ -105,18 +94,14 @@ window.gridd = function () {
 
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
-// let random = alea();
-
-random = Math.random;
-
-function shuffled(array, inPlace = false) {
+function shuffled(array, inPlace = false, seed = Math.random()) {
   if (!inPlace) array = [...array]; // create a duplicate array
 
   let currentIndex = array.length;
   let randomIndex;
 
   while (currentIndex != 0) {
-    randomIndex = Math.floor(random() * currentIndex);
+    randomIndex = Math.floor(alea(seed)() * currentIndex);
     currentIndex--;
     [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
   }
