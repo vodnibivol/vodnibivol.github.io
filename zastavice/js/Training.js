@@ -23,7 +23,7 @@ class Training {
   next() {
     const OLDEST_GUESSES = 3;
     const WORST_GUESSES = 3; // 5
-    const MIN_DISTANCE = 0; // 1-3
+    const MIN_DISTANCE = 2; // 1-3
 
     let guesses = this.GUESSES.filter((t) => t.score < this.MAX_SCORE && t.distance > MIN_DISTANCE);
 

@@ -1,7 +1,9 @@
 * {
   font-family: Menlo, Consolas, monospace;
-  font-size: 13px;
+  letter-spacing: 0.5px;
+  font-size: 12px;
   box-sizing: border-box;
+  font-weight: bold;
   text-transform: uppercase;
 }
 
@@ -21,9 +23,14 @@ body {
   align-items: center;
 
   background: hsl(0, 0%, 10%);
-  // background: black;
 
   overflow: hidden;
+
+  --text-color: #aaa;
+  // --text-color-dim: orange;
+  --btn-color: #ddd;
+  --btn-color-dim: #333;
+  --input-background: #212121;
 }
 
 ::selection {
@@ -47,6 +54,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    transform: translateY(-40px);
 
     // flex-direction: column; // ON SMALL DEVICES
 
@@ -65,6 +73,8 @@ body {
       pointer-events: none;
       user-select: none;
 
+      box-shadow: 0 0 20px #00000022;
+
       img {
         height: 100%;
       }
@@ -80,9 +90,10 @@ body {
   justify-content: center;
   // align-items: center;
   flex-direction: column;
+  user-select: none;
 
   label {
-    color: #aaa;
+    color: var(--text-color);
     user-select: none;
     cursor: pointer;
   }
@@ -94,11 +105,10 @@ body {
 }
 
 .text-input {
-  z-index: 10;
-
   position: absolute;
+  transform: translateY(50%);
 
-  $percent: 0.45;
+  $percent: 0.35;
   bottom: calc(50% - 100px - (50% - 100px) * $percent);
   border-radius: 4px;
   overflow: hidden;
@@ -114,10 +124,9 @@ body {
 
     text-align: center;
     background: transparent;
-    background: hsl(0, 0%, 13%);
-    // border-bottom: medium solid hsl(0, 0%, 15%);
+    background: var(--input-background); // dark
 
-    color: #ccc;
+    color: var(--text-color);
   }
 }
 
@@ -130,7 +139,7 @@ body {
   padding: 8px 16px;
   // margin: 5px;
 
-  color: hsl(0, 0%, 30%);
+  color: var(--btn-color-dim);
   // background: red;
 }
 
@@ -143,7 +152,7 @@ body {
   #progressBar {
     width: 40%; // will be set programatically
     height: 2px;
-    background: hsl(0, 0%, 25%);
+    background: #404040;
     transition: width 0.3s;
   }
 }
@@ -175,27 +184,35 @@ body {
 .btn {
   cursor: pointer;
 
-  background: #eee;
+  background: var(--btn-color);
   border: none;
   border-radius: 5px;
 
-  &:hover {
-    background: #ccc;
-  }
-
   &:active {
-    background: #aaa;
+    opacity: 0.8;
   }
 }
 
 .btn-dim {
-  background: #333;
+  background: var(--btn-color-dim);
 }
 
 .open-menu-btn {
-  position: absolute;
-  top: 2rem;
-  left: 2rem;
+  display: contents;
+
+  img {
+    cursor: pointer;
+    position: absolute;
+    top: 1.2rem;
+    left: 1.2rem;
+    width: 20px;
+    filter: invert(1);
+    opacity: 0.1;
+
+    &:hover {
+      opacity: 0.4;
+    }
+  }
 }
 
 button.preload-imgs-btn {
@@ -219,11 +236,11 @@ button.preload-imgs-btn {
   }
 
   progress[value]::-webkit-progress-bar {
-    background: #444;
+    background: var(--btn-color-dim);
   }
 
   progress[value]::-webkit-progress-value {
-    background-color: #aaa;
+    background-color: var(--text-color);
   }
 }
 
@@ -252,5 +269,32 @@ button.preload-imgs-btn {
   }
   100% {
     transform: translateX(0);
+  }
+}
+
+body.light {
+  background: #fff;
+
+  --text-color: #888;
+  --btn-color: #ccc;
+  --btn-color-dim: #eee;
+  --input-background: #f2f2f2;
+
+  // .box img {
+  //   filter: drop-shadow(0 0 15px #00000055);
+  // }
+
+  .open-menu-btn img {
+    filter: none; // uninvert
+  }
+
+  .form-container {
+    .submit-menu-btn {
+      color: #666;
+    }
+    
+    .preload-imgs-btn {
+      color: var(--text-color);
+    }
   }
 }

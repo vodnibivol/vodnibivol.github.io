@@ -8,11 +8,13 @@
     <title>zastavice</title>
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
   </head>
-  <body>
+  <body class="light">
     <div class="main hidden">
       <!-- OPEN MENU BTN -->
       <!-- prettier-ignore -->
-      <!-- <button class="btn open-menu-btn btn-dim" v-if="!menuOpen && ['GUESSING', 'HELP', 'INCORRECT'].includes(state)" @click="openMenu">options</button> -->
+      <button class="open-menu-btn" v-if="!menuOpen && ['GUESSING', 'HELP', 'INCORRECT'].includes(state)" @click="openMenu">
+        <img src="img/gear_icon.png" alt="">
+      </button>
 
       <!-- LOADING BAR -->
       <div class="preload-container" v-show="state === 'LOADING'">
@@ -34,10 +36,10 @@
         <!-- preload button -->
         <button type="button" class="btn preload-imgs-btn btn-dim" @click="preloadImages()">preload images</button>
 
-        <label v-for="r in allRegions"> <input type="checkbox" :value="r" v-model="selectedRegions" />{{ r }} </label>
+        <label v-for="r in allRegions"><input type="checkbox" :value="r" v-model="selectedRegions" />{{ r }}</label>
         <br />
         <!-- prettier-ignore -->
-        <button type="button" class="btn submit-menu-btn" @click="selectedRegions.length && closeMenu()">ok</button>
+        <button type="submit" class="btn submit-menu-btn" @click="selectedRegions.length && closeMenu()">ok</button>
       </div>
 
       <!-- INPUT -->
@@ -51,15 +53,15 @@
           <span id="score">{{ score }}</span>
         </div> -->
 
-        <!-- progress -->
-        <div class="progress-container">
-          <div id="progressBar" :style="'width: ' + score + '%'"></div>
-        </div>
-
         <!-- worldwide -->
         <!-- <div class="mr-worldwide" :class="{ show: score >= 10 }">
           <img src="flags/worldwide.png" />
         </div> -->
+      </div>
+
+      <!-- progress -->
+      <div class="progress-container">
+        <div id="progressBar" :style="'width: ' + score + '%'"></div>
       </div>
     </div>
 
@@ -70,7 +72,7 @@
     <script src="js/Questions.js"></script>
     <script src="js/Training.js"></script>
     <!-- list of questions and answers -->
-    <script src="flags/flag_data.js"></script>
+    <script src="js/flag_data.js"></script>
     <!-- site logic -->
     <script src="js/main.js"></script>
   </body>

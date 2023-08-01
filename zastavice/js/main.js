@@ -4,13 +4,14 @@ window.$ = window.$ || ((sel) => document.querySelector(sel));
 const Main = Vue.createApp({
   data() {
     return {
+      lightTheme: true,
       STORAGE_KEY: 'FLAG_REGIONS',
       qa: null, // in mounted
 
       menuOpen: false, // NOTE: mora biti ločeno, da se vrne na prejšnje stanje
       inputValue: '',
       state: '', // LOADING, GUESSING, INCORRECT, HELP, FINISHED
-      score: 0,
+      score: 40, // TODO
 
       targetImg: '',
       guessImg: '',
@@ -20,7 +21,7 @@ const Main = Vue.createApp({
 
       allImgs: 0, // for preload
       loadedImgs: 0,
-      imgSource: './flags/img/webp/', // 'https://flagcdn.com/w1280/'
+      imgSource: './img/flags/webp/', // 'https://flagcdn.com/w1280/'
       imgExtension: '.webp', // .png
     };
   },
@@ -59,8 +60,6 @@ const Main = Vue.createApp({
         this.nextGuess();
         this.inputFocus();
       });
-
-      this.score = 0; // reset score
     },
 
     preloadImages(callback) {
@@ -115,7 +114,7 @@ const Main = Vue.createApp({
         // EMPTY
         Q.onEmpty();
         this.state = 'HELP';
-        this.inputValue = 'odg: ' + Q.TARGET.answer.toUpperCase();
+        this.inputValue = 'ODG: ' + Q.TARGET.answer;
         return;
       } else if (Q.isCorrect(this.inputValue)) {
         // CORRECT
@@ -142,7 +141,7 @@ const Main = Vue.createApp({
     },
 
     setProgress() {
-      this.score = this.state === 'FINISHED' ? 100 : Q.score;
+      // this.score = this.state === 'FINISHED' ? 100 : Q.score; // TODO
     },
 
     nextGuess() {
