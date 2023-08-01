@@ -11,7 +11,7 @@ const Main = Vue.createApp({
       menuOpen: false, // NOTE: mora biti ločeno, da se vrne na prejšnje stanje
       inputValue: '',
       state: '', // LOADING, GUESSING, INCORRECT, HELP, FINISHED
-      score: 40, // TODO
+      score: 0,
 
       targetImg: '',
       guessImg: '',
@@ -141,7 +141,7 @@ const Main = Vue.createApp({
     },
 
     setProgress() {
-      // this.score = this.state === 'FINISHED' ? 100 : Q.score; // TODO
+      this.score = this.state === 'FINISHED' ? 100 : Q.score;
     },
 
     nextGuess() {
