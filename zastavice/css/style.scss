@@ -26,6 +26,10 @@ body {
   overflow: hidden;
 }
 
+::selection {
+  background: #ffffff33;
+}
+
 .main {
   width: 100%;
   height: 100%;
@@ -66,47 +70,54 @@ body {
       }
     }
   }
+}
 
-  // MENU
-  .form-container {
-    flex-grow: 1;
+// MENU
+.form-container {
+  flex-grow: 1;
 
-    display: flex;
-    justify-content: center;
-    // align-items: center;
-    flex-direction: column;
+  display: flex;
+  justify-content: center;
+  // align-items: center;
+  flex-direction: column;
 
-    label {
-      color: #aaa;
-      user-select: none;
-      cursor: pointer;
-    }
-
-    input {
-      margin: 0.7rem 1rem;
-      margin-left: 0;
-    }
+  label {
+    color: #aaa;
+    user-select: none;
+    cursor: pointer;
   }
 
-  .text-input {
-    z-index: 10;
+  input {
+    margin: 0.7rem 1rem;
+    margin-left: 0;
+  }
+}
 
-    position: absolute;
+.text-input {
+  z-index: 10;
 
-    bottom: 0;
+  position: absolute;
+
+  $percent: 0.45;
+  bottom: calc(50% - 100px - (50% - 100px) * $percent);
+  border-radius: 4px;
+  overflow: hidden;
+  // width: 100%;
+
+  input {
+    border: none;
+    outline: none;
+
     width: 100%;
+    padding: 6px 10px;
+    margin: 0;
 
-    input {
-      width: 100%;
-      padding: 8px 16px;
-      margin: 0;
+    text-align: center;
+    background: transparent;
+    background: hsl(0, 0%, 13%);
+    // border-bottom: medium solid hsl(0, 0%, 15%);
 
-      background: hsl(0, 0%, 15%);
-      color: #ccc;
-
-      border: none;
-      outline: none;
-    }
+    color: #ccc;
   }
 }
 
@@ -121,6 +132,20 @@ body {
 
   color: hsl(0, 0%, 30%);
   // background: red;
+}
+
+.progress-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+
+  #progressBar {
+    width: 40%; // will be set programatically
+    height: 2px;
+    background: hsl(0, 0%, 25%);
+    transition: width 0.3s;
+  }
 }
 
 .mr-worldwide {
@@ -179,7 +204,7 @@ button.preload-imgs-btn {
   left: 1.5rem;
 }
 
-.progress-container {
+.preload-container {
   position: absolute;
 
   progress[value] {

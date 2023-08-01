@@ -54,10 +54,6 @@ const Main = Vue.createApp({
         qa: QA, // all questions and answers
         values: this.selectedRegions.map((r) => COUNTRIES[r]).flat(), // selected qa
       });
-      // Q = new Questions({
-      //   qa: Object.entries(QA), // all questions and answers
-      //   answers: this.selectedRegions.map((r) => COUNTRIES[r]).flat(), // selected qa
-      // });
 
       this.preloadImages(() => {
         this.nextGuess();
@@ -119,9 +115,9 @@ const Main = Vue.createApp({
         // EMPTY
         Q.onEmpty();
         this.state = 'HELP';
-        this.inputValue = 'ANSWER: ' + Q.TARGET.answer.toUpperCase();
+        this.inputValue = 'odg: ' + Q.TARGET.answer.toUpperCase();
         return;
-      } else if (Q.isCorrect(this.inputValue.trim())) {
+      } else if (Q.isCorrect(this.inputValue)) {
         // CORRECT
         Q.onCorrect();
         this.score++;
@@ -138,7 +134,7 @@ const Main = Vue.createApp({
           Q.onIncorrect(this.inputValue);
           this.guessImg = this.imgSource + question + this.imgExtension; // render guess
           this.state = 'INCORRECT';
-          this.inputValue = 'FALSE. PRESS ENTER TO CONTINUE';
+          this.inputValue = 'narobe ..';
         }
       }
 

@@ -12,10 +12,10 @@
     <div class="main hidden">
       <!-- OPEN MENU BTN -->
       <!-- prettier-ignore -->
-      <button class="btn open-menu-btn btn-dim" v-if="!menuOpen && ['GUESSING', 'HELP', 'INCORRECT'].includes(state)" @click="openMenu">options</button>
+      <!-- <button class="btn open-menu-btn btn-dim" v-if="!menuOpen && ['GUESSING', 'HELP', 'INCORRECT'].includes(state)" @click="openMenu">options</button> -->
 
       <!-- LOADING BAR -->
-      <div class="progress-container" v-show="state === 'LOADING'">
+      <div class="preload-container" v-show="state === 'LOADING'">
         <progress min="0" :max="allImgs" :value="loadedImgs"></progress>
       </div>
 
@@ -47,14 +47,19 @@
         </form>
 
         <!-- score -->
-        <div class="score-meter">
+        <!-- <div class="score-meter">
           <span id="score">{{ score }}</span>
+        </div> -->
+
+        <!-- progress -->
+        <div class="progress-container">
+          <div id="progressBar" :style="'width: ' + score + '%'"></div>
         </div>
 
         <!-- worldwide -->
-        <div class="mr-worldwide" :class="{ show: score >= 10 }">
+        <!-- <div class="mr-worldwide" :class="{ show: score >= 10 }">
           <img src="flags/worldwide.png" />
-        </div>
+        </div> -->
       </div>
     </div>
 
