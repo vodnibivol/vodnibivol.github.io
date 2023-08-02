@@ -21,7 +21,7 @@ const Main = Vue.createApp({
 
       allImgs: 0, // for preload
       loadedImgs: 0,
-      imgSource: './img/flags/webp/', // 'https://flagcdn.com/w1280/'
+      imgSource: 'https://flagcdn.com/w1280/', // './img/flags/webp/'
       imgExtension: '.webp', // .png
     };
   },

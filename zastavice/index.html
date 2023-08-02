@@ -36,7 +36,8 @@
         <!-- preload button -->
         <div class="buttons-container">
           <button type="button" class="btn btn-dim" @click="preloadImages()">preload images</button>
-          <button type="button" class="btn btn-dim" @click="lightTheme = !lightTheme">light theme</button>
+          <!-- prettier-ignore -->
+          <button type="button" class="btn btn-dim" @click="lightTheme = !lightTheme">{{lightTheme ? 'temni način' : 'svetli način'}}</button>
         </div>
 
         <label v-for="r in allRegions"><input type="checkbox" :value="r" v-model="selectedRegions" />{{ r }}</label>
@@ -69,14 +70,10 @@
     </div>
 
     <!-- Vue -->
-    <script src="js/vue@3.2.37.js"></script>
-    <!-- <script src="https://unpkg.com/vue@3.2.37/dist/vue.global.js"></script> -->
-    <!-- main questions object -->
-    <script src="js/Questions.js"></script>
+    <!-- <script src="js/vue@3.2.37.js"></script> -->
+    <script src="https://unpkg.com/vue@3.2.37/dist/vue.global.js"></script>
     <script src="js/Training.js"></script>
-    <!-- list of questions and answers -->
     <script src="js/flag_data.js"></script>
-    <!-- site logic -->
     <script src="js/main.js"></script>
   </body>
 </html>
