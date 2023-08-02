@@ -34,7 +34,7 @@ body {
 }
 
 ::selection {
-  background: #ffffff33;
+  // background: #ffffff33;
 }
 
 .main {
@@ -215,10 +215,15 @@ body {
   }
 }
 
-button.preload-imgs-btn {
+.buttons-container {
   position: fixed;
-  bottom: 1.5rem;
-  left: 1.5rem;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .preload-container {
@@ -273,16 +278,12 @@ button.preload-imgs-btn {
 }
 
 body.light {
-  background: #fff;
+  background: #fbfbfb;
 
   --text-color: #888;
   --btn-color: #ccc;
   --btn-color-dim: #eee;
-  --input-background: #f2f2f2;
-
-  // .box img {
-  //   filter: drop-shadow(0 0 15px #00000055);
-  // }
+  --input-background: #f0f0f0;
 
   .open-menu-btn img {
     filter: none; // uninvert
@@ -293,7 +294,7 @@ body.light {
       color: #666;
     }
     
-    .preload-imgs-btn {
+    .buttons-container button {
       color: var(--text-color);
     }
   }

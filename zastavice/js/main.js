@@ -4,7 +4,7 @@ window.$ = window.$ || ((sel) => document.querySelector(sel));
 const Main = Vue.createApp({
   data() {
     return {
-      lightTheme: true,
+      lightTheme: false,
       STORAGE_KEY: 'FLAG_REGIONS',
       qa: null, // in mounted
 
@@ -26,11 +26,21 @@ const Main = Vue.createApp({
     };
   },
 
+  watch: {
+    lightTheme(isToggled) {
+      document.body.className = isToggled ? 'light' : '';
+      localStorage.ZASTAVICE_LIGHT_THEME = isToggled;
+    },
+  },
+
   mounted() {
     // events
     document.addEventListener('click', this.inputFocus);
 
     // init
+    if (localStorage.ZASTAVICE_LIGHT_THEME) {
+      this.lightTheme = localStorage.ZASTAVICE_LIGHT_THEME === 'true';
+    }
     const cachedRegions = localStorage.getItem(this.STORAGE_KEY);
 
     if (cachedRegions) {
@@ -148,12 +158,13 @@ const Main = Vue.createApp({
       this.inputValue = '';
       Q.next();
 
-      if (!!Q.TARGET) {
+      if (Q.TARGET) {
         this.state = 'GUESSING';
         this.targetImg = this.imgSource + Q.TARGET.question + this.imgExtension; // render question
       } else {
         this.state = 'FINISHED';
-        alert('konec:)');
+        this.inputValue = 'KONEC:)';
+        this.targetImg = "./img/ww3.jpg"
       }
     },
   },

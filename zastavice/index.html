@@ -12,7 +12,7 @@
     <div class="main hidden">
       <!-- OPEN MENU BTN -->
       <!-- prettier-ignore -->
-      <button class="open-menu-btn" v-if="!menuOpen && ['GUESSING', 'HELP', 'INCORRECT'].includes(state)" @click="openMenu">
+      <button class="open-menu-btn" v-if="!menuOpen && state !== 'LOADING'" @click="openMenu">
         <img src="img/gear_icon.png" alt="">
       </button>
 
@@ -22,7 +22,7 @@
       </div>
 
       <!-- ZASTAVICE -->
-      <div class="box-container" v-if="!menuOpen && ['GUESSING', 'HELP', 'INCORRECT'].includes(state)">
+      <div class="box-container" v-if="!menuOpen && state !== 'LOADING'">
         <div class="box target">
           <img :src="targetImg" alt="target" />
         </div>
@@ -34,7 +34,10 @@
       <!-- MENU -->
       <div class="form-container" v-show="menuOpen && state !== 'LOADING'">
         <!-- preload button -->
-        <button type="button" class="btn preload-imgs-btn btn-dim" @click="preloadImages()">preload images</button>
+        <div class="buttons-container">
+          <button type="button" class="btn btn-dim" @click="preloadImages()">preload images</button>
+          <button type="button" class="btn btn-dim" @click="lightTheme = !lightTheme">light theme</button>
+        </div>
 
         <label v-for="r in allRegions"><input type="checkbox" :value="r" v-model="selectedRegions" />{{ r }}</label>
         <br />
@@ -43,7 +46,7 @@
       </div>
 
       <!-- INPUT -->
-      <div class="text-input" v-show="!menuOpen && ['GUESSING', 'HELP', 'INCORRECT'].includes(state)">
+      <div class="text-input" v-show="!menuOpen && state !== 'LOADING'">
         <form action="#" @submit.prevent="onEnter">
           <input v-model="inputValue" type="text" name="" id="textInput" spellcheck="false" autocomplete="off" />
         </form>
