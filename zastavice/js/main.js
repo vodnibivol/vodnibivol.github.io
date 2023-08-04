@@ -1,4 +1,4 @@
-let Q; // will be set in mounted();
+let T; // will be set in mounted();
 window.$ = window.$ || ((sel) => document.querySelector(sel));
 
 const Main = Vue.createApp({
@@ -13,15 +13,12 @@ const Main = Vue.createApp({
       state: '', // LOADING, GUESSING, INCORRECT, HELP, FINISHED
       score: 0,
 
-      targetImg: '',
-      guessImg: '',
-
       allRegions: ['europe', 'asia', 'africa', 'americas', 'oceania', 'antarctic'],
       selectedRegions: null, // in mounted
 
       allImgs: 0, // for preload
       loadedImgs: 0,
-      imgSource: 'https://flagcdn.com/w1280/', // './img/flags/webp/'
+      imgSource: 'https://flagcdn.com/w1280/', // 'img/flags/webp/', 'https://flagcdn.com/w1280/'
       imgExtension: '.webp', // .png
     };
   },
@@ -44,32 +41,34 @@ const Main = Vue.createApp({
     const cachedRegions = localStorage.getItem(this.STORAGE_KEY);
 
     if (cachedRegions) {
-      this.selectedRegions = JSON.parse(cachedRegions);
+      this.selectedRegions = cachedRegions.split('+');
     } else {
       this.selectedRegions = this.allRegions;
       this.menuOpen = true;
     }
 
+    $('.main').classList.remove('hidden');
     this.init();
-    document.querySelector('.main').classList.remove('hidden');
   },
 
   methods: {
     inputFocus() {
-      if (['GUESSING', 'INCORRECT', 'HELP'].includes(this.state)) document.querySelector('#textInput').focus();
+      if (['GUESSING', 'INCORRECT', 'HELP'].includes(this.state)) {
+        setTimeout(() => {
+          $('#textInput').focus();
+          // console.log('focus');
+        }, 5);
+      }
     },
 
     init() {
       // called on reset (menu change ..)
-      Q = new Training({
+      T = new Training({
         qa: QA, // all questions and answers
         values: this.selectedRegions.map((r) => COUNTRIES[r]).flat(), // selected qa
       });
 
-      this.preloadImages(() => {
-        this.nextGuess();
-        this.inputFocus();
-      });
+      this.preloadImages(this.nextGuess);
     },
 
     preloadImages(callback) {
@@ -77,7 +76,7 @@ const Main = Vue.createApp({
       const prevState = this.state; // save state
       this.state = 'LOADING';
 
-      const urls = Q.QA.map(([q, a]) => this.imgSource + q + this.imgExtension);
+      const urls = T.QA.map(([q, a]) => this.imgSource + q + this.imgExtension);
       this.allImgs = urls.length;
       this.loadedImgs = 0;
 
@@ -102,19 +101,31 @@ const Main = Vue.createApp({
     },
 
     closeMenu() {
-      let prev = localStorage.getItem(this.STORAGE_KEY);
-
-      if (prev !== JSON.stringify(this.selectedRegions)) {
-        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.selectedRegions));
+      const prev = localStorage.getItem(this.STORAGE_KEY);
+      if (prev !== this.selectedRegions.join('+')) {
+        $('.target').style.opacity = 0;
+        localStorage.setItem(this.STORAGE_KEY, this.selectedRegions.join('+'));
         this.init();
       }
-
       this.menuOpen = false;
     },
 
     onEnter() {
-      if (this.state === 'GUESSING') this.checkAnswer();
-      else this.nextGuess();
+      if (anime.running.length) return;
+
+      switch (this.state) {
+        case 'GUESSING':
+          this.checkAnswer();
+          break;
+        case 'INCORRECT':
+          Animations.hideError().then(this.nextGuess);
+          break;
+        case 'HELP':
+          Animations.toHell().then(this.nextGuess);
+          break;
+        default:
+          this.nextGuess();
+      }
     },
 
     checkAnswer() {
@@ -122,61 +133,58 @@ const Main = Vue.createApp({
 
       if (this.inputValue === '?') {
         // EMPTY
-        Q.onEmpty();
+        T.onEmpty();
         this.state = 'HELP';
-        this.inputValue = 'ODG: ' + Q.TARGET.answer;
+        this.inputValue = 'ODG: ' + T.TARGET.answer;
         return;
-      } else if (Q.isCorrect(this.inputValue)) {
-        // CORRECT
-        Q.onCorrect();
-        this.score++;
-        this.nextGuess();
-      } else {
-        let question = Q.getQuestion(this.inputValue); // question to your answer (image)
+      }
 
-        if (question === undefined) {
-          // INVALID
-          Q.onInvalid();
-          shake('.target');
-        } else {
-          // INCORRECT
-          Q.onIncorrect(this.inputValue);
-          this.guessImg = this.imgSource + question + this.imgExtension; // render guess
-          this.state = 'INCORRECT';
-          this.inputValue = 'narobe ..';
-        }
+      const question = T.getQuestion(this.inputValue); // question to your answer (image)
+
+      if (question === undefined) {
+        // INVALID
+        T.onInvalid();
+        Animations.shake('.target');
+      } else if (T.isCorrect(this.inputValue)) {
+        // CORRECT
+        T.onCorrect();
+        this.inputValue = '';
+        Animations.toHeaven().then(this.nextGuess);
+      } else {
+        // INCORRECT
+        T.onIncorrect(this.inputValue);
+        this.state = 'INCORRECT';
+        this.inputValue = 'narobe ..';
+        $('.guess img').src = this.imgSource + question + this.imgExtension;
+        $('.guess img').onload = Animations.showError;
       }
 
       this.setProgress();
     },
 
     setProgress() {
-      this.score = this.state === 'FINISHED' ? 100 : Q.score;
+      this.score = this.state === 'FINISHED' ? 100 : T.score;
     },
 
     nextGuess() {
       this.inputValue = '';
-      Q.next();
+      T.next();
 
-      if (Q.TARGET) {
+      if (T.TARGET) {
         this.state = 'GUESSING';
-        this.targetImg = this.imgSource + Q.TARGET.question + this.imgExtension; // render question
+        $('.target img').src = this.imgSource + T.TARGET.question + this.imgExtension;
+        $('.target img').onload = Animations.fromHell;
       } else {
         this.state = 'FINISHED';
         this.inputValue = 'KONEC:)';
-        this.targetImg = "./img/ww3.jpg"
+        this.targetImg = 'img/ww3.jpg';
       }
+
+      this.inputFocus();
     },
   },
 });
 
 // --- HELPER FUNCTIONS
-
-function shake(selector) {
-  // shakes element (like shaking head)
-  let el = document.querySelector(selector);
-  el.addEventListener('animationend', () => (el.style.animation = ''), { once: true });
-  el.style.animation = 'shake 0.4s';
-}
 
 Main.mount('.main');

@@ -59,14 +59,15 @@ body {
     // flex-direction: column; // ON SMALL DEVICES
 
     .box {
+      position: absolute;
+
       $size: 400px;
       $margin: 50px;
 
       margin: $margin / 2;
-
       height: $size / 2;
-      // width: $size;
 
+      // background: white;
       border-radius: 10px;
       overflow: hidden;
 
@@ -78,6 +79,10 @@ body {
       img {
         height: 100%;
       }
+    }
+
+    .guess {
+      z-index: -10;
     }
   }
 }
@@ -105,6 +110,8 @@ body {
 }
 
 .text-input {
+  z-index: -100;
+
   position: absolute;
   transform: translateY(50%);
 
@@ -256,25 +263,11 @@ body {
 }
 
 .opacity-0 {
-  opacity: 0;
+  opacity: 0 !important;
 }
 
-@keyframes shake {
-  0% {
-    transform: translateX(0);
-  }
-  25% {
-    transform: translateX(10px);
-  }
-  50% {
-    transform: translateX(-7px);
-  }
-  75% {
-    transform: translateX(5px);
-  }
-  100% {
-    transform: translateX(0);
-  }
+[cloak] {
+  opacity: 0 !important;
 }
 
 body.light {
@@ -293,7 +286,7 @@ body.light {
     .submit-menu-btn {
       color: #666;
     }
-    
+
     .buttons-container button {
       color: var(--text-color);
     }
