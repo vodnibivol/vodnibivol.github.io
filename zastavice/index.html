@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="css/style.css" />
     <title>zastavice</title>
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+    <link rel="preconnect" href="https://flagcdn.com/" />
   </head>
   <body>
     <div class="main hidden">
@@ -18,7 +21,7 @@
 
       <!-- LOADING BAR -->
       <div class="preload-container" v-show="state === 'LOADING'">
-        <progress min="0" :max="allImgs" :value="loadedImgs"></progress>
+        <progress id="preloadProgress" min="0" :max="allImgs" :value="loadedImgs"></progress>
       </div>
 
       <!-- ZASTAVICE -->
@@ -43,12 +46,12 @@
         <label v-for="r in allRegions"><input type="checkbox" :value="r" v-model="selectedRegions" />{{ r }}</label>
         <br />
         <!-- prettier-ignore -->
-        <button type="submit" class="btn submit-menu-btn" @click="selectedRegions.length && closeMenu()">ok</button>
+        <button type="submit" :disabled="!selectedRegions.length" class="btn submit-menu-btn" @click="selectedRegions.length && closeMenu()">ok</button>
       </div>
 
       <!-- INPUT -->
       <div class="text-input" v-show="!menuOpen && state !== 'LOADING'">
-        <form action="#" @submit.prevent="onEnter">
+        <form @submit.prevent="onEnter">
           <input v-model="inputValue" type="text" name="" id="textInput" spellcheck="false" autocomplete="off" />
         </form>
       </div>
@@ -59,9 +62,8 @@
       </div>
     </div>
 
-    <!-- Vue -->
     <!-- <script src="js/vue@3.2.37.js"></script> -->
-    <script src="https://unpkg.com/vue@3.2.37/dist/vue.global.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.3.4/vue.global.prod.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
     <script src="js/Animations.js"></script>
     <script src="js/Training.js"></script>

@@ -67,7 +67,6 @@ body {
       margin: $margin / 2;
       height: $size / 2;
 
-      // background: white;
       border-radius: 10px;
       overflow: hidden;
 
@@ -78,6 +77,7 @@ body {
 
       img {
         height: 100%;
+        // background: white; // FIXME: malo so neki robeki okoli .. zaradi nepala sicer treba
       }
     }
 
@@ -107,6 +107,10 @@ body {
     margin: 0.7rem 1rem;
     margin-left: 0;
   }
+
+  // button[type="submit"] {
+
+  // }
 }
 
 .text-input {
@@ -197,6 +201,10 @@ body {
 
   &:active {
     opacity: 0.8;
+  }
+
+  &:disabled {
+    pointer-events: none;
   }
 }
 

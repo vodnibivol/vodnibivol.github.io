@@ -60,6 +60,11 @@ const Animations = {
       opacity: 0,
       easing: 'easeInQuart', // Quart/Quint
       duration: 500,
+      scale: {
+        value: 1,
+        duration: 500,
+        easing: 'easeInOutCubic',
+      },
     }).finished;
   },
 
@@ -79,6 +84,34 @@ const Animations = {
       translateX: [10, -7, 5, 0],
       easing: 'easeInOutQuad',
       duration: 500,
+    }).finished;
+  },
+
+  zoomTarget() {
+    return anime({
+      targets: '.target',
+      scale: 1.2,
+      easing: 'easeInOutBack',
+      duration: 600,
+    }).finished;
+  },
+
+  ending() {
+    return anime({
+      targets: '.target',
+      translateY: [
+        // { value: 100, duration: 0 },
+        // { value: 0, duration: 2000 },
+        100, 0
+      ],
+      // scale: {
+      //   value: 1.1,
+      //   duration: 2500,
+      // },
+      scale: [1, 1.1],
+      opacity: [0, 1],
+      easing: 'easeInOutBack',
+      duration: 2000,
     }).finished;
   },
 };

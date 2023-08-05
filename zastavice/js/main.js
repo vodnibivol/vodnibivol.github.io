@@ -14,12 +14,12 @@ const Main = Vue.createApp({
       score: 0,
 
       allRegions: ['europe', 'asia', 'africa', 'americas', 'oceania', 'antarctic'],
-      selectedRegions: null, // in mounted
+      selectedRegions: [], // in mounted
 
       allImgs: 0, // for preload
       loadedImgs: 0,
       imgSource: 'https://flagcdn.com/w1280/', // 'img/flags/webp/', 'https://flagcdn.com/w1280/'
-      imgExtension: '.webp', // .png
+      imgExtension: '.webp', // .png / .webp
     };
   },
 
@@ -33,16 +33,22 @@ const Main = Vue.createApp({
   mounted() {
     // events
     document.addEventListener('click', this.inputFocus);
+    window.addEventListener('focus', this.inputFocus);
 
-    // init
+    // local storage
     if (localStorage.ZASTAVICE_LIGHT_THEME) {
       this.lightTheme = localStorage.ZASTAVICE_LIGHT_THEME === 'true';
     }
-    const cachedRegions = localStorage.getItem(this.STORAGE_KEY);
 
-    if (cachedRegions) {
-      this.selectedRegions = cachedRegions.split('+');
-    } else {
+    if (localStorage.FLAG_REGIONS) {
+      try {
+        this.selectedRegions = JSON.parse(localStorage.FLAG_REGIONS);
+      } catch (error) {
+        this.selectedRegions = [];
+      }
+    }
+
+    if (this.selectedRegions.length === 0 || this.selectedRegions.some((r) => !this.allRegions.includes(r))) {
       this.selectedRegions = this.allRegions;
       this.menuOpen = true;
     }
@@ -53,12 +59,10 @@ const Main = Vue.createApp({
 
   methods: {
     inputFocus() {
-      if (['GUESSING', 'INCORRECT', 'HELP'].includes(this.state)) {
-        setTimeout(() => {
-          $('#textInput').focus();
-          // console.log('focus');
-        }, 5);
-      }
+      requestAnimationFrame(function () {
+        const inputEl = $('#textInput');
+        if (inputEl) inputEl.focus();
+      });
     },
 
     init() {
@@ -68,32 +72,33 @@ const Main = Vue.createApp({
         values: this.selectedRegions.map((r) => COUNTRIES[r]).flat(), // selected qa
       });
 
-      this.preloadImages(this.nextGuess);
+      this.nextGuess();
+      // this.preloadImages().then(this.nextGuess);
     },
 
-    preloadImages(callback) {
+    preloadImages() {
       // called only on beginning (size of all not too large < 3mb)
       const prevState = this.state; // save state
       this.state = 'LOADING';
 
-      const urls = T.QA.map(([q, a]) => this.imgSource + q + this.imgExtension);
-      this.allImgs = urls.length;
-      this.loadedImgs = 0;
+      return new Promise((resolve, reject) => {
+        const urls = T.QA.map(([q, a]) => this.imgSource + q + this.imgExtension);
+        let loaded = 0;
+        $('#preloadProgress').max = urls.length;
 
-      for (let url of urls) {
-        const img = new Image();
-        img.onload = () => {
-          this.loadedImgs++;
-          if (this.loadedImgs === this.allImgs) {
-            if (callback) callback();
-            else this.state = prevState;
-          }
-        };
-        img.onerror = (e) => {
-          console.error(e);
-        };
-        img.src = url;
-      }
+        for (let url of urls) {
+          const img = new Image();
+          img.onload = () => {
+            $('#preloadProgress').value = ++loaded;
+            if (loaded === urls.length) {
+              this.state = prevState;
+              resolve();
+            }
+          };
+          img.onerror = reject;
+          img.src = url;
+        }
+      });
     },
 
     openMenu() {
@@ -102,9 +107,9 @@ const Main = Vue.createApp({
 
     closeMenu() {
       const prev = localStorage.getItem(this.STORAGE_KEY);
-      if (prev !== this.selectedRegions.join('+')) {
+      if (prev !== JSON.stringify(this.selectedRegions)) {
         $('.target').style.opacity = 0;
-        localStorage.setItem(this.STORAGE_KEY, this.selectedRegions.join('+'));
+        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.selectedRegions));
         this.init();
       }
       this.menuOpen = false;
@@ -123,6 +128,9 @@ const Main = Vue.createApp({
         case 'HELP':
           Animations.toHell().then(this.nextGuess);
           break;
+        case 'FINISHED':
+          this.init();
+          break;
         default:
           this.nextGuess();
       }
@@ -136,6 +144,7 @@ const Main = Vue.createApp({
         T.onEmpty();
         this.state = 'HELP';
         this.inputValue = 'ODG: ' + T.TARGET.answer;
+        Animations.zoomTarget();
         return;
       }
 
@@ -155,8 +164,8 @@ const Main = Vue.createApp({
         T.onIncorrect(this.inputValue);
         this.state = 'INCORRECT';
         this.inputValue = 'narobe ..';
-        $('.guess img').src = this.imgSource + question + this.imgExtension;
         $('.guess img').onload = Animations.showError;
+        $('.guess img').src = this.imgSource + question + this.imgExtension;
       }
 
       this.setProgress();
@@ -172,12 +181,13 @@ const Main = Vue.createApp({
 
       if (T.TARGET) {
         this.state = 'GUESSING';
-        $('.target img').src = this.imgSource + T.TARGET.question + this.imgExtension;
         $('.target img').onload = Animations.fromHell;
+        $('.target img').src = this.imgSource + T.TARGET.question + this.imgExtension;
       } else {
         this.state = 'FINISHED';
         this.inputValue = 'KONEC:)';
-        this.targetImg = 'img/ww3.jpg';
+        $('.target img').onload = Animations.fromHell;
+        $('.target img').src = 'img/ww3.jpg';
       }
 
       this.inputFocus();
@@ -186,5 +196,7 @@ const Main = Vue.createApp({
 });
 
 // --- HELPER FUNCTIONS
+
+const wait = (duration) => new Promise((resolve, _) => setTimeout(resolve, duration));
 
 Main.mount('.main');
