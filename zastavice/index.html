@@ -7,29 +7,27 @@
     <link rel="stylesheet" href="css/style.css" />
     <title>zastavice</title>
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
     <link rel="preconnect" href="https://flagcdn.com/" />
   </head>
   <body>
     <div class="main hidden">
       <!-- OPEN MENU BTN -->
-      <!-- prettier-ignore -->
       <button class="open-menu-btn" v-if="!menuOpen && state !== 'LOADING'" @click="openMenu">
-        <img src="img/gear_icon.png" alt="">
+        <img src="img/gear_icon.png" alt="options" />
       </button>
 
       <!-- LOADING BAR -->
       <div class="preload-container" v-show="state === 'LOADING'">
-        <progress id="preloadProgress" min="0" :max="allImgs" :value="loadedImgs"></progress>
+        <progress id="preloadProgress" min="0"></progress>
       </div>
 
       <!-- ZASTAVICE -->
       <div class="box-container" v-show="!menuOpen && state !== 'LOADING'">
-        <div class="box target" style="opacity: 0">
+        <div class="box target" style="opacity: 0;">
           <img alt="target" />
         </div>
-        <div class="box guess" style="opacity: 0">
+        <div class="box guess" v-show="state === 'INCORRECT'">
           <img alt="guess" />
         </div>
       </div>
@@ -63,6 +61,7 @@
     </div>
 
     <!-- <script src="js/vue@3.2.37.js"></script> -->
+    <!-- TODO -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.3.4/vue.global.prod.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
     <script src="js/Animations.js"></script>
