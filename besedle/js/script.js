@@ -9,8 +9,13 @@ const Besedle = {
 
   mounted() {
     // prepare target
-    const random = alea(new Date().toDateString());
-    this.target = WORDLIST_TARGETS[Math.floor(random() * WORDLIST_TARGETS.length)];
+    try {
+      const params = new URLSearchParams(location.search);
+      this.target = decodeURIComponent(atob(params.get('w') || false));
+    } catch (error) {
+      const random = alea(new Date().toDateString());
+      this.target = WORDLIST_TARGETS[Math.floor(random() * WORDLIST_TARGETS.length)];
+    }
 
     // prepare guesses
     this.guesses = new Array(6).fill().map((_, i) => new Row(i));
