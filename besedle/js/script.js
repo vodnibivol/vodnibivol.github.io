@@ -9,13 +9,7 @@ const Besedle = {
 
   mounted() {
     // prepare target
-    try {
-      const params = new URLSearchParams(location.search);
-      this.target = decodeURIComponent(atob(params.get('w') || false));
-    } catch (error) {
-      const random = alea(new Date().toDateString());
-      this.target = WORDLIST_TARGETS[Math.floor(random() * WORDLIST_TARGETS.length)];
-    }
+    this.getQueryParams();
 
     // prepare guesses
     this.guesses = new Array(6).fill().map((_, i) => new Row(i));
@@ -28,6 +22,30 @@ const Besedle = {
   },
 
   methods: {
+    getQueryParams() {
+      const URI = new URL(location.href);
+      const DEV = URI.searchParams.has('dev');
+
+      if (URI.searchParams.has('m')) {
+        URI.searchParams.set('w', btoa(encodeURIComponent(URI.searchParams.get('m'))));
+        URI.searchParams.delete('m');
+        window.history.replaceState({}, null, URI.toString());
+        if (DEV) console.log(URI);
+      }
+
+      try {
+        const target = decodeURIComponent(atob(URI.searchParams.get('w') || false));
+        if (target.length !== 5 || !WORDLIST_VALID.includes(target)) throw new Error('invalid word: ' + target);
+        this.target = target;
+      } catch (err) {
+        if (DEV) console.error(err);
+        const random = alea(new Date().toDateString());
+        this.target = WORDLIST_TARGETS[Math.floor(random() * WORDLIST_TARGETS.length)];
+        URI.search = '';
+        window.history.replaceState({}, null, URI.toString());
+      }
+    },
+
     onKeyDown(evt) {
       if (this.finished) return;
 
@@ -42,12 +60,12 @@ const Besedle = {
         activeRow.submit(this.target);
       } else if (key === 'Backspace') {
         // del prev
-        const lastLetter = activeRow.letters.findLast((l) => l.value !== '');
-        lastLetter.value = '';
+        const lastLetter = activeRow.letters.findLast((l) => l.value);
+        if (lastLetter) lastLetter.value = '';
         return;
       } else if (/^[a-zčšž]$/iu.test(key)) {
         // letter typed
-        const emptySpot = activeRow.letters.find((l) => l.value === '');
+        const emptySpot = activeRow.letters.find((l) => !l.value);
         if (!emptySpot) return;
         emptySpot.value = key.toLowerCase();
       }
