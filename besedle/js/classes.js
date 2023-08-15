@@ -4,6 +4,11 @@ class Row {
     this.fixed = false;
     this.letters = new Array(5).fill().map((_, i) => new Letter(this, i));
     this.index = index;
+    this.id = crypto.randomUUID();
+  }
+
+  get el() {
+    return document.querySelector(`[data-id="${this.id}"]`);
   }
 
   get full() {
@@ -14,22 +19,17 @@ class Row {
     return this.letters.map((l) => l.value).join('');
   }
 
-  setValue(word, submit = false) {
-    this.letters.forEach((l, i) => l.setValue(word.at(i).toLowerCase()));
-    if (submit) this.submit();
+  get isValid() {
+    return this.value.length === 5 && WORDLIST_VALID.includes(this.value);
   }
 
+  get isCorrect() {
+    return this.letters.every((l) => l.status === 'correct');
+  }
 
-  checkValid() {
-    const word = this.letters.map((l) => l.value).join('');
-
-    if (word.length < 5) {
-      shake('#guess-grid .row:nth-of-type(' + (this.index + 1) + ')');
-    } else if (!WORDLIST_VALID.includes(word)) {
-      shake('#guess-grid .row:nth-of-type(' + (this.index + 1) + ')');
-    } else {
-      return true;
-    }
+  setValue(guessWord, submit = false) {
+    this.letters.forEach((l, i) => l.setValue(guessWord[i]));
+    if (submit) this.submit();
   }
 
   submit(targetWord) {
@@ -37,7 +37,7 @@ class Row {
     const GUESS = this.letters.map((l) => l.value);
 
     // ERROR CKECKING
-    if (!this.checkValid()) return;
+    if (!this.isValid) return false;
 
     // first locate (and remove) correct ones
     for (let i = 0; i < 5; ++i) {
@@ -52,20 +52,18 @@ class Row {
       if (this.letters[i].status === 'correct') continue;
 
       if (GUESS[i] === TARGET[i]) {
-        // CORRECT
         this.letters[i].status = 'correct';
         TARGET[i] = null;
       } else if (TARGET.includes(GUESS[i])) {
-        // DISPLACED
         TARGET[TARGET.indexOf(GUESS[i])] = null;
         this.letters[i].status = 'displaced';
       } else {
-        // WRONG
         this.letters[i].status = 'wrong';
       }
     }
 
     this.fixed = true;
+    return true;
   }
 }
 
@@ -74,12 +72,17 @@ class Letter {
     this.value = '';
     this.row = row;
     this.index = index;
+    this.id = crypto.randomUUID();
 
     this.status = '';
   }
 
-  setValue(value) {
-    this.value = value;
+  setValue(value = '') {
+    this.value = value.toLowerCase();
+  }
+
+  get el() {
+    return document.querySelector(`[data-id="${this.id}"]`);
   }
 
   get active() {

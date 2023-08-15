@@ -4,6 +4,7 @@ const Besedle = {
       guesses: [],
       finished: false,
       target: '',
+      dailyIndex: null,
     };
   },
 
@@ -13,10 +14,15 @@ const Besedle = {
 
     // prepare guesses
     this.guesses = new Array(6).fill().map((_, i) => new Row(i));
+    if (this.dailyIndex) {
+      this.getStorage();
+      this.checkWin();
+    }
 
     // events
     document.addEventListener('keydown', this.onKeyDown);
     document.addEventListener('click', this.onClick);
+    new Shortcuts().on('SHIFT+C', this.clearStorage).listen();
 
     [...document.querySelectorAll('[hidden]')].forEach((el) => el.removeAttribute('hidden'));
   },
@@ -34,15 +40,20 @@ const Besedle = {
       }
 
       try {
+        // custom word
         const target = decodeURIComponent(atob(URI.searchParams.get('w') || false));
         if (target.length !== 5 || !WORDLIST_VALID.includes(target)) throw new Error('invalid word: ' + target);
         this.target = target;
       } catch (err) {
+        // daily puzzle
         if (DEV) console.error(err);
         const random = alea(new Date().toDateString());
         this.target = WORDLIST_TARGETS[Math.floor(random() * WORDLIST_TARGETS.length)];
         URI.search = '';
         window.history.replaceState({}, null, URI.toString());
+
+        // set daily index for daily puzzle
+        this.dailyIndex = 'BESEDLE_' + new Intl.DateTimeFormat('en-GB').format(new Date());
       }
     },
 
@@ -57,7 +68,12 @@ const Besedle = {
 
       if (key === 'Enter') {
         // mora bit cela vrsta polna, a NE fixed
-        activeRow.submit(this.target);
+        const isValid = activeRow.submit(this.target);
+        if (isValid) {
+          this.setStorage();
+        } else {
+          shake(activeRow.el);
+        }
       } else if (key === 'Backspace') {
         // del prev
         const lastLetter = activeRow.letters.findLast((l) => l.value);
@@ -73,13 +89,29 @@ const Besedle = {
       this.checkWin();
     },
 
+    getStorage() {
+      const val = localStorage.getItem(this.dailyIndex);
+      if (val) {
+        const words = val.split(',');
+        this.guesses.forEach((g, i) => g.setValue(words[i]) || g.submit(this.target));
+      }
+    },
+
+    setStorage() {
+      const guessesString = this.guesses.map((g) => (g.full ? g.value : '')).join(',');
+      localStorage.setItem(this.dailyIndex, guessesString);
+    },
+
+    clearStorage() {
+      localStorage.removeItem(this.dailyIndex);
+    },
+
     checkWin() {
       const lastRow = this.guesses.findLast((g) => g.fixed);
       if (!lastRow) return;
-      const win = lastRow.letters.every((l) => l.status === 'correct');
+      const win = lastRow.isCorrect;
       if (win) {
         this.finished = true;
-        // alert('KONEC!');
       }
     },
 
@@ -94,7 +126,7 @@ Vue.createApp(Besedle).mount('#main');
 // --- HELPERS
 
 function shake(selector) {
-  const el = document.querySelector(selector);
+  const el = typeof selector === 'object' ? selector : document.querySelector(selector);
   el.addEventListener('animationend', () => (el.style.animation = ''), { once: true });
   el.style.animation = 'shake 0.5s';
 }

@@ -10,9 +10,9 @@
   <body>
     <div id="main" hidden>
       <div id="guess-grid-container">
-        <div id="guess-grid">
-          <div class="row" :class="{fixed:row.fixed,full:row.full}" v-for="row of guesses" @click="openDefinition(row)">
-            <div class="letter" :class="[letter.status, {active: letter.active}]" v-for="letter of row.letters">
+        <div id="guess-grid" :class="{finished}">
+          <div class="row" :class="{fixed:row.fixed,full:row.full,correct:row.isCorrect}" :data-id="row.id" v-for="row of guesses" @click="openDefinition(row)">
+            <div class="letter" :class="[letter.status, {active: letter.active}]" :data-id="letter.id" v-for="letter of row.letters">
               <div class="front">{{ letter.value }}</div>
               <div class="back">{{ letter.value }}</div>
             </div>
@@ -27,6 +27,7 @@
     <script src="js/alea.min.js"></script>
     <script src="js/wordlist.min.js"></script>
     <script src="js/classes.js"></script>
+    <script src="js/Shortcuts.js"></script>
     <script src="js/script.js"></script>
   </body>
 </html>
