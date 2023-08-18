@@ -90,6 +90,8 @@ class Letter {
   }
 }
 
+// --- helpers
+
 function randomID() {
   if (crypto.randomUUID !== undefined) return crypto.randomUUID();
   return uuidv4();

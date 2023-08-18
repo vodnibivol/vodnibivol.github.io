@@ -161,26 +161,31 @@ body {
 // KEYBOARD
 
 .keyboard-container {
-  padding: 5px;
+  --gap: 5px;
+
+  padding: var(--gap);
   flex-shrink: 1;
   width: 100vw;
-  
+
   #keyboard {
-    max-width: 450px;
+    max-width: 400px;
     margin: 0 auto;
+    margin-bottom: 10px;
 
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: var(--gap);
 
     .keyboard-row {
       display: flex;
-      gap: 5px;
+      gap: var(--gap);
 
       .letter {
         background: #d4d6da;
         flex: 1;
-        height: 50px;
+        height: 10vw;
+        height: 48px;
+        // aspect-ratio: 36/50;
         font-size: 20px;
 
         border-radius: 4px;
@@ -190,6 +195,28 @@ body {
         display: flex;
         justify-content: center;
         align-items: center;
+        border-bottom: 2px solid darken(#d4d6da, 8);
+        text-transform: uppercase;
+
+        transition: all 0.15s;
+
+        &[data-status='wrong'] {
+          background: #787c7e;
+          color: white;
+          border-bottom-color: darken(#787c7e, 8);
+        }
+
+        &[data-status='displaced'] {
+          background: #c8b458;
+          color: white;
+          border-bottom-color: darken(#c8b458, 8);
+        }
+
+        &[data-status='correct'] {
+          background: #6baa64;
+          color: white;
+          border-bottom-color: darken(#6baa64, 8);
+        }
       }
 
       .enter {
@@ -202,11 +229,42 @@ body {
 
       .size-double {
         flex: 2;
-        padding: 0 2.5px;
+        padding: 0 var(--gap) / 2;
+      }
+    }
+  }
+
+  // MOBILE
+  @media screen and (max-width: 700px) {
+    #keyboard {
+      gap: 5px;
+      margin-bottom: 0px;
+
+      .keyboard-row {
+        gap: 4px;
+
+        .letter {
+          height: 42px;
+          font-size: 18px;
+
+          &.enter {
+            font-size: 13px;
+          }
+        }
       }
     }
   }
 }
+
+// HIDDEN INPUT
+
+input#hiddenInput {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+// ANIMATIONS
 
 @keyframes shake {
   0% {
