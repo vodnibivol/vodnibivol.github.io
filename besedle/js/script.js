@@ -5,6 +5,7 @@ const Besedle = {
       finished: false,
       target: '',
       dailyIndex: null,
+      keyboardOpen: window.innerWidth < 700,
     };
   },
 

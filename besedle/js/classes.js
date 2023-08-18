@@ -4,7 +4,7 @@ class Row {
     this.fixed = false;
     this.letters = new Array(5).fill().map((_, i) => new Letter(this, i));
     this.index = index;
-    this.id = crypto.randomUUID();
+    this.id = randomID();
   }
 
   get el() {
@@ -72,7 +72,7 @@ class Letter {
     this.value = '';
     this.row = row;
     this.index = index;
-    this.id = crypto.randomUUID();
+    this.id = randomID();
 
     this.status = '';
   }
@@ -88,4 +88,15 @@ class Letter {
   get active() {
     return this.value;
   }
+}
+
+function randomID() {
+  if (crypto.randomUUID !== undefined) return crypto.randomUUID();
+  return uuidv4();
+}
+
+function uuidv4() {
+  return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
+    (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16)
+  );
 }

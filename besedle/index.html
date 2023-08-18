@@ -2,17 +2,30 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Besedle</title>
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
     <div id="main" hidden>
+      <!-- <div id="keyboard-switch" @click="keyboardOpen = !keyboardOpen">A</div> -->
+
       <div id="guess-grid-container">
         <div id="guess-grid" :class="{finished}">
-          <div class="row" :class="{fixed:row.fixed,full:row.full,correct:row.isCorrect}" :data-id="row.id" v-for="row of guesses" @click="openDefinition(row)">
-            <div class="letter" :class="[letter.status, {active: letter.active}]" :data-id="letter.id" v-for="letter of row.letters">
+          <div
+            class="row"
+            :class="{fixed:row.fixed,full:row.full,correct:row.isCorrect}"
+            :data-id="row.id"
+            v-for="row of guesses"
+            @click="openDefinition(row)"
+          >
+            <div
+              class="letter"
+              :class="[letter.status, {active: letter.active}]"
+              :data-id="letter.id"
+              v-for="letter of row.letters"
+            >
               <div class="front">{{ letter.value }}</div>
               <div class="back">{{ letter.value }}</div>
             </div>
@@ -20,7 +33,25 @@
         </div>
       </div>
 
-      <!-- <div id="keyboard"></div> -->
+      <!-- for mobile -->
+      <div class="keyboard-container" v-if="keyboardOpen">
+        <div id="keyboard">
+          <div class="keyboard-row">
+            <div class="letter" v-for="l of 'qwertyuiopš'" :data-value="l" @click="onKeyDown({key:l})">{{ l }}</div>
+          </div>
+          <div class="keyboard-row">
+            <div class="letter" v-for="l of 'asdfghjklčž'" :data-value="l" @click="onKeyDown({key:l})">{{ l }}</div>
+          </div>
+          <div class="keyboard-row">
+            <div class="letter size-double enter" @click="onKeyDown({key:'Enter'})">enter</div>
+            <div class="letter" v-for="l of 'zxcvbnm'" :data-value="l" @click="onKeyDown({key:l})">{{ l }}</div>
+            <div class="letter size-double" @click="onKeyDown({key:'Backspace'})">
+              <!-- prettier-ignore -->
+              <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20" class="game-icon" data-testid="icon-backspace"><path fill="var(--color-tone-1)" d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H7.07L2.4 12l4.66-7H22v14zm-11.59-2L14 13.41 17.59 17 19 15.59 15.41 12 19 8.41 17.59 7 14 10.59 10.41 7 9 8.41 12.59 12 9 15.59z"></path></svg>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script src="js/vue.global.prod.js"></script>
