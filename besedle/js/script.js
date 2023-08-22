@@ -174,7 +174,14 @@ const Animations = {
     return function () {
       return new Promise((resolve, reject) => {
         const el = typeof selector === 'object' ? selector : document.querySelector(selector);
-        el.addEventListener('animationend', resolve, { once: true });
+        el.addEventListener(
+          'animationend',
+          () => {
+            el.style.animation = '';
+            resolve();
+          },
+          { once: true }
+        );
         el.style.animation = animation;
       });
     };
