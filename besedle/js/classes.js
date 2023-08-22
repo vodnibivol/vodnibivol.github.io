@@ -19,17 +19,17 @@ class Row {
     return this.letters.map((l) => l.value).join('');
   }
 
-  get isValid() {
+  get valid() {
     return this.value.length === 5 && WORDLIST_VALID.includes(this.value);
   }
 
-  get isCorrect() {
+  get correct() {
     return this.letters.every((l) => l.status === 'correct');
   }
 
-  setValue(guessWord, submit = false) {
+  setValue(guessWord, targetWord) {
     this.letters.forEach((l, i) => l.setValue(guessWord[i]));
-    if (submit) this.submit();
+    if (targetWord) this.submit(targetWord);
   }
 
   submit(targetWord) {
@@ -37,7 +37,7 @@ class Row {
     const GUESS = this.letters.map((l) => l.value);
 
     // ERROR CKECKING
-    if (!this.isValid) return false;
+    if (!this.valid) return false;
 
     // first locate (and remove) correct ones
     for (let i = 0; i < 5; ++i) {

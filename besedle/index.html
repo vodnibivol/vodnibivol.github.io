@@ -6,6 +6,10 @@
     <title>Besedle</title>
     <link rel="stylesheet" href="css/style.css" />
 
+    <!-- PRELOAD FONTS -->
+    <link rel="preload" href="fonts/lexend-v18-latin-ext-500.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="fonts/lexend-v18-latin-ext-600.woff2" as="font" type="font/woff2" crossorigin />
+
     <!-- ICONS -->
     <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png" />
@@ -20,41 +24,38 @@
     <meta name="theme-color" content="#ffffff" />
   </head>
   <body>
-    <div id="main" hidden>
-      <!-- <div id="keyboard-switch" @click="keyboardOpen = !keyboardOpen">A</div> -->
-
+    <div id="main" cloak>
       <div id="guess-grid-container">
-        <div id="guess-grid" :class="{finished}">
-          <div
-            class="row"
-            :class="{fixed:row.fixed,full:row.full,correct:row.isCorrect}"
-            :data-id="row.id"
-            v-for="row of guesses"
-            @click="openDefinition(row)"
-          >
-            <div
-              class="letter"
-              :class="[letter.status, {active: letter.active}]"
-              :data-id="letter.id"
-              v-for="letter of row.letters"
-            >
-              <div class="front">{{ letter.value }}</div>
-              <div class="back">{{ letter.value }}</div>
-            </div>
+        <div id="guess-grid" :class="{ finished }">
+          <div id="msg">
+            <a :href="lost ? `https://fran.si/iskanje?query=${target}` : null" target="_blank">{{ msg }}</a>
           </div>
+
+          <!-- ROW template -->
+          <template v-for="row of guesses">
+            <a :href="row.fixed ? `https://fran.si/iskanje?query=${row.value}` : null" target="_blank">
+              <div class="row" :class="{fixed:row.fixed,full:row.full,correct:row.correct}" :data-id="row.id">
+                <!-- LETTER template -->
+                <template v-for="letter of row.letters">
+                  <div class="letter" :class="[letter.status, {active: letter.active}]" :data-id="letter.id">
+                    <div class="front">{{ letter.value }}</div>
+                    <div class="back">{{ letter.value }}</div>
+                  </div>
+                </template>
+              </div>
+            </a>
+          </template>
         </div>
       </div>
 
       <!-- for mobile -->
-      <!-- <input type="text" name="hiddenInput" id="hiddenInput"> -->
-
       <div class="keyboard-container" v-show="keyboardOpen">
         <div id="keyboard">
           <div class="keyboard-row">
-            <div class="letter" v-for="l of 'qwertyuiopš'" :data-value="l" :class="" @click="onKeyDown({key:l})">{{ l }}</div>
+            <div class="letter" v-for="l of 'qwertyuiopš'" :data-value="l" @click="onKeyDown({key:l})">{{ l }}</div>
           </div>
           <div class="keyboard-row">
-            <div class="letter" v-for="l of 'asdfghjklčž'" :data-value="l" :class="" @click="onKeyDown({key:l})">{{ l }}</div>
+            <div class="letter" v-for="l of 'asdfghjklčž'" :data-value="l" @click="onKeyDown({key:l})">{{ l }}</div>
           </div>
           <div class="keyboard-row">
             <div class="letter size-double enter" data-value="Enter" @click="onKeyDown({key:'Enter'})">enter</div>

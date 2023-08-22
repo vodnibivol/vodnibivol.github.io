@@ -2,10 +2,10 @@ const Besedle = {
   data() {
     return {
       guesses: [],
-      finished: false,
       target: '',
       dailyIndex: null,
       keyboardOpen: window.innerWidth < 700,
+      msg: '',
     };
   },
 
@@ -15,26 +15,46 @@ const Besedle = {
 
     // prepare guesses
     this.guesses = new Array(6).fill().map((_, i) => new Row(i));
+
     if (this.dailyIndex) {
       this.getStorage();
-      this.checkWin();
       this.setKeyboard();
     }
 
     // events
     document.addEventListener('keydown', this.onKeyDown);
-    // document.addEventListener('click', this.onClick);
     new Shortcuts()
-      .on('SHIFT+C', this.clearStorage)
-      .on('SHIFT+S', this.setKeyboard)
-      .on('SHIFT+R', this.randomWord)
       .on('SHIFT+K', () => (this.keyboardOpen = !this.keyboardOpen))
+      .on('SHIFT+C', this.clearStorage)
+      .on('SHIFT+R', this.randomWord)
       .listen();
 
-    [...document.querySelectorAll('[hidden]')].forEach((el) => el.removeAttribute('hidden'));
+    [...document.querySelectorAll('[cloak]')].forEach((el) => el.removeAttribute('cloak'));
+  },
+
+  computed: {
+    won() {
+      return this.guesses.some((g) => g.fixed && g.value === this.target);
+    },
+
+    lost() {
+      return this.full && !this.won;
+    },
+
+    full() {
+      return this.guesses.length && !!this.guesses.at(-1).fixed;
+    },
+
+    finished() {
+      return this.won || this.full;
+    },
   },
 
   methods: {
+    test() {
+      this.guesses.forEach((g) => g.setValue('mucek', this.target));
+    },
+
     randomWord() {
       const params = new URLSearchParams(location.search);
       params.set('m', WORDLIST_TARGETS[Math.floor(alea(new Date())() * WORDLIST_TARGETS.length)]);
@@ -85,9 +105,8 @@ const Besedle = {
         if (isValid) {
           this.setStorage();
           setTimeout(this.setKeyboard, 2500);
-          // this.setKeyboard();
         } else {
-          shake(activeRow.el);
+          Animations.shake(activeRow.el);
         }
       } else if (key === 'Backspace') {
         // del prev
@@ -140,21 +159,55 @@ const Besedle = {
       const lastRow = this.guesses.findLast((g) => g.fixed);
       if (!lastRow) return; // no answers
 
-      this.finished = lastRow.isCorrect || lastRow.index === 5;
-    },
+      if (this.won) this.msg = 'čestitam!';
+      else if (this.lost) this.msg = this.target;
 
-    openDefinition(row) {
-      window.open('https://fran.si/iskanje?query=' + row.value, '_blank');
+      if (this.msg) Animations.showMsg();
     },
   },
 };
 
+// --- ANIMATIONS
+
+const Animations = {
+  anima(selector, animation) {
+    return function () {
+      return new Promise((resolve, reject) => {
+        const el = typeof selector === 'object' ? selector : document.querySelector(selector);
+        el.addEventListener('animationend', resolve, { once: true });
+        el.style.animation = animation;
+      });
+    };
+  },
+
+  shake(el) {
+    return this.anima(el, 'shake 0.5s')();
+  },
+
+  showMsg(timeout = 5000) {
+    const el = document.querySelector('#msg');
+    el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), timeout);
+  },
+};
+
+// --- INIT
+
 Vue.createApp(Besedle).mount('#main');
 
-// --- HELPERS
+// --- SW
 
-function shake(selector) {
-  const el = typeof selector === 'object' ? selector : document.querySelector(selector);
-  el.addEventListener('animationend', () => (el.style.animation = ''), { once: true });
-  el.style.animation = 'shake 0.5s';
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker
+    .register('sw.js', { scope: location.pathname || '/' })
+    .then(function (reg) {
+      // Registration worked
+      console.log('Registration succeeded. Scope is ' + reg.scope);
+      // // Attempt to update
+      reg.update();
+    })
+    .catch(function (error) {
+      // Registration failed
+      console.log('Registration failed with ' + error);
+    });
 }

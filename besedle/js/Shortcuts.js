@@ -1,23 +1,25 @@
-// modified: 15. aug 2023
+// modified: 22. aug 2023
 
 class Shortcuts {
   constructor({ el = window, preventDefault = false, log = false } = {}) {
-    this.el = el;
+    this.el = typeof el === 'string' ? document.querySelector(el) : el;
     this.prevent = preventDefault;
     this.log = log;
 
-    this.active = [];
+    this.active = new Set();
     this.listeners = {};
   }
 
   listen() {
     this.el.addEventListener('keydown', this._onKeyDown.bind(this));
     this.el.addEventListener('keyup', this._onKeyUp.bind(this));
+    window.addEventListener('focus', this._clearActive.bind(this));
+    window.addEventListener('blur', this._clearActive.bind(this));
   }
 
   on(keyString, foo) {
-    let keys = keyString.toLowerCase().split('+').map((k) => k.trim());
-    let keyStr = this._keyString(keys);
+    const keys = keyString.split('+').map((k) => k.toUpperCase().trim());
+    const keyStr = this._keyString(keys);
 
     this.listeners[keyStr] = this.listeners[keyStr] || [];
     this.listeners[keyStr].push(foo);
@@ -26,37 +28,39 @@ class Shortcuts {
   }
 
   _keyString(arr) {
-    let sortedKeys = arr.sort((a, b) => a.localeCompare(b));
-
-    bringToFront(sortedKeys, 'shift');
-    bringToFront(sortedKeys, 'alt');
-    bringToFront(sortedKeys, 'control');
-    bringToFront(sortedKeys, 'meta');
-
-    let sortedString = sortedKeys.join('+').toLowerCase();
-    return sortedString;
+    const sortedKeys = [...arr].sort((a, b) => a.localeCompare(b));
+    return sortedKeys.join('+');
   }
 
   _fireEvents() {
-    let keyStr = this._keyString(this.active);
-    let activeListener = this.listeners[keyStr];
+    const keyStr = this._keyString(this.active);
+    const activeListener = this.listeners[keyStr];
 
     if (activeListener) {
-      activeListener.forEach((foo) => foo());
-      this.active = [];
       if (this.log) this._logKeys();
+      activeListener.forEach((foo) => foo());
+      this.active = new Set();
     }
   }
 
   _logKeys() {
-    console.log(this.active);
+    console.info(this.active);
+  }
+
+  _clearActive() {
+    this.active = new Set();
   }
 
   _onKeyDown(e) {
     if (this.prevent) e.preventDefault();
 
-    let KEY = e.key.toLowerCase();
-    if (!this.active.includes(KEY)) this.active.push(KEY);
+    const KEY = e.key.toUpperCase();
+    this.active.add(KEY);
+
+    if (e.metaKey) this.active.add('META');
+    if (e.ctrlKey) this.active.add('CONTROL');
+    if (e.altKey) this.active.add('ALT');
+    if (e.shiftKey) this.active.add('SHIFT');
 
     if (this.log) this._logKeys();
     this._fireEvents();
@@ -67,26 +71,13 @@ class Shortcuts {
   _onKeyUp(e) {
     if (this.prevent) e.preventDefault();
 
-    let KEY = e.key.toLowerCase();
-    this.active = /meta|control|shift/.test(KEY) ? [] : this.active.filter((k) => k !== KEY);
+    const KEY = e.key.toUpperCase();
+
+    if (KEY === 'META') this._clearActive();
+    else this.active.delete(KEY);
+
     if (this.log) this._logKeys();
 
     return false;
-  }
-
-  _removeDuplicates(arr) {
-    return arr.reduce((acc, cur) => (acc.includes(cur) ? acc : [...acc, cur]), []);
-  }
-}
-
-// --- UTILS
-
-function bringToFront(arr, el) {
-  let index = arr.indexOf(el);
-  if (index !== -1) {
-    // exist; move to front
-    arr.unshift(...arr.splice(index, 1));
-  } else {
-    // console.warn("cannot bring to front: element doesn't exist");
   }
 }
