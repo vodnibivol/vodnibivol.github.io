@@ -1,1 +1,1 @@
-window.location.href = 'http://' + IP + ':' + (window.PORT || '1100');
+window.location.href = 'http://' + EXT_IP + ':' + (window.PORT || '1100');
