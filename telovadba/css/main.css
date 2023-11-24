@@ -1,0 +1,1 @@
+*{box-sizing:border-box}html,body{margin:0;padding:0}.material-symbols-outlined{font-variation-settings:"FILL" 0,"wght" 400,"GRAD" 0,"opsz" 24}#nav-container{position:fixed;bottom:0;left:0;width:100%;height:50px;background:#eee;display:flex;justify-content:space-around;align-items:center}#nav-container .icon{display:contents;color:#888}#nav-container .icon.active{color:#444}
