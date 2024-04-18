@@ -299,7 +299,9 @@ a {
     --gap: 4px;
 
     #keyboard {
-      margin-bottom: 0px;
+      // margin-bottom: 40px;
+      margin-bottom: env(safe-area-inset-bottom, 0px);
+
 
       .keyboard-row {
         .letter {
