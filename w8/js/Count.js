@@ -1,6 +1,6 @@
 class Count {
-  constructor() {
-    this.max = 0;
+  constructor(maxVal = 0) {
+    this.max = maxVal;
     this.current = 0;
     this.el = null;
   }
@@ -10,7 +10,6 @@ class Count {
   }
 
   init(maxVal = 0) {
-    this.max = maxVal;
     this.el = $('#count');
     this.render();
 

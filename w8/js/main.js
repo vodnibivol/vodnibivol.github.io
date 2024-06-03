@@ -45,13 +45,15 @@ const Main = {
   },
 
   init() {
-    // init form
+    // events
     $('#inputForm').onsubmit = (e) => this.submitForm(e);
     document.body.onclick = (e) => {
       if (document.body.dataset.view === 'input') $('#input').focus();
     };
 
     $('#input').focus();
+
+    $('#navLeft').onclick = () => (document.body.dataset.view = 'input');
   },
 
   async submitForm(e) {
@@ -61,8 +63,11 @@ const Main = {
 
     // --- EASTER EGG
 
-    if (/lar(a|i[ck]a|kon?|č)|fi?li?p.*|miš(ko)?|šmurk?|(črv|storž|škrat|polž|makaronč)(ek|ko|kar|on)/.test(this.input)) {
-      return Main.create('miško rad imam'.split(' '));
+    // prettier-ignore
+    if (/lar(a|i[ck]a|kon?|č)|fi?li?p.*|miš(k[oa])?|šmurk?|(črv|storž|škrat|polž|makaronč)(ek|ko|kar|on)?/.test(this.input)) {
+      setTimeout(() => $('#input').value = '', 2000);
+      this.create('miško rad imam'.split(' '));
+      return;
     }
 
     // --- EASTER EGG
@@ -91,6 +96,7 @@ const Main = {
       // error: show error warning
       console.warn(err);
       $('#input').value = 'ERROR';
+      document.body.dataset.view = 'input';
     }
   },
 
@@ -98,7 +104,7 @@ const Main = {
     this.Words = new Words(entries);
     this.Grid = new Grid().init();
     this.Words.init();
-    this.Count = new Count().init(Main.Words.strings.length);
+    this.Count = new Count(this.Words.objects.length).init();
 
     document.body.dataset.view = 'grid';
   },
@@ -110,15 +116,3 @@ const Main = {
 };
 
 Main.init();
-// Main.create('miško rad imam'.split(' '));
-// 'miška muca kura kravica anakonda larika kokoška slon koleraba pepelka uš bavc'.split(' ');
-
-const Nav = {
-  leftArrow: $('#leftArrow'),
-
-  init() {
-    $('#navLeft').onclick = () => (document.body.dataset.view = 'input');
-  },
-};
-
-Nav.init();
