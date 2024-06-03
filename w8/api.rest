@@ -1,0 +1,9 @@
+### KONTEKST.IO => SOPOMENKE
+
+POST https://www.kontekst.io/api
+
+{"q": "lulek", "lang": "sl"}
+
+### FRAN.SI => validacija (raje kar napravi seznam..)
+
+GET https://fran.si/ajax/iskanje/autocomplete?query=flumaster

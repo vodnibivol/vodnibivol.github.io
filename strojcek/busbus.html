@@ -17,8 +17,9 @@
       const randomId = (len = 16) => new Array(len).fill().map(() => Math.floor(Math.random() * 16).toString(16)).join('');
       const params = new URLSearchParams(location.search);
 
-      const userId = params.get('userId') || localStorage.userId || randomId();
+      const userId = params.get('userId') || localStorage.getItem('userId') || randomId();
       console.log(userId);
+      document.querySelector('pre').innerText += `[${userId}]`;
       localStorage.userId = userId;
       window.location.href = 'http://' + EXT_IP + ':' + (window.PORT || '1100') + '/?userId=' + userId;
     </script>

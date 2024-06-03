@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form action="#">
+      <input type="text" id="inputData" value="pod" />
+      <input type="submit" value="generiraj" />
+    </form>
+    <hr />
+    <div class="results"></div>
+
+    <script src="./js/WORDS.js"></script>
+
+    <script>
+      const $ = (sel) => document.querySelector(sel);
+      $('form').onsubmit = async () => {
+        const res = await postData('https://www.kontekst.io/api', { q: $('#inputData').value, lang: 'sl' });
+        const j = JSON.parse(await res.text());
+
+        // try {
+        if (j.status === 200) {
+          console.table(j.result.sims);
+          $('.results').innerHTML = '';
+          for (let i = 0; i < j.result.sims.length; i++) {
+            const r = j.result.sims[i];
+            $('.results').innerHTML += `<li id="word-${i}">${r.term}</li>`;
+
+            if (i <= 16)
+              checkWord(r.term).then((is_ok) => {
+                const color = is_ok ? 'green' : 'red';
+                $('li#word-' + i).style.setProperty('background', color);
+              });
+          }
+        }
+      };
+
+      $('form').submit();
+
+      async function checkWord(word) {
+        const ALPHABET = 'abcčdefghijklmnoprsštuvzžqwxyđć';
+        if ([...word].some((letter) => !ALPHABET.includes(letter))) return false;
+
+        const url = 'https://fran.si/ajax/iskanje/autocomplete?query=' + word;
+        const r = await fetch(url);
+        const j = await r.json();
+        // console.log(j);
+        return j.includes(word);
+      }
+
+      // Example POST method implementation:
+      async function postData(url = '', data = {}) {
+        // Default options are marked with *
+        const response = await fetch(url, {
+          method: 'POST', // *GET, POST, PUT, DELETE, etc.
+          mode: 'cors', // no-cors, *cors, same-origin
+          cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+          credentials: 'same-origin', // include, *same-origin, omit
+          headers: {
+            'Content-Type': 'application/json',
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          redirect: 'follow', // manual, *follow, error
+          referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+          body: JSON.stringify(data), // body data type must match "Content-Type" header
+        });
+        return response; // parses JSON response into native JavaScript objects
+      }
+    </script>
+  </body>
+</html>
