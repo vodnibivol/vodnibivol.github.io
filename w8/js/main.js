@@ -40,6 +40,8 @@ const Main = {
   Grid: null,
   Count: null,
 
+  easterEgg: false,
+
   get input() {
     return $('#input').value.toLowerCase().trim();
   },
@@ -57,6 +59,8 @@ const Main = {
   },
 
   async submitForm(e) {
+    if (!this.input) return;
+
     // FORM SUBMITTED
     document.body.dataset.view = 'loading';
     e.preventDefault();
@@ -67,8 +71,10 @@ const Main = {
     if (/lar(a|i[ck]a|kon?|č)|fi?li?p.*|miš(k[oa])?|šmurk?|(črv|storž|škrat|polž|makaronč)(ek|ko|kar|on)?/.test(this.input)) {
       setTimeout(() => $('#input').value = '', 2000);
       this.create('miško rad imam'.split(' '));
+      this.easterEgg = true;
       return;
     }
+    this.easterEgg = false;
 
     // --- EASTER EGG
 
@@ -110,9 +116,59 @@ const Main = {
   },
 
   win() {
-    if (this.Grid.size < 7) confetti();
+    $('#grid').style.setProperty('pointer-events', 'none');
+
+    if (this.easterEgg) heartShower();
+    else if (this.Grid.size < 7) confetti();
     else confetti({ particleCount: 100, spread: 70 }); // , origin: { y: 0.6 }
   },
 };
 
 Main.init();
+
+// TODO: move (and above) to new file: utils.js
+function heartShower() {
+  const shapes = [
+    confetti.shapeFromText({ text: '🩷' }),
+    confetti.shapeFromText({ text: '❤️' }),
+    confetti.shapeFromText({ text: '💜' }),
+  ];
+
+  const duration = 10 * 1000;
+  const animationEnd = Date.now() + duration;
+  let skew = 1;
+  let int = 0;
+
+  function randomInRange(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  (function frame() {
+    const timeLeft = animationEnd - Date.now();
+    const ticks = Math.max(200, 500 * (timeLeft / duration));
+    skew = Math.max(0.8, skew - 0.001);
+
+    if (++int % 6 === 0)
+      confetti({
+        particleCount: 1,
+        startVelocity: 0,
+        ticks: 500,
+        origin: {
+          x: randomInRange(0.4, 0.6),
+          // since particles fall down, skew start toward the top
+          y: 0,
+          // y: skew-0.2,
+        },
+        // colors: ['#ffffff'],
+        shapes,
+        gravity: randomInRange(0.6, 0.8),
+        scalar: randomInRange(0.5, 1.2),
+        drift: randomInRange(-0.4, 0.4), // 0.4
+        // flat: true,
+      });
+
+    if (timeLeft > 0) {
+      requestAnimationFrame(frame);
+    }
+  })();
+}
