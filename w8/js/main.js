@@ -59,17 +59,18 @@ const Main = {
   },
 
   async submitForm(e) {
+    e.preventDefault();
     if (!this.input) return;
 
     // FORM SUBMITTED
     document.body.dataset.view = 'loading';
-    e.preventDefault();
+    $('#input').blur();
 
     // --- EASTER EGG
 
     // prettier-ignore
-    if (/lar(a|i[ck]a|kon?|č)|fi?li?p.*|miš(k[oa])?|šmurk?|(črv|storž|škrat|polž|makaronč)(ek|ko|kar|on)?/.test(this.input)) {
-      setTimeout(() => $('#input').value = '', 2000);
+    if (/^(lar(a|i[ck]a|kon?|č)?|fi?li?p.*|miš(k[oa])?|šmurk?|škronk?|čm?[ou]n?k(o|ec|ar)?|(črv|storž|škrat|polž|makaronč)(ek|ko|kar|on)?)$/.test(this.input)) {
+      setTimeout(() => $('#input').value = '', 2000); // clean input when returned
       this.create('miško rad imam'.split(' '));
       this.easterEgg = true;
       return;
@@ -80,28 +81,34 @@ const Main = {
 
     // get Kontekst words
     const res = await postData('https://www.kontekst.io/api', { q: this.input, lang: 'sl' });
+    const responseText = await res.clone().text();
 
     try {
       // try fetching kontekst words
       const data = await res.json();
 
       if (data.status === 200) {
-        // console.info('SUCCESS!!');
+        // request SUCCESS
         const entries = data.result.sims;
-        const filteredEntries = entries
-          .filter(({ term }, index) => {
-            if (index > 12) return false;
-            else if (term.length > 10) return false;
-            return WIKIPEDIA_TITLES.includes(term) || FRAN_ENTRIES.includes(term);
-          })
-          .map((e) => e.term);
+        console.table(entries);
 
-        this.create(filteredEntries);
+        const filteredEntries = entries.filter(({ term }, index) => {
+          if (index > 12) return false;
+          else if (term.length > 10) return false;
+          return WIKIPEDIA_TITLES.includes(term) || FRAN_ENTRIES.includes(term);
+        });
+
+        const filteredWords = filteredEntries.map((e) => e.term);
+        console.log(filteredWords);
+
+        // SUCCESS: create grid
+        this.create(filteredWords);
       }
     } catch (err) {
       // error: show error warning
-      console.warn(err);
-      $('#input').value = 'ERROR';
+      console.warn(responseText);
+      console.error(err);
+      $('#input').value = 'Ni rezultatov.';
       document.body.dataset.view = 'input';
     }
   },

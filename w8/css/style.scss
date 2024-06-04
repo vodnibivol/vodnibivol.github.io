@@ -1,5 +1,4 @@
 @import './fonts';
-@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
 
 :root {
   --grid-size: 10;
@@ -15,6 +14,8 @@
   user-select: none;
   font-weight: 500;
   font-size: 13px;
+  touch-action: none; // !important
+  // color: var(--font-dark);
 }
 
 ::selection {
@@ -73,41 +74,55 @@ body {
 #input-wrapper {
   position: absolute;
 
-  input {
+  input[type='text'] {
     outline: none;
     appearance: none;
 
-    &[type='text'] {
-      text-transform: uppercase;
-      border: 2px solid black;
-      border-radius: 5px;
-      padding: 2px 7px;
-      width: 140px;
+    text-transform: uppercase;
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 2px 7px;
+    width: 140px;
 
-      &:focus {
-        background: #fafafa;
-      }
+    &:focus {
+      background: #fafafa;
     }
 
-    &[type='submit'] {
+    &::placeholder {
+      color: var(--font-light);
+    }
+  }
+
+  button[type='submit'] {
+    display: contents;
+
+    svg {
+      z-index: 10;
       position: absolute;
       top: 50%;
       right: 0;
-      background: transparent;
-      font-size: 18px;
-      font-family: 'Monaco', 'Lucida Grande', 'Segoe UI', sans-serif;
-      // font-weight: bold;
-      cursor: pointer;
-      border: none;
+      transform: translateY(-50%);
 
-      // background: #ff000055;
       padding: 7px;
 
-      transform: translateY(-55%);
+      background: transparent;
+      // background: #ff000033;
+      fill: black;
+
+      cursor: pointer;
 
       &:active {
         color: var(--font-medium);
       }
+    }
+  }
+
+  // INPUT EMPTY => DISABLE BUTTON
+  input:placeholder-shown ~ button {
+    pointer-events: none;
+
+    svg {
+      fill: var(--font-light);
     }
   }
 }
@@ -115,6 +130,8 @@ body {
 // --- NAV
 
 #nav {
+  z-index: 100;
+
   pointer-events: none;
   position: fixed;
   height: 100%;
@@ -127,6 +144,7 @@ body {
   #navRight {
     background: transparent;
     color: var(--font-light);
+    fill: var(--font-light);
     height: 100%;
     width: 100px;
     font-size: 18px;
@@ -136,17 +154,20 @@ body {
     &:hover {
       // opacity: 0.7;
       color: var(--font-dark);
+      fill: var(--font-dark);
       background: #fcfcfc;
     }
   }
 
-  #navLeft {
-    font-family: 'Monaco';
-    transform: scaleX(-1);
+  #navLeft svg {
+    transform: scaleX(-1); // left arrow
   }
 
-  #navRight {
-    font-family: 'Monaco';
+  @media screen and (max-width: 450px) {
+    #navLeft,
+    #navRight {
+      width: 50px;
+    }
   }
 }
 
@@ -191,6 +212,7 @@ body[data-view='input'] {
 body:not([data-view='input']) {
   #input-wrapper {
     opacity: 0.5;
+    pointer-events: none;
   }
 }
 
