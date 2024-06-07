@@ -8,15 +8,15 @@ class Cell {
     this.x = x;
     this.y = y;
 
-    this.hex = cellHex(x, y);
+    this.id = cellId(x, y);
   }
 
   get el() {
-    return $(`[data-hex="${this.hex}"]`);
+    return $(`[data-id="${this.id}"]`);
   }
 
-  setContent(letter, testColor) {
+  setContent(letter, color) {
     this.content = letter;
-    this.testColor = testColor; // NOTE: TESTING
+    this.color = color;
   }
 }

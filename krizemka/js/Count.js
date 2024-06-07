@@ -1,27 +1,32 @@
 class Count {
   constructor(maxVal = 0) {
     this.max = maxVal;
-    this.current = 0;
+    this.value = 0;
     this.el = null;
   }
 
   get isFinished() {
-    return this.current === this.max;
+    return this.value === this.max;
   }
 
-  init(maxVal = 0) {
+  init() {
     this.el = $('#count');
     this.render();
 
     return this;
   }
 
+  setValue(val) {
+    this.value = val;
+    this.render();
+  }
+
   increase() {
-    this.current++;
+    this.value++;
     this.render();
   }
 
   render() {
-    this.el.innerHTML = this.current + '/' + this.max;
+    this.el.innerHTML = this.value + '/' + this.max;
   }
 }

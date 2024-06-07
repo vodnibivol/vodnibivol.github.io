@@ -23,7 +23,7 @@ class Grid {
     $('#grid-wrapper').insertAdjacentElement('afterbegin', this.el);
 
     this.size = (function () {
-      const PERCENTAGE_FULL = 0.8; // 0.4 => 0.8
+      const PERCENTAGE_FULL = 0.5; // 0.4 => 0.8
       const longestWord = Main.Words.strings.reduce((acc, cur) => (cur.length > acc.length ? cur : acc));
       const percentageSize = Math.round(Math.sqrt((Main.Words.strings.join('').length * 1) / PERCENTAGE_FULL));
       return Math.max(longestWord.length, percentageSize);
@@ -36,27 +36,27 @@ class Grid {
     return this;
   }
 
-  findCell(hex) {
-    return this.matrix.flat().find((c) => c.hex === hex);
+  findCell(id) {
+    return this.matrix.flat().find((c) => c.id === id);
   }
 
-  clickCell(hex) {
-    const cell = this.findCell(hex);
+  clickCell(id) {
+    const cell = this.findCell(id);
 
     if (this.selectionStart) {
       // SELECT END
-      const startHex = this.selectionStart.hex;
-      const endHex = hex;
+      const startId = this.selectionStart.id;
+      const endId = id;
 
-      const match = Main.Words.testSelection(startHex, endHex);
-      if (match) {
-        match.reveal();
-        Main.Count.increase();
-        if (Main.Count.isFinished) Main.win();
-      }
+      const match = Main.Words.testSelection(startId, endId);
+      if (match) match.reveal();
 
       delete this.selectionStart.el.dataset.start;
       this.selectionStart = null;
+
+      // update count
+      Main.Count.setValue(Main.Words.revealedNo);
+      if (Main.Count.isFinished) Main.win();
     } else {
       // SELECT START
       this.selectionStart = cell;
@@ -72,7 +72,7 @@ class Grid {
       // clear selection
       this.clearHover();
 
-      const hoveringCell = this.findCell(e.target.dataset.hex);
+      const hoveringCell = this.findCell(e.target.dataset.id);
       const distX = hoveringCell.x - this.selectionStart.x;
       const distY = hoveringCell.y - this.selectionStart.y;
 
@@ -95,7 +95,7 @@ class Grid {
     // CLICK CELL
     this.el.addEventListener('mousedown', (e) => {
       this.clearHover();
-      e.target.matches('.cell') && this.clickCell(e.target.dataset.hex);
+      e.target.matches('.cell') && this.clickCell(e.target.dataset.id);
     });
 
     // HOVER OUTSIDE THE BOX
@@ -135,8 +135,8 @@ class Grid {
         el.className = 'cell flex-center';
         el.innerText = cell.content || cell.defaultContent;
         if (IS_DEV) el.innerText = cell.content; // TESTING
-        if (IS_DEV) el.style.setProperty('background', cell.testColor); // TESTING
-        el.dataset.hex = cell.hex;
+        if (IS_DEV) el.style.setProperty('background', cell.color); // TESTING
+        el.dataset.id = cell.id;
 
         this.el.appendChild(el);
       }

@@ -6,6 +6,10 @@ class Words {
     this.strings = stringArray;
   }
 
+  get revealedNo() {
+    return this.objects.filter((o) => o.revealed).length;
+  }
+
   init() {
     this.objects = [];
 
@@ -20,8 +24,8 @@ class Words {
     return this;
   }
 
-  testSelection(startHex, endHex) {
-    const result = this.objects.find((w) => w.start.hex === startHex && w.end.hex === endHex);
+  testSelection(startId, endId) {
+    const result = this.objects.find((w) => w.start.id === startId && w.end.id === endId);
     return result;
   }
 
@@ -40,15 +44,17 @@ class Word {
 
     this.dir = null; // { x: 0, y: 0 }
     this.letters = []; // array of objects {}
+    this.revealed = false;
 
-    // this.color = `rgb(${Math.random() * 256},${Math.random() * 256},${Math.random() * 256})`;
     this.color = this.randomColor();
   }
 
   randomColor() {
     const h = randomRange(0, 360);
-    const s = randomRange(50, 80);
-    const l = randomRange(50, 90);
+    // const s = randomRange(50, 80);
+    // const l = randomRange(50, 90);
+    const s = 70; // 70
+    const l = 85; // 70 => 90 (85)
 
     return `hsl(${h}deg ${s}% ${l}%)`;
   }
@@ -62,10 +68,9 @@ class Word {
   }
 
   reveal() {
-    this.letters.forEach((l) => {
-      // get hex of cell and highlight it
-      $(`[data-hex="${l.hex}"]`).style.background = this.color;
-    });
+    // get id of cell and highlight it
+    this.letters.forEach((l) => ($(`[data-id="${l.id}"]`).style.background = this.color));
+    this.revealed = true;
   }
 
   findPosition() {
@@ -83,7 +88,7 @@ class Word {
     }
 
     // 1. find all positions;
-    for (let dir of Direction.directions) {
+    for (let dir of Direction.selectedDirs) {
       // FOR EVERY DIRECTION:
 
       // TRAVERSE AVAILABLE GRID POSITIONS
@@ -144,7 +149,7 @@ class Word {
     this.letters.forEach((l) => Main.Grid.matrix[l.y][l.x].setContent(l.content, this.color));
     this.letters.forEach((l) => {
       const cell = Main.Grid.matrix[l.y][l.x];
-      l.hex = cell.hex;
+      l.id = cell.id;
     });
 
     // 5. render grid
