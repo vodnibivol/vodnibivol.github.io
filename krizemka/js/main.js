@@ -13,6 +13,8 @@ const Main = {
   Grid: null,
   Count: null,
 
+  maxEntries: parseInt(new URLSearchParams(location.search).get('maxEntries')) || 15,
+
   easterEgg: false,
 
   get input() {
@@ -51,8 +53,6 @@ const Main = {
     }
     this.easterEgg = false;
 
-    // --- EASTER EGG
-
     // get Kontekst words
     const res = await postData('https://www.kontekst.io/api', { q: this.input, lang: 'sl' });
     const responseText = await res.clone().text();
@@ -67,7 +67,7 @@ const Main = {
         console.table(entries);
 
         const filteredEntries = entries.filter(({ term }, index) => {
-          if (index > 16) return false;
+          if (index > this.maxEntries) return false;
           if (term.length > 12) return false;
           return WIKIPEDIA_TITLES.includes(term) || FRAN_ENTRIES.includes(term);
         });
@@ -92,6 +92,7 @@ const Main = {
     this.Grid = new Grid().init();
     this.Words.init();
     this.Count = new Count(this.Words.objects.length).init();
+    Direction.reset();
 
     document.body.dataset.view = 'grid';
   },

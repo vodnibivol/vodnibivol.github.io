@@ -42,6 +42,10 @@ const Direction = {
     this.render();
   },
 
+  reset() {
+    this.history = [];
+  },
+
   render() {
     [...$$('#dirs-wrapper .dir')].forEach((d, i) => {
       if (this.selectedDirIndexes.includes(i)) d.dataset.selected = '';
@@ -49,12 +53,12 @@ const Direction = {
     });
   },
 
-  frequenceUsed(dir) {
+  frequencyUsed(dir) {
     return arrayCount(this.history, this.getIndex(dir));
   },
 
   getIndex(dir) {
-    return this.selectedDirIndexes.findIndex(({ x, y }) => x === dir.x && y === dir.y);
+    return this.ALL_DIRS.findIndex(({ x, y }) => x === dir.x && y === dir.y);
   },
 
   saveDir(dir) {

@@ -115,7 +115,7 @@ class Word {
             AVAILABLE_PLACEMENTS.push({
               dir,
               letters: placement,
-              score: Direction.frequenceUsed(dir),
+              score: Direction.frequencyUsed(dir),
             });
         }
       }
