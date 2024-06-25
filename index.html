@@ -88,11 +88,12 @@
     </div>
     <footer>
       <div class="copyright">
-        <p>(c) 2023 | vodnibivol</p>
+        <p>(c) <span id="year"></span> | vodnibivol</p>
       </div>
     </footer>
     <script>
       document.addEventListener('contextmenu', (event) => event.preventDefault());
+      document.querySelector("#year").innerText = new Date().getFullYear();
     </script>
   </body>
 </html>
