@@ -84,5 +84,14 @@
     <script src="./js/script.js"></script>
     <script src="./js/persist@3.x.x.min.js"></script>
     <script src="./js/alpinejs@3.12.2.min.js"></script>
+
+    <script>
+      const hover_fix = (function () {
+        [...document.querySelectorAll('.cell')].forEach((el) => {
+          el.addEventListener('touchstart', () => {});
+          el.addEventListener('touchend', () => {});
+        });
+      })();
+    </script>
   </body>
 </html>
