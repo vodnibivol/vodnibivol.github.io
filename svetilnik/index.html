@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <title>svetilnik</title>
+    <style>
+      :root {
+        --box-width: 100px;
+        --box-height: 100px;
+      }
+      html,
+      body {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        overscroll-behavior: contain;
+        touch-action: none;
+      }
+      body {
+        background: #000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: default;
+      }
+      #whitebox {
+        position: absolute;
+
+        background: #fff;
+        width: var(--box-width);
+        height: var(--box-height);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="whitebox"></div>
+
+    <script>
+      const Main = (function () {
+        return {
+          squareEl: document.querySelector('#whitebox'),
+          dragging: false,
+          minSize: 100, // px
+
+          initialBoxSize: {
+            width: null,
+            height: null,
+          },
+
+          boxSize: {
+            width: 200,
+            height: 200,
+          },
+
+          start: {
+            x: null,
+            y: null,
+          },
+
+          init() {
+            document.addEventListener('mousedown', this.onDragStart.bind(this));
+            document.addEventListener('touchstart', this.onDragStart.bind(this));
+            document.addEventListener('touchend', this.onDragEnd.bind(this));
+            document.addEventListener('mouseup', this.onDragEnd.bind(this));
+            document.addEventListener('touchmove', this.onDrag.bind(this));
+            document.addEventListener('mousemove', this.onDrag.bind(this));
+
+            // izbere naključno barvo za kvadrat: da vem, da se je refreshal
+            // this.squareEl.style.background = `hsl(${Math.random() * 360}, 100%, ${Math.random() * 100}%)`;
+
+            this.render();
+          },
+
+          onDragStart(e) {
+            // this.squareEl.style.background = '#eee';
+
+            this.dragging = true;
+            this.initialBoxSize.width = this.boxSize.width;
+            this.initialBoxSize.height = this.boxSize.height;
+
+            this.start.x = e.clientX || e.touches[0].clientX;
+            this.start.y = e.clientY || e.touches[0].clientY;
+          },
+
+          onDragEnd() {
+            this.squareEl.style.background = '#fff';
+            this.dragging = false;
+
+            this.initialBoxSize.width = this.boxSize.width;
+            this.initialBoxSize.height = this.boxSize.height;
+          },
+
+          onDrag(e) {
+            if (!this.dragging) return;
+
+            const maxWidth = document.body.getBoundingClientRect().width-20;
+            const maxHeight = document.body.getBoundingClientRect().height-20;
+
+            const relX = -(this.start.x - (e.clientX || e.touches[0].clientX));
+            const relY = this.start.y - (e.clientY || e.touches[0].clientY);
+
+            if (Math.abs(relX) > Math.abs(relY)) {
+              this.boxSize.width = Math.min(maxWidth, Math.max(this.minSize, this.initialBoxSize.width + relX));
+              this.boxSize.height = Math.min(maxHeight, Math.max(this.minSize, this.initialBoxSize.height));
+            } else {
+              this.boxSize.width = Math.min(maxWidth, Math.max(this.minSize, this.initialBoxSize.width));
+              this.boxSize.height = Math.min(maxHeight, Math.max(this.minSize, this.initialBoxSize.height + relY));
+            }
+
+            this.render();
+          },
+
+          render() {
+            document.documentElement.style.setProperty('--box-width', this.boxSize.width + 'px');
+            document.documentElement.style.setProperty('--box-height', this.boxSize.height + 'px');
+          },
+        };
+      })();
+
+      Main.init();
+    </script>
+  </body>
+</html>
