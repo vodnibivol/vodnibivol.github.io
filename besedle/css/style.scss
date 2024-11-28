@@ -25,6 +25,13 @@
   src: url('../fonts/lexend-v18-latin-ext-700.woff2') format('woff2');
 }
 
+// --- VARS
+
+$color-wrong: #787c7e;
+$color-displaced: #c8b458;
+$color-correct: #6baa64;
+$color-lightgray: #d4d6da;
+
 * {
   box-sizing: border-box;
   font-family: Lexend, Helvetica, Arial, sans-serif; // Merriweather, Lato, *LEXEND*
@@ -164,7 +171,7 @@ a {
       }
 
       .front {
-        border: 2px solid #d4d6da;
+        border: 2px solid $color-lightgray;
       }
 
       .back {
@@ -190,15 +197,15 @@ a {
       }
 
       &.wrong .back {
-        background: #787c7e;
+        background: $color-wrong;
       }
 
       &.displaced .back {
-        background: #c8b458;
+        background: $color-displaced;
       }
 
       &.correct .back {
-        background: #6baa64;
+        background: $color-correct;
       }
     }
   }
@@ -224,8 +231,11 @@ a {
   $gap: 5px;
 
   padding: var(--gap);
+  padding-top: 6px;
   flex-shrink: 1;
   width: 100vw;
+
+  // background: #eee; // mislim, da ni potrebno
 
   #keyboard {
     max-width: 400px;
@@ -241,7 +251,7 @@ a {
       gap: var(--gap);
 
       .letter {
-        background: #d4d6da;
+        background: $color-lightgray;
         flex: 1;
         height: 10vw;
         height: 48px;
@@ -255,27 +265,47 @@ a {
         display: flex;
         justify-content: center;
         align-items: center;
-        border-bottom: 2px solid darken(#d4d6da, 8);
+        border-bottom: 2px solid darken($color-lightgray, 8);
         text-transform: uppercase;
 
-        transition: all 0.15s;
+        // transition: all 0.15s;
+
+        &:active {
+          transition: none;
+          background: darken($color-lightgray, 8);;
+        }
 
         &[data-status='wrong'] {
-          background: #787c7e;
+          transition: background 0.15s;
+          background: $color-wrong;
           color: white;
-          border-bottom-color: darken(#787c7e, 8);
+          border-bottom-color: darken($color-wrong, 8);
+
+          &:active {
+            background: darken($color-wrong, 8);
+          }
         }
 
         &[data-status='displaced'] {
+          transition: background 0.15s;
           background: #c8b458;
           color: white;
-          border-bottom-color: darken(#c8b458, 8);
+          border-bottom-color: darken($color-displaced, 8);
+
+          &:active {
+            background: darken($color-displaced, 8);
+          }
         }
 
         &[data-status='correct'] {
+          transition: background 0.15s;
           background: #6baa64;
           color: white;
-          border-bottom-color: darken(#6baa64, 8);
+          border-bottom-color: darken($color-correct, 8);
+
+          &:active {
+            background: darken($color-correct, 8);
+          }
         }
       }
 
@@ -301,7 +331,6 @@ a {
     #keyboard {
       // margin-bottom: 40px;
       margin-bottom: env(safe-area-inset-bottom, 0px);
-
 
       .keyboard-row {
         .letter {
