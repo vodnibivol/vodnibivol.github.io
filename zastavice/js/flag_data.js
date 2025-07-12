@@ -242,7 +242,7 @@ const QA = {
   'sg': 'Singapore',
   'sm': 'San Marino',
   'cl': 'Chile',
-  'um': 'United States Minor Outlying Islands',
+  // 'um': 'United States Minor Outlying Islands',
   'bj': 'Benin',
   'lk': 'Sri Lanka',
   'by': 'Belarus',
