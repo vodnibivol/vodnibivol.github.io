@@ -38,9 +38,9 @@ class Training {
     }
 
     // TODO: delete
-    console.log('---');
-    console.log(_5worstGuesses);
-    console.log(pool);
+    // console.log('---');
+    // console.log(_5worstGuesses);
+    // console.log(pool);
     // console.log(this.GUESSES);
 
     this.TARGET = randomChoose(pool);

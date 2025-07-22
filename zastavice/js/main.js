@@ -98,6 +98,10 @@ const Main = Vue.createApp({
           img.onerror = reject;
           img.src = url;
         }
+
+        // preload mr. worldwide
+        const img = new Image();
+        img.src = 'img/ww3.jpg';
       });
     },
 
