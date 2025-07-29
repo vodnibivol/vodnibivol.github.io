@@ -1,13 +1,5 @@
 // UTILS
 
-function randomChoose(arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
-}
-
-function randomRange(n) {
-  return Math.floor(Math.random() * n);
-}
-
 function generateSpectreSet(n, dist) {
   // n: number of colors
   // r: minimal distance between colors
@@ -21,18 +13,16 @@ function generateSpectreSet(n, dist) {
   let remainder = 360 - n * dist;
 
   // random starting point
-  let start = 0; // Math.random() * 360;
+  let start = random(360);
 
   for (let i = 0; i < n; ++i) {
-    const rand = Math.random() * remainder;
+    const rand = random(remainder);
     const hue = start + (dist + rand);
-    // const f = Math.floor;
-    // console.log(f(remainder), f(rand), f(hue));
-    spectreValues.push(Math.floor(hue));
+    spectreValues.push(floor(hue % 360));
+
     remainder -= rand;
     start = hue;
   }
 
   return spectreValues;
 }
-

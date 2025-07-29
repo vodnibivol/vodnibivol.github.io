@@ -8,20 +8,26 @@ const SQUARE_SIZE = 35; // px
 
 function setup() {
   // createCanvas(GRID_SIZE.x * SQUARE_SIZE, GRID_SIZE.y * SQUARE_SIZE);
-  createCanvas(windowWidth - 50, windowHeight - 50);
+  colorMode(HSL);
+  createCanvas(windowWidth, windowHeight);
 
-  Squares.create();
+  Grid.create();
   Shapes.create();
+
+  // noLoop();
 }
 
 function draw() {
-  // background(200);
+  background(50);
 
-  Squares.draw();
+  Grid.draw();
 
-  // circle(mouseX, mouseY, 50); // TESTING
+  Shapes.arr[0].draw();
+  // circle(mouseX, mouseY, 30)
 }
 
 function windowResized() {
-  resizeCanvas(windowWidth - 50, windowHeight - 50);
+  resizeCanvas(windowWidth, windowHeight);
 }
+
+// function mouseMoved()

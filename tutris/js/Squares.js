@@ -1,9 +1,9 @@
 // SQUARES
 
-const Squares = {
+const Grid = {
   arr: [],
 
-  get gridOrigin() {
+  get origin() {
     return {
       x: width / 2 - (GRID_SIZE.x * SQUARE_SIZE) / 2,
       y: height / 2 - (GRID_SIZE.y * SQUARE_SIZE) / 2,
@@ -14,23 +14,22 @@ const Squares = {
     for (let i = 0; i < GRID_SIZE.y; ++i) {
       for (let j = 0; j < GRID_SIZE.x; ++j) {
         // create a square
-        const c = new Square(j, i);
+        const c = new GridSquare(j, i, this.origin);
         this.arr.push(c);
       }
     }
   },
 
-  get(x, y) {
-    return this.arr.find((s) => s.x === x && s.y === y) || null;
+  get(col, row) {
+    return this.arr.find((s) => s.col === col && s.row === row) || null;
   },
 
   randomFreeSquare() {
     // get all free squares
     const freeSquares = this.arr.filter((s) => !s.shape);
-    // console.log(this.arr);
 
     // return one of them
-    return randomChoose(freeSquares);
+    return random(freeSquares);
   },
 
   draw() {
@@ -39,20 +38,38 @@ const Squares = {
 };
 
 class Square {
-  constructor(x, y) {
-    this.x = x;
-    this.y = y;
+  constructor(col, row, anchor = { x: 0, y: 0 }) {
+    this.col = col;
+    this.row = row;
+    this.anchor = anchor;
+    this.size = 35;
 
-    // this.color = color(`hsl(${randomRange(360)}, 100%, 70%)`);
     this.shape = null;
   }
 
+  get bbox() {
+    const x = this.col * this.size;
+    const y = this.row * this.size;
+
+    return {
+      x: this.anchor.x + x,
+      y: this.anchor.y + y,
+
+      top: this.anchor.y + y,
+      right: this.anchor.x + x + this.size,
+      bottom: this.anchor.y + y + this.size,
+      left: this.anchor.x + x,
+    };
+  }
+}
+
+class GridSquare extends Square {
   get neighbours() {
     return [
-      Squares.get(this.x + 1, this.y),
-      Squares.get(this.x, this.y + 1),
-      Squares.get(this.x - 1, this.y),
-      Squares.get(this.x, this.y - 1),
+      Grid.get(this.col + 1, this.row),
+      Grid.get(this.col, this.row + 1),
+      Grid.get(this.col - 1, this.row),
+      Grid.get(this.col, this.row - 1),
     ];
   }
 
@@ -60,6 +77,36 @@ class Square {
     const c = this.shape?.color || color(255);
     fill(c);
     strokeWeight(3);
-    square(Squares.gridOrigin.x + this.x * SQUARE_SIZE, Squares.gridOrigin.y + this.y * SQUARE_SIZE, SQUARE_SIZE);
+    square(this.bbox.x, this.bbox.y, this.size);
+  }
+}
+
+class ShapeSquare extends Square {
+  constructor(col, row, anchor, color) {
+    super(col, row, anchor);
+
+    this.color = color;
+  }
+
+  get bbox() {
+    const x = this.col * this.size;
+    const y = this.row * this.size;
+
+    return {
+      x: this.anchor.x + x,
+      y: this.anchor.y + y,
+
+      top: this.anchor.y + y,
+      right: this.anchor.x + x + this.size,
+      bottom: this.anchor.y + y + this.size,
+      left: this.anchor.x + x,
+    };
+  }
+
+  draw() {
+    const c = this.color || color(255);
+    fill(c);
+    strokeWeight(3);
+    square(this.bbox.x, this.bbox.y, this.size);
   }
 }
