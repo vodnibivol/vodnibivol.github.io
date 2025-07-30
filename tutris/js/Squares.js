@@ -3,7 +3,7 @@
 const Grid = {
   arr: [],
 
-  get origin() {
+  get position() {
     return {
       x: width / 2 - (GRID_SIZE.x * SQUARE_SIZE) / 2,
       y: height / 2 - (GRID_SIZE.y * SQUARE_SIZE) / 2,
@@ -14,7 +14,7 @@ const Grid = {
     for (let i = 0; i < GRID_SIZE.y; ++i) {
       for (let j = 0; j < GRID_SIZE.x; ++j) {
         // create a square
-        const c = new GridSquare(j, i, this.origin);
+        const c = new GridSquare(j, i, this);
         this.arr.push(c);
       }
     }
@@ -38,10 +38,10 @@ const Grid = {
 };
 
 class Square {
-  constructor(col, row, anchor = { x: 0, y: 0 }) {
+  constructor(col, row, parent) {
     this.col = col;
     this.row = row;
-    this.anchor = anchor;
+    this.parent = parent;
     this.size = 35;
 
     this.shape = null;
@@ -52,14 +52,18 @@ class Square {
     const y = this.row * this.size;
 
     return {
-      x: this.anchor.x + x,
-      y: this.anchor.y + y,
+      x: this.parent.position.x + x,
+      y: this.parent.position.y + y,
 
-      top: this.anchor.y + y,
-      right: this.anchor.x + x + this.size,
-      bottom: this.anchor.y + y + this.size,
-      left: this.anchor.x + x,
+      top: this.parent.position.y + y,
+      right: this.parent.position.x + x + this.size,
+      bottom: this.parent.position.y + y + this.size,
+      left: this.parent.position.x + x,
     };
+  }
+
+  get isHovering() {
+    return mouseX > this.bbox.left && mouseX < this.bbox.right && mouseY > this.bbox.top && mouseY < this.bbox.bottom;
   }
 }
 
@@ -82,29 +86,14 @@ class GridSquare extends Square {
 }
 
 class ShapeSquare extends Square {
-  constructor(col, row, anchor, color) {
-    super(col, row, anchor);
+  constructor(col, row, parent, color) {
+    super(col, row, parent);
 
     this.color = color;
   }
 
-  get bbox() {
-    const x = this.col * this.size;
-    const y = this.row * this.size;
-
-    return {
-      x: this.anchor.x + x,
-      y: this.anchor.y + y,
-
-      top: this.anchor.y + y,
-      right: this.anchor.x + x + this.size,
-      bottom: this.anchor.y + y + this.size,
-      left: this.anchor.x + x,
-    };
-  }
-
   draw() {
-    const c = this.color || color(255);
+    const c = this.parent.isHovering ? color('pink') : this.color || color(255);
     fill(c);
     strokeWeight(3);
     square(this.bbox.x, this.bbox.y, this.size);

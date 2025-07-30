@@ -8,19 +8,14 @@ const Shapes = {
     const colors = generateSpectreSet(HOW_MANY, 40);
 
     for (let i = 0; i < HOW_MANY; ++i) {
+      const position = { x: random(width * 0.8), y: random(height * 0.8) };
       const randomSquare = Grid.randomFreeSquare();
-      const s = new Shape(randomSquare.col, randomSquare.row, colors[i]);
+      const s = new Shape(randomSquare.col, randomSquare.row, position, colors[i]);
       this.arr.push(s);
     }
 
     this.grow();
   },
-
-  // new(c) {
-  //   const randomSquare = Grid.randomFreeSquare();
-  //   const s = new Shape(randomSquare.x, randomSquare.y, c);
-  //   return s;
-  // },
 
   grow() {
     // grow the shapes
@@ -36,30 +31,33 @@ const Shapes = {
 
     this.arr.forEach((shape) => {
       shape.createSquares();
-      // console.log(shape);
       delete shape.gridSquares;
     });
   },
 };
 
 class Shape {
-  constructor(col, row, clr) {
-    // this.origin = { x, y };
-
+  constructor(col, row, position, clr) {
     this.color = color(`hsl(${floor(clr) || floor(random(360))}, 100%, 70%)`);
 
     // get origin square
     this.origin = Grid.get(col, row);
     this.origin.shape = this;
     this.gridSquares = [this.origin];
+
+    // shape squares added later
+    this.shapeSquares = [];
+
+    this.position = position; // NOTE: hardcoded for now
   }
 
-  get position() {
-    // BUG: ne deluje dinamično, moraš passat objekt Shape in vedno znova klicat Shape.position ...
-    return {
-      x: mouseX,
-      y: mouseY,
-    };
+  get isHovering() {
+    return this.shapeSquares.some((s) => s.isHovering);
+  }
+
+  move(x, y) {
+    this.position.x += x;
+    this.position.y += y;
   }
 
   createSquares() {
@@ -72,10 +70,8 @@ class Shape {
     this.height = 1 + this.bottom - this.top;
 
     this.shapeSquares = this.gridSquares.map((square) => {
-      return new ShapeSquare(square.col - this.left, square.row - this.top, this.position, this.color);
+      return new ShapeSquare(square.col - this.left, square.row - this.top, this, this.color);
     });
-
-    // console.log(this.top, this.right, this.bottom);
   }
 
   draw() {
