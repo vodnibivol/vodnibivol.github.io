@@ -4,11 +4,22 @@ const Shapes = {
   arr: [],
 
   create() {
-    const HOW_MANY = 6;
-    const colors = generateSpectreSet(HOW_MANY, 40);
+    const HOW_MANY = 10;
+    const colors = generateSpectreSet(HOW_MANY, 30);
+    console.log(colors);
 
     for (let i = 0; i < HOW_MANY; ++i) {
-      const position = { x: random(width * 0.8), y: random(height * 0.8) };
+      const xAdoptionToGrid = Grid.position.x % SQUARE_SIZE; // grid position x error
+      const yAdoptionToGrid = Grid.position.y % SQUARE_SIZE; // grid position y error
+
+      const x = random(width * 0.8);
+      const y = random(height * 0.8);
+
+      const position = {
+        x: x - (x % SQUARE_SIZE) + xAdoptionToGrid,
+        y: y - (y % SQUARE_SIZE) + yAdoptionToGrid,
+      };
+
       const randomSquare = Grid.randomFreeSquare();
       const s = new Shape(randomSquare.col, randomSquare.row, position, colors[i]);
       this.arr.push(s);
@@ -48,7 +59,7 @@ class Shape {
     // shape squares added later
     this.shapeSquares = [];
 
-    this.position = position; // NOTE: hardcoded for now
+    this.position = position;
     this.isDragging = false;
   }
 
@@ -62,10 +73,10 @@ class Shape {
   }
 
   createSquares() {
-    this.top = Math.min(...this.gridSquares.map((s) => s.row));
-    this.right = Math.max(...this.gridSquares.map((s) => s.col));
-    this.bottom = Math.max(...this.gridSquares.map((s) => s.row));
-    this.left = Math.min(...this.gridSquares.map((s) => s.col));
+    this.top = min(this.gridSquares.map((s) => s.row));
+    this.right = max(this.gridSquares.map((s) => s.col));
+    this.bottom = max(this.gridSquares.map((s) => s.row));
+    this.left = min(this.gridSquares.map((s) => s.col));
 
     this.width = 1 + this.right - this.left;
     this.height = 1 + this.bottom - this.top;

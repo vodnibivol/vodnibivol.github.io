@@ -93,7 +93,16 @@ class ShapeSquare extends Square {
   }
 
   draw() {
-    const c = this.parent.isHovering ? color('pink') : this.color || color(255);
+    let c;
+
+    if (this.parent.isDragging) {
+      c = color('lightpink');
+    } else if (this.parent.isHovering) {
+      c = color('lightblue'); // TESTING GAPS
+    } else {
+      c = this.color || color(100);
+    }
+
     fill(c);
     strokeWeight(3);
     square(this.bbox.x, this.bbox.y, this.size);
