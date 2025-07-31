@@ -49,6 +49,7 @@ class Shape {
     this.shapeSquares = [];
 
     this.position = position; // NOTE: hardcoded for now
+    this.isDragging = false;
   }
 
   get isHovering() {

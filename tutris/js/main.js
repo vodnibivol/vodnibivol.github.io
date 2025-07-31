@@ -25,16 +25,32 @@ function draw() {
   // circle(mouseX, mouseY, 30)
 }
 
+// --- EVENTS
+
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
 }
 
 function mouseDragged(e) {
-  /** 
-  TODO: to ne deluje, ker vleče več oblik in ker gre ven, če se prehitro premakneš.
-  mora bit tak, da ko klikneš, če klikneš v obliko začne vlečt in spusti, ko spustiš ...
- */
   Shapes.arr.forEach((s) => {
-    s.isHovering && s.move(e.movementX, e.movementY);
+    s.isDragging && s.move(e.movementX, e.movementY);
   });
+}
+
+function mousePressed() {
+  const hoveringShape = Shapes.arr.findLast((s) => s.isHovering);
+  if (hoveringShape) {
+    // start drag
+    hoveringShape.isDragging = true;
+    // move to back
+    Shapes.arr = [...Shapes.arr.filter((s) => !s.isDragging), hoveringShape];
+  }
+}
+
+function mouseReleased() {
+  const draggingShape = Shapes.arr.find((s) => s.isDragging);
+  if (draggingShape) {
+    // end drag
+    draggingShape.isDragging = false;
+  }
 }
