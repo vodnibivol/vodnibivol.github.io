@@ -4,13 +4,14 @@ const Shapes = {
   arr: [],
 
   create() {
-    const HOW_MANY = 3;
+    const HOW_MANY = 7;
     const colors = generateSpectreSet(HOW_MANY, 30);
 
+    // TODO: preveri ta del kode ...
     for (let i = 0; i < HOW_MANY; ++i) {
       const position = {
-        x: random(width * 0.8),
-        y: random(height * 0.8),
+        x: Math.random() * (width * 0.8), // ne random, ker je seeded
+        y: Math.random() * (height * 0.8), // ne random, ker je seeded
       };
 
       const randomSquare = Grid.randomFreeSquare();
@@ -46,7 +47,7 @@ const Shapes = {
 
 class Shape {
   constructor(col, row, position, clr) {
-    this.color = color(`hsl(${floor(clr) || floor(random(360))}, 100%, 70%)`);
+    this.color = color(clr || floor(random(360)), 100, 70 ,0.8);
 
     // get origin square
     this.origin = Grid.get(col, row);
@@ -79,8 +80,7 @@ class Shape {
     };
   }
 
-  fallIntoPlace() {
-    // FIXME: zaenkrat samo tak, potem pa more preverit če je enako št. zelenih kvadratkov spodaj
+  fallIntoPlace(outsideGrid = false) {
     const HS = SQUARE_SIZE / 2;
 
     const isInsideGrid =
@@ -89,7 +89,7 @@ class Shape {
       this.bbox.top < Grid.bbox.bottom - HS &&
       this.bbox.bottom > Grid.bbox.top + HS;
 
-    if (!isInsideGrid) return;
+    if (!outsideGrid && !isInsideGrid) return;
 
     const xError = (100 * SQUARE_SIZE + this.position.x - Grid.position.x) % SQUARE_SIZE;
     const yError = (100 * SQUARE_SIZE + this.position.y - Grid.position.y) % SQUARE_SIZE;
@@ -101,14 +101,23 @@ class Shape {
     if (xError > SQUARE_SIZE / 2) this.position.x += SQUARE_SIZE;
   }
 
-  createSquares() {
-    const top = min(this.gridSquares.map((s) => s.row)); // koordinata (0, 1, 2, 3) najvisjega kvadratka
-    const right = max(this.gridSquares.map((s) => s.col));
-    const bottom = max(this.gridSquares.map((s) => s.row));
-    const left = min(this.gridSquares.map((s) => s.col));
+  moveIntoFrame() {
+    this.position.x += (width - SCREEN_SIZE.width) / 2;
+    this.position.y += (height - SCREEN_SIZE.height) / 2;
+    
+    // correct if off screen
+    this.position.x = min(width - this.width, max(0, this.position.x));
+    this.position.y = min(height - this.height, max(0, this.position.y));
+  }
 
-    const width = 1 + right - left; // in squares
-    const height = 1 + bottom - top; // in squares
+  createSquares() {
+    const top = min(this.gridSquares.map((s) => s.row)); // row/col
+    const right = max(this.gridSquares.map((s) => s.col)); // row/col
+    const bottom = max(this.gridSquares.map((s) => s.row)); // row/col
+    const left = min(this.gridSquares.map((s) => s.col)); // row/col
+
+    const width = 1 + right - left; // in squares (row/col)
+    const height = 1 + bottom - top; // in squares (row/col)
 
     this.width = width * SQUARE_SIZE; // in px
     this.height = height * SQUARE_SIZE; // in px

@@ -1,7 +1,7 @@
 // SQUARES
 
 const Grid = {
-  arr: [],
+  arr: [], // array of squares
   width: 0, // in px; set in create()
   hegiht: 0, // in px; set in create()
 
@@ -24,7 +24,6 @@ const Grid = {
   create() {
     for (let i = 0; i < GRID_SIZE.y; ++i) {
       for (let j = 0; j < GRID_SIZE.x; ++j) {
-        // create a square
         const c = new GridSquare(j, i, this);
         this.arr.push(c);
       }
@@ -39,10 +38,7 @@ const Grid = {
   },
 
   randomFreeSquare() {
-    // get all free squares
     const freeSquares = this.arr.filter((s) => !s.shape);
-
-    // return one of them
     return random(freeSquares);
   },
 
@@ -56,22 +52,21 @@ class Square {
     this.col = col;
     this.row = row;
     this.parent = parent;
-    this.size = 35;
 
-    this.shape = null;
+    this.shape = null; // used when creating blocks
   }
 
   get bbox() {
-    const x = this.col * this.size; // relative to grid origin
-    const y = this.row * this.size; // relative to grid origin
+    const x = this.col * SQUARE_SIZE; // relative to grid origin
+    const y = this.row * SQUARE_SIZE; // relative to grid origin
 
     return {
       x: this.parent.position.x + x,
       y: this.parent.position.y + y,
 
       top: this.parent.position.y + y,
-      right: this.parent.position.x + x + this.size,
-      bottom: this.parent.position.y + y + this.size,
+      right: this.parent.position.x + x + SQUARE_SIZE,
+      bottom: this.parent.position.y + y + SQUARE_SIZE,
       left: this.parent.position.x + x,
     };
   }
@@ -80,6 +75,8 @@ class Square {
     return mouseX > this.bbox.left && mouseX < this.bbox.right && mouseY > this.bbox.top && mouseY < this.bbox.bottom;
   }
 }
+
+// --- GRID SQUARE
 
 class GridSquare extends Square {
   constructor(col, row, parent) {
@@ -95,41 +92,15 @@ class GridSquare extends Square {
     ];
   }
 
-  onShapeHover() {
-    // const draggingShape = Shapes.arr.find((s) => s.isDragging);
-    const isHoveringOver = Shapes.arr.some((shape) => {
-      return shape.shapeSquares.some(
-        (square) =>
-          abs(this.bbox.x - square.bbox.x) <= this.size / 2 && abs(this.bbox.y - square.bbox.y) <= this.size / 2
-      );
-
-      // states: EMPTY, EMPTY+OK, FULL+ERR (different shape)
-      // NOTE: OK je samo, če so vsi kvadratki pod shape-om prazni. če ni kvadratka ali je poln, ni ok.
-    });
-    
-    if (isHoveringOver) {
-      this.hover = this.shape ? 'ERR' : 'OK';
-    } else {
-      this.hover = null;
-    }
-  }
-
   draw() {
-    let c;
-
-    if (this.shape) {
-      c = this.shape.color;
-    } else if (this.hover) {
-      c = this.hover === 'OK' ? color('green') : color('red');
-    } else {
-      c = color(100);
-    }
-
-    fill(c);
+    fill(100);
+    stroke(0);
     strokeWeight(3);
-    square(this.bbox.x, this.bbox.y, this.size);
+    square(this.bbox.x, this.bbox.y, SQUARE_SIZE);
   }
 }
+
+// --- SHAPE SQUARE
 
 class ShapeSquare extends Square {
   constructor(col, row, parent, color) {
@@ -139,22 +110,13 @@ class ShapeSquare extends Square {
   }
 
   draw() {
-    let c;
+    let c = this.color || color(100);
+    if (this.parent.isDragging) c = color('#ffffffbb');
 
-    // if (this.parent.isDragging) {
-    c = color('#ffffffbb');
-    // } else {
-    //   c = this.color || color(100);
-    // }
-
-    // if (this.parent.isHovering) {
-    //   c.setAlpha(0.9);
-    // } else {
-    //   c.setAlpha(1);
-    // }
-
+    blendMode(DARKEST);
     fill(c);
     strokeWeight(3);
-    square(this.bbox.x, this.bbox.y, this.size);
+    square(this.bbox.x, this.bbox.y, SQUARE_SIZE);
+    blendMode(BLEND);
   }
 }
