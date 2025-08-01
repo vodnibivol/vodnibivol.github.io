@@ -4,6 +4,8 @@ const GRID_SIZE = {
   y: 4,
 };
 
+let SCREEN_SIZE; // { width: 0, height: 0 }
+
 const SQUARE_SIZE = 35; // px
 
 function setup() {
@@ -14,6 +16,8 @@ function setup() {
 
   Grid.create();
   Shapes.create();
+
+  SCREEN_SIZE = { width, height };
 
   // noLoop();
   // frameRate(5);
@@ -28,8 +32,20 @@ function draw() {
 
 // --- EVENTS
 
-function windowResized(e) {
+function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
+
+  // move shapes to new location
+  Shapes.arr.forEach((sh) => {
+    sh.position.x += (width - SCREEN_SIZE.width) / 2;
+    sh.position.y += (height - SCREEN_SIZE.height) / 2;
+
+    // correct if off screen
+    sh.position.x = max(0, sh.position.x);
+    sh.position.y = max(0, sh.position.y);
+  });
+
+  SCREEN_SIZE = { width, height };
 }
 
 function mouseDragged() {
