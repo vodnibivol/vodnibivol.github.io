@@ -38,6 +38,7 @@ const Drag = {
     this.shape.isDragging = false;
 
     // TODO: check for win
+    Grid.checkForWin();
   },
 
   onMove() {

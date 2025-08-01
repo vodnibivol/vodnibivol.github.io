@@ -1,4 +1,4 @@
-// SQUARES
+// --- GRID
 
 const Grid = {
   arr: [], // array of squares
@@ -33,6 +33,19 @@ const Grid = {
     this.height = GRID_SIZE.y * SQUARE_SIZE;
   },
 
+  checkForWin() {
+    const win = this.arr.every((sq) => {
+      // there is one square on top of it
+      return Shapes.arr.some((sh) => {
+        return sh.shapeSquares.some((s) => {
+          return dist(sq.bbox.x, sq.bbox.y, s.bbox.x, s.bbox.y) < 1;
+        });
+      });
+    });
+
+    if (win) console.info('WIN');
+  },
+
   get(col, row) {
     return this.arr.find((s) => s.col === col && s.row === row) || null;
   },
@@ -47,13 +60,15 @@ const Grid = {
   },
 };
 
+// --- SQUARE
+
 class Square {
   constructor(col, row, parent) {
     this.col = col;
     this.row = row;
     this.parent = parent;
 
-    this.shape = null; // used when creating blocks
+    this.shape = null; // used when creating blocks // TODO: delete?
   }
 
   get bbox() {

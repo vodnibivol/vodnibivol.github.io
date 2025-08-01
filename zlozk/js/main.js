@@ -1,7 +1,7 @@
 // grid size
 const GRID_SIZE = {
-  x: 8,
-  y: 5,
+  x: 8, // 8
+  y: 5, // 5
 };
 
 let SCREEN_SIZE; // { width: 0, height: 0 }

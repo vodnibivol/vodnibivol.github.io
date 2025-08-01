@@ -4,7 +4,7 @@ const Shapes = {
   arr: [],
 
   create() {
-    const HOW_MANY = 7;
+    const HOW_MANY = 8;
     const colors = generateSpectreSet(HOW_MANY, 30);
 
     // TODO: preveri ta del kode ...
@@ -47,7 +47,7 @@ const Shapes = {
 
 class Shape {
   constructor(col, row, position, clr) {
-    this.color = color(clr || floor(random(360)), 100, 70 ,0.8);
+    this.color = color(clr || floor(random(360)), 100, 70, 0.8);
 
     // get origin square
     this.origin = Grid.get(col, row);
@@ -104,7 +104,7 @@ class Shape {
   moveIntoFrame() {
     this.position.x += (width - SCREEN_SIZE.width) / 2;
     this.position.y += (height - SCREEN_SIZE.height) / 2;
-    
+
     // correct if off screen
     this.position.x = min(width - this.width, max(0, this.position.x));
     this.position.y = min(height - this.height, max(0, this.position.y));
