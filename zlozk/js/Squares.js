@@ -111,7 +111,7 @@ class ShapeSquare extends Square {
 
   draw() {
     let c = this.color || color(100);
-    if (this.parent.isDragging) c = color('#ffffffbb');
+    // if (this.parent.isDragging) c = color('#ffffffbb');
 
     blendMode(DARKEST);
     fill(c);
