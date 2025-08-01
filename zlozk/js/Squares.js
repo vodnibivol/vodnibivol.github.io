@@ -43,7 +43,10 @@ const Grid = {
       });
     });
 
-    if (win) console.info('WIN');
+    if (win) {
+      console.info('WIN');
+      localStorage.setItem('zlozk-level-temp', ++LEVEL);
+    }
   },
 
   get(col, row) {
