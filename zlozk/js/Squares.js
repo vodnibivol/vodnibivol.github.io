@@ -2,11 +2,22 @@
 
 const Grid = {
   arr: [],
+  width: 0, // in px; set in create()
+  hegiht: 0, // in px; set in create()
 
   get position() {
     return {
-      x: width / 2 - (GRID_SIZE.x * SQUARE_SIZE) / 2,
-      y: height / 2 - (GRID_SIZE.y * SQUARE_SIZE) / 2,
+      x: width / 2 - this.width / 2,
+      y: height / 2 - this.height / 2,
+    };
+  },
+
+  get bbox() {
+    return {
+      top: this.position.y,
+      right: this.position.x + this.width,
+      bottom: this.position.y + this.height,
+      left: this.position.x,
     };
   },
 
@@ -18,6 +29,9 @@ const Grid = {
         this.arr.push(c);
       }
     }
+
+    this.width = GRID_SIZE.x * SQUARE_SIZE;
+    this.height = GRID_SIZE.y * SQUARE_SIZE;
   },
 
   get(col, row) {
@@ -48,8 +62,8 @@ class Square {
   }
 
   get bbox() {
-    const x = this.col * this.size;
-    const y = this.row * this.size;
+    const x = this.col * this.size; // relative to grid origin
+    const y = this.row * this.size; // relative to grid origin
 
     return {
       x: this.parent.position.x + x,
@@ -68,6 +82,10 @@ class Square {
 }
 
 class GridSquare extends Square {
+  constructor(col, row, parent) {
+    super(col, row, parent);
+  }
+
   get neighbours() {
     return [
       Grid.get(this.col + 1, this.row),
@@ -77,8 +95,36 @@ class GridSquare extends Square {
     ];
   }
 
+  onShapeHover() {
+    // const draggingShape = Shapes.arr.find((s) => s.isDragging);
+    const isHoveringOver = Shapes.arr.some((shape) => {
+      return shape.shapeSquares.some(
+        (square) =>
+          abs(this.bbox.x - square.bbox.x) <= this.size / 2 && abs(this.bbox.y - square.bbox.y) <= this.size / 2
+      );
+
+      // states: EMPTY, EMPTY+OK, FULL+ERR (different shape)
+      // NOTE: OK je samo, če so vsi kvadratki pod shape-om prazni. če ni kvadratka ali je poln, ni ok.
+    });
+    
+    if (isHoveringOver) {
+      this.hover = this.shape ? 'ERR' : 'OK';
+    } else {
+      this.hover = null;
+    }
+  }
+
   draw() {
-    const c = this.shape?.color || color(255);
+    let c;
+
+    if (this.shape) {
+      c = this.shape.color;
+    } else if (this.hover) {
+      c = this.hover === 'OK' ? color('green') : color('red');
+    } else {
+      c = color(100);
+    }
+
     fill(c);
     strokeWeight(3);
     square(this.bbox.x, this.bbox.y, this.size);
@@ -95,13 +141,17 @@ class ShapeSquare extends Square {
   draw() {
     let c;
 
-    if (this.parent.isDragging) {
-      c = color('lightpink');
-    } else if (this.parent.isHovering) {
-      c = color('lightblue'); // TESTING GAPS
-    } else {
-      c = this.color || color(100);
-    }
+    // if (this.parent.isDragging) {
+    c = color('#ffffffbb');
+    // } else {
+    //   c = this.color || color(100);
+    // }
+
+    // if (this.parent.isHovering) {
+    //   c.setAlpha(0.9);
+    // } else {
+    //   c.setAlpha(1);
+    // }
 
     fill(c);
     strokeWeight(3);

@@ -4,20 +4,13 @@ const Shapes = {
   arr: [],
 
   create() {
-    const HOW_MANY = 10;
+    const HOW_MANY = 3;
     const colors = generateSpectreSet(HOW_MANY, 30);
-    console.log(colors);
 
     for (let i = 0; i < HOW_MANY; ++i) {
-      const xAdoptionToGrid = Grid.position.x % SQUARE_SIZE; // grid position x error
-      const yAdoptionToGrid = Grid.position.y % SQUARE_SIZE; // grid position y error
-
-      const x = random(width * 0.8);
-      const y = random(height * 0.8);
-
       const position = {
-        x: x - (x % SQUARE_SIZE) + xAdoptionToGrid,
-        y: y - (y % SQUARE_SIZE) + yAdoptionToGrid,
+        x: random(width * 0.8),
+        y: random(height * 0.8),
       };
 
       const randomSquare = Grid.randomFreeSquare();
@@ -45,6 +38,10 @@ const Shapes = {
       delete shape.gridSquares;
     });
   },
+
+  draw() {
+    this.arr.forEach((s) => s.draw());
+  },
 };
 
 class Shape {
@@ -61,28 +58,63 @@ class Shape {
 
     this.position = position;
     this.isDragging = false;
+
+    this.width = 0; // in px; set in createSquares
+    this.height = 0; // in px; set in createSquares
   }
 
   get isHovering() {
     return this.shapeSquares.some((s) => s.isHovering);
   }
 
-  move(x, y) {
-    this.position.x += x;
-    this.position.y += y;
+  get bbox() {
+    return {
+      x: this.position.x,
+      y: this.position.y,
+
+      top: this.position.y,
+      right: this.position.x + this.width,
+      bottom: this.position.y + this.height,
+      left: this.position.x,
+    };
+  }
+
+  fallIntoPlace() {
+    // FIXME: zaenkrat samo tak, potem pa more preverit če je enako št. zelenih kvadratkov spodaj
+    const HS = SQUARE_SIZE / 2;
+
+    const isInsideGrid =
+      this.bbox.left < Grid.bbox.right - HS &&
+      this.bbox.right > Grid.bbox.left + HS &&
+      this.bbox.top < Grid.bbox.bottom - HS &&
+      this.bbox.bottom > Grid.bbox.top + HS;
+
+    if (!isInsideGrid) return;
+
+    const xError = (100 * SQUARE_SIZE + this.position.x - Grid.position.x) % SQUARE_SIZE;
+    const yError = (100 * SQUARE_SIZE + this.position.y - Grid.position.y) % SQUARE_SIZE;
+
+    this.position.x -= xError;
+    this.position.y -= yError;
+
+    if (yError > SQUARE_SIZE / 2) this.position.y += SQUARE_SIZE;
+    if (xError > SQUARE_SIZE / 2) this.position.x += SQUARE_SIZE;
   }
 
   createSquares() {
-    this.top = min(this.gridSquares.map((s) => s.row));
-    this.right = max(this.gridSquares.map((s) => s.col));
-    this.bottom = max(this.gridSquares.map((s) => s.row));
-    this.left = min(this.gridSquares.map((s) => s.col));
+    const top = min(this.gridSquares.map((s) => s.row)); // koordinata (0, 1, 2, 3) najvisjega kvadratka
+    const right = max(this.gridSquares.map((s) => s.col));
+    const bottom = max(this.gridSquares.map((s) => s.row));
+    const left = min(this.gridSquares.map((s) => s.col));
 
-    this.width = 1 + this.right - this.left;
-    this.height = 1 + this.bottom - this.top;
+    const width = 1 + right - left; // in squares
+    const height = 1 + bottom - top; // in squares
+
+    this.width = width * SQUARE_SIZE; // in px
+    this.height = height * SQUARE_SIZE; // in px
 
     this.shapeSquares = this.gridSquares.map((square) => {
-      return new ShapeSquare(square.col - this.left, square.row - this.top, this, this.color);
+      return new ShapeSquare(square.col - left, square.row - top, this, this.color);
     });
   }
 
