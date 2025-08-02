@@ -13,10 +13,10 @@ function generateSpectreSet(n, dist) {
   let remainder = 360 - n * dist;
 
   // random starting point
-  let start = random(360);
+  let start = Random.range(360, Random.PRNG_COLOR);
 
   for (let i = 0; i < n; ++i) {
-    const rand = random(remainder);
+    const rand = Random.range(remainder, Random.PRNG_COLOR);
     const hue = start + (dist + rand);
     spectreValues.push(floor(hue % 360));
 
@@ -26,3 +26,18 @@ function generateSpectreSet(n, dist) {
 
   return spectreValues;
 }
+
+// RANDOM
+
+const Random = {
+  PRNG_COLOR: null,
+  PRNG_SHAPES: null,
+
+  choose(arr, prng = Math.random) {
+    return arr[floor(prng() * arr.length)];
+  },
+
+  range(n, prng = Math.random) {
+    return prng() * n; // floor?
+  }
+};

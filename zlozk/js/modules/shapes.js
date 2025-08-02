@@ -4,7 +4,10 @@ const Shapes = {
   arr: [],
 
   create() {
-    const HOW_MANY = 8;
+    // init
+    this.arr = [];
+
+    const HOW_MANY = 8; // 8
     const colors = generateSpectreSet(HOW_MANY, 30);
 
     // TODO: preveri ta del kode ...
@@ -20,6 +23,7 @@ const Shapes = {
     }
 
     this.grow();
+    this.alignToGrid();
   },
 
   grow() {
@@ -38,6 +42,10 @@ const Shapes = {
       shape.createSquares();
       delete shape.gridSquares;
     });
+  },
+
+  alignToGrid() {
+    this.arr.forEach((sh) => sh.fallIntoPlace(true)); // every shape on screen, not just on grid
   },
 
   draw() {
@@ -139,7 +147,7 @@ class Shape {
     if (!freeNeighbours.length) return;
 
     // grow in the way of random free neighbour
-    const randomFreeNeighbour = random(freeNeighbours);
+    const randomFreeNeighbour = Random.choose(freeNeighbours, Random.PRNG_SHAPES);
     this.gridSquares.push(randomFreeNeighbour);
     randomFreeNeighbour.shape = this;
   }

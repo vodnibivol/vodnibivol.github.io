@@ -22,6 +22,9 @@ const Grid = {
   },
 
   create() {
+    // init
+    this.arr = [];
+
     for (let i = 0; i < GRID_SIZE.y; ++i) {
       for (let j = 0; j < GRID_SIZE.x; ++j) {
         const c = new GridSquare(j, i, this);
@@ -34,7 +37,7 @@ const Grid = {
   },
 
   checkForWin() {
-    const win = this.arr.every((sq) => {
+    WIN = this.arr.every((sq) => {
       // there is one square on top of it
       return Shapes.arr.some((sh) => {
         return sh.shapeSquares.some((s) => {
@@ -43,9 +46,8 @@ const Grid = {
       });
     });
 
-    if (win) {
+    if (WIN) {
       console.info('WIN');
-      localStorage.setItem('zlozk-level-temp', ++LEVEL);
     }
   },
 
@@ -55,7 +57,7 @@ const Grid = {
 
   randomFreeSquare() {
     const freeSquares = this.arr.filter((s) => !s.shape);
-    return random(freeSquares);
+    return Random.choose(freeSquares, Random.PRNG_SHAPES);
   },
 
   draw() {
