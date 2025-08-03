@@ -39,5 +39,5 @@ const Random = {
 
   range(n, prng = Math.random) {
     return prng() * n; // floor?
-  }
+  },
 };

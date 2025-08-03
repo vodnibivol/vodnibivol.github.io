@@ -13,8 +13,8 @@ const Shapes = {
     // TODO: preveri ta del kode ...
     for (let i = 0; i < HOW_MANY; ++i) {
       const position = {
-        x: Math.random() * (width * 0.8), // ne random, ker je seeded
-        y: Math.random() * (height * 0.8), // ne random, ker je seeded
+        x: Random.range(width * 0.8), // ne random, ker je seeded
+        y: Random.range(height * 0.8), // ne random, ker je seeded
       };
 
       const randomSquare = Grid.randomFreeSquare();
@@ -55,7 +55,7 @@ const Shapes = {
 
 class Shape {
   constructor(col, row, position, clr) {
-    this.color = color(clr || floor(random(360)), 100, 70, 0.8);
+    this.color = color(clr || floor(Random.range(360)), 100, 70, 0.8);
 
     // get origin square
     this.origin = Grid.get(col, row);

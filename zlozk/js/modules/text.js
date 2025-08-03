@@ -3,13 +3,14 @@ const Text = {
   draw() {
     // -- CURSOR
     const mouseIsOnArrow = dist(mouseX, mouseY, width / 2, height * 0.75) < 50;
-    cursor(WIN && mouseIsOnArrow ? HAND : ARROW);
+    cursor(Game.levelWon && mouseIsOnArrow ? HAND : ARROW);
 
     // -- TEXT
     noStroke();
     fill(0);
 
-    if (WIN) this.drawArrow();
+    blendMode(DARKEST);
+    if (Game.levelWon) this.drawArrow();
     else this.drawLevel();
   },
 
@@ -29,6 +30,6 @@ const Text = {
     textStyle(BOLD);
     fill(80);
 
-    text('L' + LEVEL, width - 22, height - 22);
+    text('L' + Game.level, width - 22, height - 22);
   },
 };

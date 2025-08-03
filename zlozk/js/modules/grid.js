@@ -36,8 +36,8 @@ const Grid = {
     this.height = GRID_SIZE.y * SQUARE_SIZE;
   },
 
-  checkForWin() {
-    WIN = this.arr.every((sq) => {
+  get isFull() {
+    return this.arr.every((sq) => {
       // there is one square on top of it
       return Shapes.arr.some((sh) => {
         return sh.shapeSquares.some((s) => {
@@ -45,10 +45,6 @@ const Grid = {
         });
       });
     });
-
-    if (WIN) {
-      console.info('WIN');
-    }
   },
 
   get(col, row) {
@@ -137,6 +133,5 @@ class ShapeSquare extends Square {
     fill(c);
     strokeWeight(3);
     square(this.bbox.x, this.bbox.y, SQUARE_SIZE);
-    blendMode(BLEND);
   }
 }

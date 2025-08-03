@@ -37,8 +37,7 @@ const Drag = {
     this.shape.fallIntoPlace();
     this.shape.isDragging = false;
 
-    // TODO: check for win
-    Grid.checkForWin();
+    Game.checkForWin();
   },
 
   onMove() {
