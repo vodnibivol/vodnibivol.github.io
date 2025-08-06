@@ -2,6 +2,7 @@
 
 const Grid = {
   arr: [], // array of squares
+  size: { x: 8, y: 5 }, // cols/rows
   width: 0, // in px; set in create()
   hegiht: 0, // in px; set in create()
 
@@ -25,15 +26,15 @@ const Grid = {
     // init
     this.arr = [];
 
-    for (let i = 0; i < GRID_SIZE.y; ++i) {
-      for (let j = 0; j < GRID_SIZE.x; ++j) {
+    for (let i = 0; i < this.size.y; ++i) {
+      for (let j = 0; j < this.size.x; ++j) {
         const c = new GridSquare(j, i, this);
         this.arr.push(c);
       }
     }
 
-    this.width = GRID_SIZE.x * SQUARE_SIZE;
-    this.height = GRID_SIZE.y * SQUARE_SIZE;
+    this.width = this.size.x * SQUARE_SIZE;
+    this.height = this.size.y * SQUARE_SIZE;
   },
 
   get isFull() {
@@ -69,7 +70,7 @@ class Square {
     this.row = row;
     this.parent = parent;
 
-    this.shape = null; // used when creating blocks // TODO: delete?
+    this.shape = null; // used when creating blocks
   }
 
   get bbox() {
@@ -127,7 +128,6 @@ class ShapeSquare extends Square {
 
   draw() {
     let c = this.color || color(100);
-    // if (this.parent.isDragging) c = color('#ffffffbb');
 
     blendMode(DARKEST);
     fill(c);

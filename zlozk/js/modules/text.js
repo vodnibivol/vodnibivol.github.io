@@ -2,7 +2,7 @@ const Text = {
   // draw game state
   draw() {
     // -- CURSOR
-    const mouseIsOnArrow = dist(mouseX, mouseY, width / 2, height * 0.75) < 50;
+    const mouseIsOnArrow = dist(mouseX, mouseY, width / 2, lerp(Grid.bbox.bottom, height, 0.49)) < 50;
     cursor(Game.levelWon && mouseIsOnArrow ? HAND : ARROW);
 
     // -- TEXT

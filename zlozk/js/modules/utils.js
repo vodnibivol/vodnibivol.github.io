@@ -1,4 +1,4 @@
-// UTILS
+// --- UTILS
 
 function generateSpectreSet(n, dist) {
   // n: number of colors
@@ -27,7 +27,7 @@ function generateSpectreSet(n, dist) {
   return spectreValues;
 }
 
-// RANDOM
+// --- RANDOM
 
 const Random = {
   PRNG_COLOR: null,

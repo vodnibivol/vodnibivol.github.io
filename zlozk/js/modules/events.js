@@ -22,27 +22,10 @@ function mousePressed() {
   return false;
 }
 
-function touchStarted() {
-  if (Game.levelWon) return;
-  Drag.onStart();
-  return false;
-}
-
 function mouseReleased() {
   if (Game.levelWon) {
-    // INIT NEXT LEVEL
-    const mouseIsOnArrow = dist(mouseX, mouseY, width / 2, height * 0.75) < 50;
-    if (mouseIsOnArrow) return Game.init(); // true: LEVEL++
-  }
-
-  Drag.onEnd();
-  return false;
-}
-
-function touchEnded() {
-  if (Game.levelWon) {
-    // INIT NEXT LEVEL
-    const mouseIsOnArrow = dist(mouseX, mouseY, width / 2, height * 0.75) < 50;
+    // init next level
+    const mouseIsOnArrow = dist(mouseX, mouseY, width / 2, lerp(Grid.bbox.bottom, height, 0.49)) < 50;
     if (mouseIsOnArrow) return Game.init();
   }
 
@@ -56,8 +39,7 @@ function mouseDragged() {
   return false;
 }
 
-function touchMoved() {
-  if (Game.levelWon) return;
-  Drag.onMove();
-  return false;
-}
+// touch versions
+const touchStarted = mousePressed;
+const touchEnded = mouseReleased;
+const touchMoved = mouseDragged;
