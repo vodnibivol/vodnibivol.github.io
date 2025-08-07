@@ -1,15 +1,18 @@
 // --- GAME LOGIC
 
 const Game = {
-  level: 0,
   levelWon: false,
+
+  get level() {
+    return localStorage.getItem('zlozk-level-temp') || 1;
+  },
+
+  set level(value) {
+    localStorage.setItem('zlozk-level-temp', value);
+  },
 
   init() {
     this.levelWon = false;
-
-    // localStorage
-    this.level = localStorage.getItem('zlozk-level-temp') || 1;
-    localStorage.setItem('zlozk-level-temp', this.level);
 
     // init PRNG
     Random.PRNG_COLOR = alea('color' + this.level);
@@ -20,11 +23,12 @@ const Game = {
   },
 
   checkForWin() {
-    // check for win sem
     this.levelWon = Grid.isFull;
     if (this.levelWon) {
       this.level++;
-      localStorage.setItem('zlozk-level-temp', this.level);
+
+      confetti({ particleCount: 50, spread: 70, origin: { x: 0, y: 0.45 }, angle: 60 });
+      confetti({ particleCount: 50, spread: 70, origin: { x: 1, y: 0.45 }, angle: 120 });
     }
   },
 };

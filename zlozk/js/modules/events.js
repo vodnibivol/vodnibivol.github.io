@@ -26,7 +26,8 @@ function mouseReleased() {
   if (Game.levelWon) {
     // init next level
     const mouseIsOnArrow = dist(mouseX, mouseY, width / 2, lerp(Grid.bbox.bottom, height, 0.49)) < 50;
-    if (mouseIsOnArrow) return Game.init();
+    if (mouseIsOnArrow) Game.init();
+    return;
   }
 
   Drag.onEnd();
@@ -40,6 +41,14 @@ function mouseDragged() {
 }
 
 // touch versions
-const touchStarted = mousePressed;
-const touchEnded = mouseReleased;
-const touchMoved = mouseDragged;
+function touchStarted() {
+  mousePressed();
+}
+
+function touchEnded() {
+  mouseReleased();
+}
+
+function touchMoved() {
+  mouseDragged();
+}

@@ -12,9 +12,11 @@
         padding: 0;
         box-sizing: border-box;
         user-select: none;
+        -webkit-user-select: none;
+        -webkit-touch-callout: none;
       }
 
-      canvas {
+      canvas.p5canvas {
         position: absolute;
         top: 50%;
         left: 50%;
@@ -38,15 +40,21 @@
     </style>
   </head>
   <body>
+    <script>
+      // prevent magnifying glass on double tap+drag (iPad, iPhone)
+      document.body.addEventListener('touchstart', (e) => e.preventDefault(), { passive: false });
+    </script>
+
     <script src="js/vendor/p5@1.11.9.min.js"></script>
     <script src="js/vendor/alea.min.js"></script>
+    <script src="js/vendor/confetti.min.js"></script>
     <script src="js/modules/events.js"></script>
     <script src="js/modules/utils.js"></script>
-    <script src="js/modules/game.js"></script>
     <script src="js/modules/text.js"></script>
     <script src="js/modules/drag.js"></script>
     <script src="js/modules/shapes.js"></script>
     <script src="js/modules/grid.js"></script>
+    <script src="js/modules/game.js"></script>
     <script src="js/main.js"></script>
   </body>
 </html>

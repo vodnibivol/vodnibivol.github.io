@@ -15,10 +15,10 @@ const Text = {
   },
 
   drawArrow() {
-    textFont('Monaco');
+    textFont('system-ui'); // = 'SF Pro'; Monaco ima dobro puscico
     textAlign(CENTER, CENTER);
-    textSize(22);
-    textStyle(NORMAL);
+    textSize(18);
+    textStyle(BOLD);
 
     text('→', width / 2, lerp(Grid.bbox.bottom, height, 0.49));
   },
