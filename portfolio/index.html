@@ -34,14 +34,8 @@
             enjoy turning ideas into simple, effective digital products.
           </p>
           <div class="links">
-            <a href="https://github.com/vodnibivol">
-              <img src="img/gh-icon.png" alt="github" />
-              Github</a
-            >
-            <a href="https://www.linkedin.com">
-              <img src="img/li-icon.png" alt="linkedin" />
-              LinkedIn</a
-            >
+            <a href="https://github.com/vodnibivol"><img src="img/gh-icon.png" alt="github" />Github</a>
+            <a href="https://www.linkedin.com"><img src="img/li-icon.png" alt="linkedin" />LinkedIn</a>
           </div>
         </div>
       </div>
@@ -71,212 +65,24 @@
     <section id="projects">
       <div class="content">
         <h2>My Personal Projects</h2>
-        <!-- title -->
+        <!-- template -->
         <div class="project-grid">
-          <div class="grid-item">
-            <a href="/zlozek">
-              <div class="img">
-                <img src="img/thumbs/zlozek.png" alt="Tilings" loading="lazy" />
-              </div>
-            </a>
-            <div class="titles">
-              <a href="/zlozek">
-                <h3>Tilings</h3>
+          <template id="grid-item-template">
+            <div class="grid-item">
+              <a href="{{ link }}">
+                <div class="img">
+                  <img src="{{ img_src }}" alt="{{ title }}" />
+                </div>
               </a>
-              <p>
-                Developed movie finder app with semantic search and sentiment analysis using OpenAI GPT-3.5 Turbo,
-                Qdrant, React, and Flask.
-              </p>
-            </div>
-          </div>
-          <!-- title -->
-          <div class="grid-item">
-            <a href="/vremnska_napoved">
-              <div class="img">
-                <img src="img/thumbs/vreme.png" alt="Flags" loading="lazy" />
+              <div class="titles">
+                <a href="{{ link }}">
+                  <h3>{{ title }}</h3>
+                </a>
+                <p>{{ description }}</p>
               </div>
-            </a>
-            <div class="titles">
-              <a href="/vremnska_napoved">
-                <h3>Learn World Flags</h3>
-              </a>
-              <p>
-                Designed, developed, and launched a 3D multiplayer racing game with C# and Unity. This is available on
-                Itch.io for gamers worldwide to enjoy.
-              </p>
             </div>
-          </div>
-          <!-- title -->
-          <div class="grid-item">
-            <a href="//lulekfun.github.io/skratek">
-              <div class="img">
-                <img src="img/thumbs/skratek.png" alt="Learn new words" loading="lazy" />
-              </div>
-            </a>
-            <div class="titles">
-              <a href="//lulekfun.github.io/skratek">
-                <h3>Learn New Words</h3>
-              </a>
-              <p>
-                Developed and released a 2D shooting game with C# and Unity. This project is hosted on the Itch.io
-                public marketplace.
-              </p>
-            </div>
-          </div>
-          <!-- title -->
-          <div class="grid-item">
-            <a href="//lulekfun.github.io/crtica">
-              <div class="img">
-                <img src="img/thumbs/crtica.png" alt="Paint App" loading="lazy" />
-              </div>
-            </a>
-            <div class="titles">
-              <a href="//lulekfun.github.io/crtica">
-                <h3>Paint</h3>
-              </a>
-              <p>
-                This is an online educational platform that provides high-quality, data science-focused learning
-                resources in the Japanese language. I created the entire platform from scratch using Ruby on Rails.
-              </p>
-            </div>
-          </div>
-          <!-- title -->
-          <div class="grid-item">
-            <a href="//lulekfun.github.io/vesoljcki">
-              <div class="img">
-                <img src="img/thumbs/vesoljcki.png" alt="Paint App" loading="lazy" />
-              </div>
-            </a>
-            <div class="titles">
-              <a href="//lulekfun.github.io/vesoljcki">
-                <h3>Paint</h3>
-              </a>
-              <p>
-                This is an online educational platform that provides high-quality, data science-focused learning
-                resources in the Japanese language. I created the entire platform from scratch using Ruby on Rails.
-              </p>
-            </div>
-          </div>
-          <!-- title -->
-          <div class="grid-item">
-            <a href="//lulekfun.github.io/kacica">
-              <div class="img">
-                <img src="img/thumbs/kacica.png" alt="Paint App" loading="lazy" />
-              </div>
-            </a>
-            <div class="titles">
-              <a href="//lulekfun.github.io/kacica">
-                <h3>Paint</h3>
-              </a>
-              <p>
-                This is an online educational platform that provides high-quality, data science-focused learning
-                resources in the Japanese language. I created the entire platform from scratch using Ruby on Rails.
-              </p>
-            </div>
-          </div>
-          <!-- title -->
-          <div class="grid-item">
-            <a href="/zlozek">
-              <div class="img">
-                <img src="img/thumbs/zlozek.png" alt="Paint App" loading="lazy" />
-              </div>
-            </a>
-            <div class="titles">
-              <a href="/zlozek">
-                <h3>Paint</h3>
-              </a>
-              <p>
-                This is an online educational platform that provides high-quality, data science-focused learning
-                resources in the Japanese language. I created the entire platform from scratch using Ruby on Rails.
-              </p>
-            </div>
-          </div>
-          <!-- title -->
-          <div class="grid-item">
-            <a href="/slikar">
-              <div class="img">
-                <img src="img/thumbs/slikar.png" alt="Paint App" loading="lazy" />
-              </div>
-            </a>
-            <div class="titles">
-              <a href="/slikar">
-                <h3>Paint</h3>
-              </a>
-              <p>
-                This is an online educational platform that provides high-quality, data science-focused learning
-                resources in the Japanese language. I created the entire platform from scratch using Ruby on Rails.
-              </p>
-            </div>
-          </div>
-          <!-- title -->
-          <div class="grid-item">
-            <a href="/zastavice">
-              <div class="img">
-                <img src="img/thumbs/zastavice.png" alt="Paint App" loading="lazy" />
-              </div>
-            </a>
-            <div class="titles">
-              <a href="/zastavice">
-                <h3>Paint</h3>
-              </a>
-              <p>
-                This is an online educational platform that provides high-quality, data science-focused learning
-                resources in the Japanese language. I created the entire platform from scratch using Ruby on Rails.
-              </p>
-            </div>
-          </div>
-          <!-- title -->
-          <div class="grid-item">
-            <a href="/piknik">
-              <div class="img">
-                <img src="img/thumbs/piknik.png" alt="Paint App" loading="lazy" />
-              </div>
-            </a>
-            <div class="titles">
-              <a href="/piknik">
-                <h3>Paint</h3>
-              </a>
-              <p>
-                This is an online educational platform that provides high-quality, data science-focused learning
-                resources in the Japanese language. I created the entire platform from scratch using Ruby on Rails.
-              </p>
-            </div>
-          </div>
-          <!-- title -->
-          <div class="grid-item">
-            <a href="/besedle">
-              <div class="img">
-                <img src="img/thumbs/besedle.png" alt="Paint App" loading="lazy" />
-              </div>
-            </a>
-            <div class="titles">
-              <a href="/besedle">
-                <h3>Paint</h3>
-              </a>
-              <p>
-                This is an online educational platform that provides high-quality, data science-focused learning
-                resources in the Japanese language. I created the entire platform from scratch using Ruby on Rails.
-              </p>
-            </div>
-          </div>
-          <!-- title -->
-          <div class="grid-item">
-            <a href="/morse">
-              <div class="img">
-                <img src="img/thumbs/morse.png" alt="Paint App" loading="lazy" />
-              </div>
-            </a>
-            <div class="titles">
-              <a href="/morse">
-                <h3>Paint</h3>
-              </a>
-              <p>
-                This is an online educational platform that provides high-quality, data science-focused learning
-                resources in the Japanese language. I created the entire platform from scratch using Ruby on Rails.
-              </p>
-            </div>
-          </div>
-          <!--  -->
+          </template>
+          <!-- /template  -->
         </div>
       </div>
     </section>
