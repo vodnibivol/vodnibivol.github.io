@@ -4,6 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="css/style.css" />
+
+    <!-- PRELOAD FONTS -->
+    <link rel="preload" href="./fonts/poppins-v23-latin-300.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="./fonts/poppins-v23-latin-regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="./fonts/poppins-v23-latin-500.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="./fonts/poppins-v23-latin-600.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="./fonts/poppins-v23-latin-700.woff2" as="font" type="font/woff2" crossorigin />
+
+    <!-- TITLE -->
     <title>Portfolio | Filip Kokol</title>
   </head>
   <body>
@@ -18,15 +27,15 @@
       </nav>
     </header>
 
-    <section id="hero">
-      <img class="bg" src="img/gradient.avif" />
+    <section id="hero" class="noise">
+      <img class="bg" src="img/gradient.jpg" />
 
       <div class="content">
-        <!-- <div class="left">
+        <div class="left">
           <div class="img">
-            <img src="img/me-2.jpeg" alt="me" />
+            <img src="img/me.jpg" alt="me" />
           </div>
-        </div> -->
+        </div>
         <div class="right">
           <h1>I'm Filip, a frontend web developer.</h1>
           <p>
@@ -91,13 +100,13 @@
       </div>
     </section> -->
 
-    <footer>
-      <img class="bg" src="img/gradient.avif" />
+    <footer class="noise">
+      <img class="bg" src="img/gradient.jpg" />
       <!-- NOTE: temporary spacing -->
       <span>Filip Kokol&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;2025</span>
     </footer>
 
-    <script src="js/animations.js"></script>
+    <script src="js/animations.min.js"></script>
     <script src="js/script.js"></script>
   </body>
 </html>

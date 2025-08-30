@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import './fonts.scss';
 
 $layout-test: false;
 
@@ -37,6 +37,22 @@ a {
   text-decoration: none;
 }
 
+.noise::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: url('../img/noise.svg');
+  background-size: 100px;
+  mix-blend-mode: hard-light;
+  filter: brightness(0.8);
+  opacity: 0.9;
+  pointer-events: none;
+  z-index: -1;
+}
+
 // --- CONTENTS
 
 header {
@@ -55,8 +71,6 @@ header {
   justify-content: space-between;
   align-items: center;
   padding-right: 25px;
-
-  font-weight: bold;
 
   transition: filter 0.3s;
 
@@ -152,9 +166,6 @@ section#hero {
     height: 100%;
     width: 100%;
     object-fit: cover;
-    filter: blur(20px);
-    scale: 1.2;
-    // transform: scale(1.2);
   }
 
   overflow: hidden;
@@ -166,10 +177,14 @@ section#hero {
     gap: 30px;
 
     .left .img {
-      width: 300px;
-      height: 320px;
+      width: 280px;
+      height: 280px;
       // border: 2px solid white;
+      // filter: contrast(1.2);
+      // filter: grayscale(1);
       overflow: hidden;
+      border-radius: 50%;
+      z-index: 999;
 
       img {
         // mix-blend-mode: overlay;
@@ -216,7 +231,7 @@ section#hero {
           border-radius: 5px;
           // background: lightblue;
 
-          font-weight: bold;
+          font-weight: 700;
           font-size: 0.8rem;
           text-transform: uppercase;
 
@@ -340,8 +355,8 @@ footer {
     width: 100%;
     object-fit: cover;
     object-position: center;
-    transform: scale(1.5);
-    filter: hue-rotate(230deg) blur(30px);
+    filter: hue-rotate(230deg);
+    z-index: -1;
   }
 
   span {

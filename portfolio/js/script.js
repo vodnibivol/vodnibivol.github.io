@@ -67,14 +67,14 @@ const Main = (function () {
       {
         title: 'Learn World Flags',
         description:
-        'A PC-based educational game i built for myself that teaches you world flags, organized by continent.',
+          'A PC-based educational game i built for myself that teaches you world flags, organized by continent.',
         img_src: 'img/thumbs/zastavice.png',
         link: '/zastavice',
       },
       {
         title: 'Flashcards',
         description:
-        'When studying Latin, I built myself a flashcard-like app for learning pairs of words. Built around the same core as World Flags, it has helped me pass the Latin exam in college.',
+          'When studying Latin, I built myself a flashcard-like app for learning pairs of words. Built around the same core as World Flags, it has helped me pass the Latin exam in college.',
         img_src: 'img/thumbs/ucenje.png',
         link: '/ucenje',
       },
@@ -87,7 +87,7 @@ const Main = (function () {
       {
         title: 'Word Picnic Clone',
         description:
-        'Another Slovenian-language Word Picnic inspired web game, combining JavaScript game mechanics with a Python-based data analysis of valid words.',
+          'Another Slovenian-language Word Picnic inspired web game, combining JavaScript game mechanics with a Python-based data analysis of valid words.',
         img_src: 'img/thumbs/piknik.png',
         link: '/piknik',
       },
@@ -123,24 +123,24 @@ const Main = (function () {
 
     const html_template = $('template#grid-item-template').innerHTML;
     const rendered_html = render(html_template, projects);
-    $('template#grid-item-template').remove();
+    // $('template#grid-item-template').remove();
     $('.project-grid').insertAdjacentHTML('beforeend', rendered_html);
   }
 
-  function render(template, data) {
+  function render(template, data /** Array/String */) {
     // core function for string replacing/rendering
     function r(template, data) {
       Object.entries(data).forEach(([key, value]) => {
         const regex = new RegExp(`{{\\s*${key}\\s*}}`, 'g');
-        template = template.replaceAll(regex, value);
+        template = template.replace(regex, value);
       });
       return template;
     }
 
-    if (Array.isArray(data)) {
-      return data.map((data_item) => r(template, data_item)).join('');
+    if (typeof data === 'string') {
+      data = [data];
     }
 
-    return r(template, data);
+    return data.map((data_item) => r(template, data_item)).join('');
   }
 })();
