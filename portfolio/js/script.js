@@ -8,6 +8,7 @@ const Main = (function () {
   // init
   renderProjects();
 
+  // functions
   function navigate(e) {
     // events
     e.preventDefault();

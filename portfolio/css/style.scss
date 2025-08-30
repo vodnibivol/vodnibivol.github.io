@@ -377,7 +377,13 @@ footer {
     height: unset; // section height
 
     .content {
-      flex-direction: column;
+      flex-direction: column-reverse;
+
+      // .left .img {
+      //   border-radius: 0;
+      //   width: 100vw;
+      //   margin-bottom: 3rem;
+      // }
     }
   }
 
@@ -388,6 +394,18 @@ footer {
         flex-direction: column;
         // gap: 2rem;
       }
+    }
+  }
+}
+
+@media screen and (max-width: 500px) {
+  section#hero {
+    padding-top: 0;
+
+    .content .left .img {
+      border-radius: 0;
+      width: 100vw;
+      margin-bottom: 3rem;
     }
   }
 }
