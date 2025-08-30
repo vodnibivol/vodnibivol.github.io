@@ -12,6 +12,10 @@
     <link rel="preload" href="fonts/poppins-v23-latin-600.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="fonts/poppins-v23-latin-700.woff2" as="font" type="font/woff2" crossorigin />
 
+    <!-- PRELOAD IMAGES -->
+    <link rel="preload" href="img/me_sm.jpg" as="image" />
+    <link rel="preload" href="img/noise.svg" as="image" />
+
     <!-- TITLE -->
     <title>Portfolio | Filip Kokol</title>
   </head>
@@ -80,7 +84,7 @@
             <div class="grid-item">
               <a href="{{ link }}">
                 <div class="img">
-                  <img src="{{ img_src }}" alt="{{ title }}" />
+                  <img src="{{ img_src }}" alt="{{ title }}" loading="lazy" />
                 </div>
               </a>
               <div class="titles">

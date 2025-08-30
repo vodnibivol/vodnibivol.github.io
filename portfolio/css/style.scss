@@ -50,7 +50,7 @@ a {
   filter: brightness(0.8);
   opacity: 0.9;
   pointer-events: none;
-  z-index: -1;
+  z-index: 2;
 }
 
 // --- CONTENTS
@@ -157,15 +157,17 @@ section#hero {
   position: relative;
   color: white;
   border-color: white;
+  background: #fb8a51;
 
   img.bg {
-    z-index: -1;
+    z-index: 1;
     position: absolute;
     top: 0;
     left: 0;
     height: 100%;
     width: 100%;
     object-fit: cover;
+    object-position: center right;
   }
 
   overflow: hidden;
@@ -175,6 +177,7 @@ section#hero {
     align-items: center;
     justify-content: space-evenly;
     gap: 30px;
+    z-index: 3;
 
     .left .img {
       width: 280px;
@@ -378,12 +381,6 @@ footer {
 
     .content {
       flex-direction: column-reverse;
-
-      // .left .img {
-      //   border-radius: 0;
-      //   width: 100vw;
-      //   margin-bottom: 3rem;
-      // }
     }
   }
 
