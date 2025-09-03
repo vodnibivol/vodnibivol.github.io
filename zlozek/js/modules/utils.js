@@ -41,3 +41,23 @@ const Random = {
     return prng() * n; // floor?
   },
 };
+
+// --- CHROMATIC ABBERATION
+
+function chromaticAberration() {
+  // https://gist.github.com/lqt0223/8a258b68ae1c032fa1fb1e26c4965e8d
+  const imageData = drawingContext.getImageData(0, 0, drawingContext.canvas.width, drawingContext.canvas.height);
+
+  const phase = 0;
+  const intensity = 4;
+
+  // abberation part
+  const data = imageData.data; // RGBA
+  for (let i = phase % 4; i < data.length; i += 4) {
+    // Setting the start of the loop to a different integer will change the aberration color, but a start integer of 4n-1 will not work
+    data[i] = data[i + 4 * intensity];
+  }
+
+  // render
+  drawingContext.putImageData(imageData, 0, 0);
+}

@@ -15,7 +15,7 @@ const Text = {
   },
 
   drawArrow() {
-    textFont('system-ui'); // = 'SF Pro'; Monaco ima dobro puscico
+    textFont('system-ui'); // = 'SF Pro'; Monaco ima dobro puscico // TODO: najdi nekaj za windows
     textAlign(CENTER, CENTER);
     textSize(18);
     textStyle(BOLD);

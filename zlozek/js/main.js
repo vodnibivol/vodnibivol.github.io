@@ -1,5 +1,7 @@
 let SCREEN_SIZE; // { width: 0, height: 0 }
 
+const IS_DEV = new URLSearchParams(location.search).has('dev');
+
 const SQUARE_SIZE = 33; // px
 
 function setup() {

@@ -24,6 +24,10 @@ const Shapes = {
 
     this.grow();
     this.alignToGrid();
+
+    if (IS_DEV) {
+      this.randomRotate();
+    }
   },
 
   grow() {
@@ -48,6 +52,17 @@ const Shapes = {
     this.arr.forEach((sh) => sh.fallIntoPlace(true)); // every shape on screen, not just on grid
   },
 
+  randomRotate() {
+    if (!IS_DEV) return;
+
+    this.arr.forEach((shape) => {
+      // random rotate: not here !!
+      for (let i = 0; i < Random.range(4); ++i) {
+        shape.rotateRight();
+      }
+    });
+  },
+
   draw() {
     this.arr.forEach((s) => s.draw());
   },
@@ -68,8 +83,8 @@ class Shape {
     this.position = position;
     this.isDragging = false;
 
-    this.width = 0; // in px; set in createSquares
-    this.height = 0; // in px; set in createSquares
+    this.width = 0; // cols
+    this.height = 0; // rows
   }
 
   get isHovering() {
@@ -77,15 +92,29 @@ class Shape {
   }
 
   get bbox() {
+    const widthPx = this.width * SQUARE_SIZE;
+    const heightPx = this.height * SQUARE_SIZE;
+
     return {
       x: this.position.x,
       y: this.position.y,
 
       top: this.position.y,
-      right: this.position.x + this.width,
-      bottom: this.position.y + this.height,
+      right: this.position.x + widthPx,
+      bottom: this.position.y + heightPx,
       left: this.position.x,
+
+      width: widthPx,
+      height: heightPx,
     };
+  }
+
+  rotateRight() {
+    this.shapeSquares.forEach((s) => {
+      const temp = s.col;
+      s.col = this.height - s.row;
+      s.row = temp;
+    });
   }
 
   fallIntoPlace(outsideGrid = false) {
@@ -114,8 +143,8 @@ class Shape {
     this.position.y += (height - SCREEN_SIZE.height) / 2;
 
     // correct if off screen
-    this.position.x = min(width - this.width, max(0, this.position.x));
-    this.position.y = min(height - this.height, max(0, this.position.y));
+    this.position.x = min(width - this.bbox.width, max(0, this.position.x)); // FIXME: ne deluje, bbox.width = 0?
+    this.position.y = min(height - this.bbox.height, max(0, this.position.y));
   }
 
   createSquares() {
@@ -124,11 +153,8 @@ class Shape {
     const bottom = max(this.gridSquares.map((s) => s.row)); // row/col
     const left = min(this.gridSquares.map((s) => s.col)); // row/col
 
-    const width = 1 + right - left; // in squares (row/col)
-    const height = 1 + bottom - top; // in squares (row/col)
-
-    this.width = width * SQUARE_SIZE; // in px
-    this.height = height * SQUARE_SIZE; // in px
+    this.width = 1 + right - left; // in squares (row/col)
+    this.height = 1 + bottom - top; // in squares (row/col)
 
     this.shapeSquares = this.gridSquares.map((square) => {
       return new ShapeSquare(square.col - left, square.row - top, this, this.color);

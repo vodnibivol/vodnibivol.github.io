@@ -30,6 +30,14 @@ function mouseReleased() {
     return;
   }
 
+  // rotate shape on click
+  if (IS_DEV) {
+    const hoveringShape = Shapes.arr.find((s) => s.isHovering);
+    if (hoveringShape && !Drag.movementExists) {
+      hoveringShape.rotateRight();
+    }
+  }
+
   Drag.onEnd();
   return false;
 }

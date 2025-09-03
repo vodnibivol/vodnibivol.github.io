@@ -10,6 +10,10 @@ const Drag = {
     };
   },
 
+  get movementExists() {
+    return !!(abs(this.mouseMovement.x) + abs(this.mouseMovement.y));
+  },
+
   get shapePosition() {
     return {
       x: this.shapeStart.x + this.mouseMovement.x,
