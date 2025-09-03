@@ -16,13 +16,17 @@
     <link rel="preload" href="img/me_sm.jpg" as="image" />
     <link rel="preload" href="img/noise.svg" as="image" />
 
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
     <!-- TITLE -->
     <title>Portfolio | Filip Kokol</title>
   </head>
   <body>
     <header>
       <a href="#">
-        <div class="logo">F</div>
+        <div class="logo">
+          <img src="img/skratek.svg" alt="little dwarf" />
+        </div>
       </a>
       <nav class="links">
         <a id="aboutLink" class="link" href="#">about</a>
@@ -42,8 +46,8 @@
             enjoy turning ideas into simple, effective digital products.
           </p>
           <div class="links">
-            <a href="https://github.com/vodnibivol"><img src="img/gh-icon.png" alt="github" />Github</a>
-            <!-- <a href="https://www.linkedin.com"><img src="img/li-icon.png" alt="linkedin" />LinkedIn</a> -->
+            <a href="https://github.com/vodnibivol" target="_blank"><img src="img/icons/github-1.svg" alt="github logo" />Github</a>
+            <!-- <a href="https://www.linkedin.com" target="_blank"><img src="img/li-icon.png" alt="linkedin" />LinkedIn</a> -->
           </div>
         </div>
         <div class="left">
@@ -82,13 +86,17 @@
           <!-- template -->
           <template id="grid-item-template">
             <div class="grid-item">
-              <a href="{{ link }}">
+              <a href="{{ link }}" target="_blank">
                 <div class="img">
-                  <img src="{{ img_src }}" alt="{{ title }}" loading="lazy" />
+                  <img class="thumbnail" src="{{ img_src }}" alt="{{ title }}" loading="lazy" />
+                  <!-- <img src="img/gh-icon.png" alt="" class="gh-link"> -->
                 </div>
               </a>
               <div class="titles">
-                <a href="{{ link }}"><h3>{{ title }}</h3></a>
+                <a href="{{ github_link }}" target="_blank">
+                  <h3>{{ title }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h3>
+                  <img src="img/icons/github-1.svg" alt="" class="gh-link" />
+                </a>
                 <p>{{ description }}</p>
               </div>
             </div>
@@ -106,8 +114,10 @@
 
     <footer class="noise">
       <img class="bg" src="img/gradient.jpg" />
-      <!-- NOTE: temporary spacing -->
-      <span>Filip Kokol&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;2025</span>
+      <a class="contact-text" href="mailto:filipkokol@icloud.com">
+        <img src="img/icons/mail-2.svg" alt="mail icon" />
+        <span>filipkokol@icloud.com</span>
+      </a>
     </footer>
 
     <script src="js/animations.min.js"></script>
