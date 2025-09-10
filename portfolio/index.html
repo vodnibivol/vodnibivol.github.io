@@ -16,7 +16,7 @@
     <link rel="preload" href="img/me_sm.jpg" as="image" />
     <link rel="preload" href="img/noise.svg" as="image" />
 
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 
     <!-- TITLE -->
     <title>Portfolio | Filip Kokol</title>
@@ -36,7 +36,7 @@
     </header>
 
     <section id="hero" class="noise">
-      <img class="bg" src="img/gradient.jpg" />
+      <img class="bg no-pointer" src="img/gradient.jpg" />
 
       <div class="content">
         <div class="right">
@@ -46,12 +46,14 @@
             enjoy turning ideas into simple, effective digital products.
           </p>
           <div class="links">
-            <a href="https://github.com/vodnibivol" target="_blank"><img src="img/icons/github-1.svg" alt="github logo" />Github</a>
+            <a href="https://github.com/vodnibivol" target="_blank"
+              ><img src="img/icons/github-1.svg" alt="github logo" />Github</a
+            >
             <!-- <a href="https://www.linkedin.com" target="_blank"><img src="img/li-icon.png" alt="linkedin" />LinkedIn</a> -->
           </div>
         </div>
         <div class="left">
-          <div class="img">
+          <div class="img no-pointer">
             <img src="img/me_sm.jpg" alt="me" />
           </div>
         </div>
@@ -62,19 +64,25 @@
       <div class="content">
         <h2>About Me</h2>
         <p>
-          I began programming in 2020, starting with small Python projects and web-related tools. Soon after, I
-          discovered my passion for building websites. I focused on JavaScript, creating personal projects, games,
-          animations, and useful tools for myself and others.
+          I began programming in 2020, starting with small Python projects and web tools. Soon after, I discovered my
+          passion for building websites and shifted my focus to JavaScript. I explored this world through personal
+          projects, games, animations, and useful tools for myself and others.
         </p>
         <p>
-          My design philosophy centers on simplicity, clarity, and functionality. I’ve always preferred clean, intuitive
-          interfaces over cluttered designs filled with unnecessary features. The same principles guide my code: I aim
-          for efficiency, readability, and maintainability. I enjoy solving problems myself, so I haven’t relied on AI
-          in my projects—I simply love the process of programming.
+          My background, however, is rooted in the arts. I studied piano for 15 years, completing conservatory training
+          before earning a bachelor’s degree in philosophy with a thesis on Zen and Japanese aesthetics. This education
+          sharpened my appreciation for creativity, simplicity, and clarity — values that strongly influence both my
+          design and my code.
         </p>
         <p>
-          Below you’ll find a selection of my projects. Some are older experiments with rougher edges, while others are
-          more recent and polished. Together, they show my growth and approach as a developer.
+          I believe in building clean, intuitive interfaces without unnecessary clutter, and I apply the same philosophy
+          to my programming: striving for efficiency, readability, and maintainability. For me, coding is a deeply
+          creative process, one where solving problems is just as rewarding as the finished product.
+        </p>
+        <p>
+          I also gained industry experience as an intern at an IT company, where I built web templates for the
+          telecommunications provider A1 in Slovenia. That role gave me a solid foundation in practical web development
+          while reinforcing my passion for bringing ideas to life through code.
         </p>
       </div>
     </section>
@@ -82,6 +90,14 @@
     <section id="projects">
       <div class="content">
         <h2>My Personal Projects</h2>
+        <p>
+          Below you’ll find a selection of my projects. Some are older experiments with rougher edges, while others are
+          more recent and polished. Together, they show my growth and approach as a developer.
+        </p>
+        <p>
+          Some are in Slovene language and it wouldn’t really make sense to translate them, so I’ve included GitHub
+          links next to the titles, to explore their code.
+        </p>
         <div class="project-grid">
           <!-- template -->
           <template id="grid-item-template">
@@ -89,16 +105,17 @@
               <a href="{{ link }}" target="_blank">
                 <div class="img">
                   <img class="thumbnail" src="{{ img_src }}" alt="{{ title }}" loading="lazy" />
-                  <!-- <img src="img/gh-icon.png" alt="" class="gh-link"> -->
+                  <img class="open-icon" src="img/icons/open-link-1.svg" alt="open link icon" />
                 </div>
               </a>
-              <div class="titles">
-                <a href="{{ github_link }}" target="_blank">
-                  <h3>{{ title }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h3>
-                  <img src="img/icons/github-1.svg" alt="" class="gh-link" />
+              <div class="title">
+                <a href="{{ link }}" target="_blank"><h3>{{ title }}</h3></a>
+                <a class="gh-link" href="{{ github_link }}" target="_blank">
+                  <img src="img/icons/github-1.svg" alt="github logo"/>
+                  <span>github</span>
                 </a>
-                <p>{{ description }}</p>
               </div>
+              <p>{{ description }}</p>
             </div>
           </template>
           <!-- /template  -->
@@ -107,10 +124,14 @@
     </section>
 
     <footer class="noise">
-      <img class="bg" src="img/gradient.jpg" />
+      <img class="bg no-pointer" src="img/gradient.jpg" />
       <a class="contact-text" href="mailto:filipkokol@icloud.com">
         <img src="img/icons/mail-2.svg" alt="mail icon" />
         <span>filipkokol@icloud.com</span>
+      </a>
+      <a class="contact-text" href="tel:+38651608707">
+        <img src="img/icons/phone-1.svg" alt="phone icon" />
+        <span>+386 51 608 707</span>
       </a>
     </footer>
 

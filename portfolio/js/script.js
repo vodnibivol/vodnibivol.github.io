@@ -41,7 +41,7 @@ const Main = (function () {
       {
         title: 'Tilings',
         description:
-          'Designed and developed with p5.js, Tilings is a browser game where players drag Tetris-like shapes to fill a grid. Built using only p5.js library, it works on PC and mobile.',
+          'Designed and developed with p5.js, Tilings is a browser game where players drag Tetris-like shapes to fill a grid. Built using only p5.js graphics library, it works on PC and mobile.',
         img_src: 'img/thumbs/zlozek.png',
         link: '/zlozek',
         github_link: 'https://github.com/vodnibivol/vodnibivol.github.io/tree/master/zlozek',
@@ -49,7 +49,7 @@ const Main = (function () {
       {
         title: 'Jumping Dwarf',
         description:
-          'A stylish browser game with sleek minimalist aesthetics, where players guide a dwarf upward by leaping across diverse platforms. Built using p5.js graphics library.',
+          'A stylish browser game with minimalist aesthetics, where players guide a dwarf upward by jumping across diverse platforms. Built using p5.js.',
         img_src: 'img/thumbs/skratek.png',
         link: 'https://lulekfun.github.io/skratek',
         github_link: 'https://github.com/lulekfun/lulekfun.github.io/tree/master/skratek',
@@ -57,14 +57,14 @@ const Main = (function () {
       {
         title: 'Sine Line',
         description:
-          'Another minimalist web game where players navigate in smooth motion, dodging obstacles and collecting points.',
+          'Another minimalist p5.js web game where players navigate in sine-like motion, dodging obstacles and collecting points.',
         img_src: 'img/thumbs/crtica.png',
         link: 'https://lulekfun.github.io/crtica',
         github_link: 'https://github.com/lulekfun/lulekfun.github.io/tree/master/crtica',
       },
       {
         title: 'Snake',
-        description: 'A classic Snake game recreated for the web using JavaScript and p5.js.',
+        description: 'My first p5.js web game: classic Snake, recreated for the web using JavaScript and p5.js.',
         img_src: 'img/thumbs/kacica.png',
         link: 'https://lulekfun.github.io/kacica',
         github_link: 'https://github.com/lulekfun/lulekfun.github.io/tree/master/kacica',
@@ -72,7 +72,7 @@ const Main = (function () {
       {
         title: 'Learn World Flags',
         description:
-          'A PC-based educational game i built for myself that teaches you world flags, organized by continent.',
+          'This is a PC-based educational game i built for myself that teaches you world flags, organized by continent.',
         img_src: 'img/thumbs/zastavice.png',
         link: '/zastavice',
         github_link: 'https://github.com/vodnibivol/vodnibivol.github.io/tree/master/zastavice',
@@ -87,7 +87,7 @@ const Main = (function () {
       },
       {
         title: 'Wordle Clone',
-        description: 'A Slovenian-language translation of a famous game, Wordle, using self-made word dictionaries.',
+        description: 'A Slovenian-language translation of a famous game, Wordle, using self-compiled word dictionaries.',
         img_src: 'img/thumbs/besedle.png',
         link: '/besedle',
         github_link: 'https://github.com/vodnibivol/vodnibivol.github.io/tree/master/besedle',
@@ -111,7 +111,7 @@ const Main = (function () {
       {
         title: 'Morse Weather Report',
         description:
-          'Minimalist joke app reporting real-time Slovenian weather, translated into Morse code text and sound.',
+          'Minimalist joke app reporting real-time Slovenian weather, translated into Morse code text and sound. Not very useful, I know ..',
         img_src: 'img/thumbs/vreme.png',
         link: '/vremenska_napoved',
         github_link: 'https://github.com/vodnibivol/vodnibivol.github.io/tree/master/vremenska_napoved',
@@ -119,7 +119,7 @@ const Main = (function () {
       {
         title: 'Morse Translator',
         description:
-          'A simple web tool that translates text to Morse code (and vice versa) in real-time, built for quick and interactive usage.',
+          'A simple web tool that translates text to Morse code (and vice versa) in real-time, built for quick and interactive usage. Now you can translate Slovenian weather, haha.',
         img_src: 'img/thumbs/morse.png',
         link: '/morse',
         github_link: 'https://github.com/vodnibivol/vodnibivol.github.io/tree/master/morse',

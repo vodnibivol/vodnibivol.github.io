@@ -35,6 +35,11 @@ a {
   text-decoration: none;
 }
 
+.no-pointer {
+  pointer-events: none;
+  user-select: none;
+}
+
 .noise::after {
   content: '';
   position: absolute;
@@ -183,15 +188,11 @@ section#hero {
     .left .img {
       width: 280px;
       height: 280px;
-      // border: 2px solid white;
-      // filter: contrast(1.2);
-      // filter: grayscale(1);
       overflow: hidden;
       border-radius: 50%;
       z-index: 999;
 
       img {
-        // mix-blend-mode: overlay;
         object-fit: cover;
         object-position: center;
         // display: flex; // disable weird bottom padding
@@ -270,12 +271,13 @@ section#projects {
   color: #fff;
 
   .content {
-    h2 {
-      margin-bottom: 3rem;
+    & > p {
+      margin-bottom: 30px;
     }
-    // max-width: 1000px;
 
     .project-grid {
+      margin-top: 3rem;
+
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       row-gap: 4rem; // fixed
@@ -289,48 +291,86 @@ section#projects {
         .img {
           border-radius: 8px;
           overflow: hidden;
-          // height: 200px;
           aspect-ratio: 16/11;
           background: white;
           position: relative;
-
-          // &:hover img.thumbnail {
-          //   opacity: 0.8;
-          // }
+          cursor: pointer; // disables text selection cursor on some images
 
           img.thumbnail {
             width: 100%;
             height: 100%;
             object-fit: cover;
             object-position: center center;
+          }
 
-            &:hover {
+          img.open-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 25px;
+            opacity: 0.6;
+            display: none;
+          }
+          
+          &:hover {
+            img.thumbnail {
               opacity: 0.8;
+            }
+            
+            img.open-icon {
+              display: block;
             }
           }
         }
 
-        .titles {
-          a {
-            display: flex;
-            justify-content: flex-start;
-            align-items: baseline;
-            gap: 10px;
+        .title {
+          display: flex;
+          justify-content: flex-start;
+          align-items: baseline;
+          gap: 10px;
+
+          h3 {
+            margin-top: 20px;
 
             &:hover {
               text-decoration: underline;
             }
           }
 
-          h3 {
-            margin-top: 20px;
-          }
+          a.gh-link {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            border-radius: 30px;
+            padding: 2px;
+            height: 19px;
 
-          img.gh-link {
-            width: 15px;
-            display: inline;
-            justify-self: flex-end;
-            transform: translateX(-25px);
+            img {
+              width: 15px;
+            }
+
+            span {
+              text-transform: uppercase;
+              font-weight: 700;
+              font-size: 11px;
+              color: black;
+
+              display: none;
+            }
+
+            &:hover {
+              padding: 2px 6px 2px 2px;
+              background: white;
+
+              img {
+                filter: invert(1);
+              }
+
+              span {
+                display: block;
+              }
+            }
           }
         }
       }
@@ -339,12 +379,14 @@ section#projects {
 }
 
 footer {
-  height: 150px;
+  min-height: 150px;
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
   overflow: hidden;
+
+  gap: 5rem;
 
   img.bg {
     position: absolute;
@@ -407,6 +449,11 @@ footer {
         // gap: 2rem;
       }
     }
+  }
+
+  footer {
+    flex-direction: column;
+    gap: 1rem;
   }
 }
 
