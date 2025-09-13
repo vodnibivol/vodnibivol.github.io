@@ -72,7 +72,7 @@ const Main = (function () {
       {
         title: 'Learn World Flags',
         description:
-          'This is a PC-based educational game i built for myself that teaches you world flags, organized by continent.',
+          'This is a PC-based educational game I built for myself that teaches you world flags, organized by continent.',
         img_src: 'img/thumbs/zastavice.png',
         link: '/zastavice',
         github_link: 'https://github.com/vodnibivol/vodnibivol.github.io/tree/master/zastavice',
@@ -87,7 +87,7 @@ const Main = (function () {
       },
       {
         title: 'Wordle Clone',
-        description: 'A Slovenian-language translation of a famous game, Wordle, using self-compiled word dictionaries.',
+        description: 'A Slovenian-language translation of a famous game, Wordle, using self-compiled word dictionaries. My first PWA that works offline.',
         img_src: 'img/thumbs/besedle.png',
         link: '/besedle',
         github_link: 'https://github.com/vodnibivol/vodnibivol.github.io/tree/master/besedle',

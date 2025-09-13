@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="css/style.css" />
 
+    <!-- OPEN GRAPH -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Filip Kokol | Portfolio" />
+    <meta property="og:url" content="http://vodnibivol.org/portfolio/" />
+    <meta property="og:image" content="https://www.vodnibivol.org/portfolio/img/og_card.jpg" />
+    <meta property="og:description" content="Filip's programming portfolio!" />
+
     <!-- PRELOAD FONTS -->
     <link rel="preload" href="fonts/poppins-v23-latin-300.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="fonts/poppins-v23-latin-regular.woff2" as="font" type="font/woff2" crossorigin />
@@ -13,8 +20,9 @@
     <link rel="preload" href="fonts/poppins-v23-latin-700.woff2" as="font" type="font/woff2" crossorigin />
 
     <!-- PRELOAD IMAGES -->
-    <link rel="preload" href="img/me_sm.jpg" as="image" />
-    <link rel="preload" href="img/noise.svg" as="image" />
+    <link rel="preload" href="img/me_sm.jpg" as="image" fetchpriority="high" />
+    <link rel="preload" href="img/gradient.jpg" as="image" fetchpriority="high" />
+    <link rel="preload" href="img/noise.svg" as="image" fetchpriority="high" />
 
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 
@@ -36,25 +44,25 @@
     </header>
 
     <section id="hero" class="noise">
-      <img class="bg no-pointer" src="img/gradient.jpg" />
+      <img class="bg no-pointer" src="img/gradient.jpg" decoding="async" fetchpriority="high" />
 
       <div class="content">
-        <div class="right">
-          <h1>I'm Filip, a frontend web developer.</h1>
+        <div class="left">
+          <h1>I'm Filip, a programmer and frontend web developer.</h1>
           <p>
             I build clean, functional, and intuitive websites with a focus on user experience and maintainable code. I
             enjoy turning ideas into simple, effective digital products.
           </p>
           <div class="links">
-            <a href="https://github.com/vodnibivol" target="_blank"
-              ><img src="img/icons/github-1.svg" alt="github logo" />Github</a
-            >
-            <!-- <a href="https://www.linkedin.com" target="_blank"><img src="img/li-icon.png" alt="linkedin" />LinkedIn</a> -->
+            <a href="https://github.com/vodnibivol" target="_blank">
+              <img src="img/icons/github-1.svg" alt="github logo" />
+              <span>Github</span>
+            </a>
           </div>
         </div>
-        <div class="left">
+        <div class="right">
           <div class="img no-pointer">
-            <img src="img/me_sm.jpg" alt="me" />
+            <img src="img/me_sm.jpg" alt="me" decoding="async" fetchpriority="high" />
           </div>
         </div>
       </div>
@@ -69,8 +77,8 @@
           projects, games, animations, and useful tools for myself and others.
         </p>
         <p>
-          My background, however, is rooted in the arts. I studied piano for 15 years, completing conservatory training
-          before earning a bachelor’s degree in philosophy with a thesis on Zen and Japanese aesthetics. This education
+          My background, however, is in the arts. I studied piano for 15 years, completing conservatory training before
+          earning a bachelor’s degree in philosophy with a thesis on Zen and Japanese aesthetics. This education
           sharpened my appreciation for creativity, simplicity, and clarity — values that strongly influence both my
           design and my code.
         </p>
@@ -92,11 +100,13 @@
         <h2>My Personal Projects</h2>
         <p>
           Below you’ll find a selection of my projects. Some are older experiments with rougher edges, while others are
-          more recent and polished. Together, they show my growth and approach as a developer.
+          more recent and polished. I’ve also worked with frameworks like Vue.js and some smaller libraries such as
+          Alpine.js, and I’m always eager to pick up new tools and technologies.You can also find some of my full-stack
+          and backend experiments on GitHub.
         </p>
         <p>
-          Some are in Slovene language and it wouldn’t really make sense to translate them, so I’ve included GitHub
-          links next to the titles, to explore their code.
+          Some of the projects are in Slovene, and it wouldn’t make sense to translate them, so I’ve included a GitHub
+          link next to each title for you to explore the code directly.
         </p>
         <div class="project-grid">
           <!-- template -->
@@ -111,7 +121,7 @@
               <div class="title">
                 <a href="{{ link }}" target="_blank"><h3>{{ title }}</h3></a>
                 <a class="gh-link" href="{{ github_link }}" target="_blank">
-                  <img src="img/icons/github-1.svg" alt="github logo"/>
+                  <img src="img/icons/github-1.svg" alt="github logo" />
                   <span>github</span>
                 </a>
               </div>
