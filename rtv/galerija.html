@@ -31,9 +31,9 @@
         <template x-for="rec in results">
           <div
             class="recording"
-            :disabled="rec.payTv||rec.payable||rec.promo||rec.expiresInDays<2||new Date()>new Date(rec.expirationDate)"
+            :dddddisabled="rec.payTv||rec.payable||rec.promo||rec.expiresInDays<2||new Date()>new Date(rec.expirationDate)"
           >
-            <a :href="rec.link" target="_blank">
+            <a :href="'/rtv/stream.html?id='+rec.id" target="_blank">
               <div class="img-container">
                 <img :src="rec.images.wide1 || rec.images.orig" :alt="rec.showName" />
 

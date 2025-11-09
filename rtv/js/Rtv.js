@@ -8,15 +8,11 @@ const Rtv = (function () {
 
   async function getStream(mediaId) {
     const metadata = await getMeta(mediaId);
-    const { response } = metadata;
 
-    const khash = await _getKhash();
-
-    const recDateDash = response.recordingDate.match(/^[\d-]+/)[0];
+    const recDateDash = metadata.response.recordingDate.match(/^[\d-]+/)[0];
     const recDateSlash = recDateDash.replace(/-/g, '/');
 
-    const archive = await _getArchive(recDateDash);
-    const streamUrl = `https://vodstr.rtvslo.si/${archive}/_definst_/${recDateSlash}/${mediaId}.smil/playlist.m3u8?keylockhash=${khash}`;
+    const streamUrl = `https://vodstr.rtvslo.si/ava_archive11/_definst_/${recDateSlash}/${mediaId}.smil/playlist.m3u8`;
 
     return streamUrl;
   }
@@ -99,37 +95,28 @@ const Rtv = (function () {
     return jwt;
   }
 
-  async function _getKhash() {
-    const jwt = await _getJwt(AUX_ID);
-    const r = await _getMedia(AUX_ID, jwt);
+  // async function _getArchive(recDate) {
+  //   const cached = dstore.get('archive_' + recDate);
+  //   if (!!cached) return cached.data;
 
-    const streams = r.response.mediaFiles[0].streams;
-    const khash = JSON.stringify(streams).match(/wowzatokenhash=([\w-]+)/)[1]; // TODO: preveri, ali ni vec razlicnih keylockhashev
-    return khash;
-  }
+  //   for (let i = 0; i <= 5; i++) {
+  //     const startDay = _dayDelta(recDate, -i);
+  //     const endDay = _dayDelta(recDate, i);
 
-  async function _getArchive(recDate) {
-    const cached = dstore.get('archive_' + recDate);
-    if (!!cached) return cached.data;
+  //     // prettier-ignore
+  //     const SEARCH_URL = `https://api.rtvslo.si/ava/getSearch2?client_id=${CLIENT_ID}&from=${startDay}&to=${endDay}&pageSize=${i*12}`;
+  //     const search = await ffetch(SEARCH_URL);
 
-    for (let i = 0; i <= 5; i++) {
-      const startDay = _dayDelta(recDate, -i);
-      const endDay = _dayDelta(recDate, i);
+  //     const archives = JSON.stringify(search).match(/archive(\d)+/g);
+  //     if (archives === null) continue;
+  //     const correctArchive = _mostFreq(archives).replace('archive', 'encrypted');
 
-      // prettier-ignore
-      const SEARCH_URL = `https://api.rtvslo.si/ava/getSearch2?client_id=${CLIENT_ID}&from=${startDay}&to=${endDay}&pageSize=${i*12}`;
-      const search = await ffetch(SEARCH_URL);
+  //     dstore.set('archive_' + recDate, correctArchive, dstore.YEAR);
+  //     return correctArchive;
+  //   }
 
-      const archives = JSON.stringify(search).match(/archive(\d)+/g);
-      if (archives === null) continue;
-      const correctArchive = _mostFreq(archives).replace('archive', 'encrypted');
-
-      dstore.set('archive_' + recDate, correctArchive, dstore.YEAR);
-      return correctArchive;
-    }
-
-    throw new Error('archive not found.');
-  }
+  //   throw new Error('archive not found.');
+  // }
 
   // --- utility functions
 

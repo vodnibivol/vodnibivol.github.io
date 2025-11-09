@@ -37,7 +37,7 @@ const Galerija = {
     const urlComponent = new URL('https://api.rtvslo.si/ava/getSearch2?client_id=8c5205a95060a482f0fc96b9162d9e3f');
 
     // urlComponent.searchParams.set('q', this.searchString);
-    // urlComponent.searchParams.set('unpublished', 1);
+    urlComponent.searchParams.set('unpublished', 1);
     urlComponent.searchParams.set('pageSize', this.flags.size || 12);
 
     // urlComponent.searchParams.set('promo', '0');
