@@ -83,7 +83,7 @@ const Galerija = {
 
   infiniteLoad() {
     if (this.loading) return;
-    const offset = 250; // px
+    const offset = 350; // px
 
     const elm = document.querySelector('#results-container');
     const distToBottom = elm.getBoundingClientRect().top + elm.getBoundingClientRect().height - window.innerHeight;

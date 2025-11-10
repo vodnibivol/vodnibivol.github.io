@@ -61,8 +61,13 @@
                   <div class="">Predvajaj</div>
                 </a>
               </div>
-              <h2 class="subtitle" x-text="modalRecording.subTitle"></h2>
-              <p x-text="modalRecording.description"></p>
+              <div class="subtitle-container">
+                <div class="subtitle" x-text="modalRecording.subTitle"></div>
+                <div class="duration" x-text="modalRecording.length_min + ' minut'"></div>
+              </div>
+              <div class="scroll">
+                <p x-text="modalRecording.description"></p>
+              </div>
             </div>
           </div>
         </div>

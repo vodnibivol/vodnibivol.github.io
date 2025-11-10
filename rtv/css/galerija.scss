@@ -149,7 +149,7 @@ hr {
   .recording {
     position: relative;
 
-    transition: transform 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s;
     width: 100%;
     max-width: 400px;
     margin: auto;
@@ -161,6 +161,7 @@ hr {
 
     &:hover {
       transform: scale(1.02);
+      box-shadow: 3px 3px 0 #ddd;
     }
 
     .img-container {
@@ -273,24 +274,43 @@ hr {
           cursor: pointer;
           border: 1.5px solid;
           margin-right: 20px;
+          border-radius: 50px;
 
           box-shadow: 3px 3px 0 lightgray;
+
+          &:active {
+            background: rgb(145, 186, 199);
+          }
         }
       }
 
-      h2 {
-        opacity: 0.7;
+      .subtitle-container {
         border-bottom: 1.5px solid;
-        font-weight: normal;
-        padding: 10px 20px;
-        font-style: italic;
+        display: flex;
+        justify-content: space-between;
+
+        div {
+          padding: 10px 20px;
+          opacity: 0.7;
+          font-weight: normal;
+          font-style: italic;
+          // background: red;
+        }
+
+        div.subtitle {
+          border-right: 1.5px solid;
+          flex-grow: 1;
+        }
       }
 
-      p {
-        white-space: pre-line;
-        padding: 20px;
+      div.scroll {
         overflow-y: scroll;
         max-height: 30vh;
+        padding: 20px;
+
+        p {
+          white-space: pre-line;
+        }
       }
     }
   }
