@@ -15,10 +15,13 @@ const Galerija = {
     size: 12,
   },
 
+  modalIsOpen: false,
+  modalRecording: {},
+
   get msgText() {
     if (this.results.length === this.maxResults) return 'to je to.';
-    if (this.loading) return 'nalaganje ..';
-    if (!this.results.length) return 'ni rezultatov.';
+    if (this.loading) return 'Nalaganje ...';
+    if (!this.results.length) return 'Ni rezultatov.';
   },
 
   onSubmit() {
@@ -36,7 +39,7 @@ const Galerija = {
   async getSearch() {
     const urlComponent = new URL('https://api.rtvslo.si/ava/getSearch2?client_id=8c5205a95060a482f0fc96b9162d9e3f');
 
-    // urlComponent.searchParams.set('q', this.searchString);
+    urlComponent.searchParams.set('q', this.searchString);
     urlComponent.searchParams.set('unpublished', 1);
     urlComponent.searchParams.set('pageSize', this.flags.size || 12);
 
@@ -80,7 +83,7 @@ const Galerija = {
 
   infiniteLoad() {
     if (this.loading) return;
-    const offset = 150; // px
+    const offset = 250; // px
 
     const elm = document.querySelector('#results-container');
     const distToBottom = elm.getBoundingClientRect().top + elm.getBoundingClientRect().height - window.innerHeight;
@@ -94,5 +97,17 @@ const Galerija = {
   selectGenre(genreId) {
     this.genre = genreId;
     this.onSubmit();
+  },
+
+  openModal(recording) {
+    console.log(recording);
+    this.modalRecording = recording;
+    this.modalIsOpen = true;
+    document.body.classList.add('modal-open');
+  },
+
+  closeModal() {
+    this.modalIsOpen = false;
+    document.body.classList.remove('modal-open');
   },
 };

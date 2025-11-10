@@ -20,8 +20,8 @@
 
       <form action="#" @submit.prevent="onSubmit">
         <div id="search-container" class="flex-center">
-          <input class="boxed" type="text" x-model="searchString" placeholder="iskanje .." />
-          <button class="boxed black" type="submit">ok</button>
+          <input class="boxed" type="text" x-model="searchString" placeholder="Iskanje ..." />
+          <button class="boxed black" type="submit">→</button>
         </div>
       </form>
 
@@ -29,28 +29,44 @@
 
       <div id="results-container" x-show="results.length">
         <template x-for="rec in results">
-          <div
-            class="recording"
-            :dddddisabled="rec.payTv||rec.payable||rec.promo||rec.expiresInDays<2||new Date()>new Date(rec.expirationDate)"
-          >
-            <a :href="'/rtv/stream.html?id='+rec.id" target="_blank">
-              <div class="img-container">
-                <img :src="rec.images.wide1 || rec.images.orig" :alt="rec.showName" />
+          <div class="recording" x-on:click="openModal(rec)">
+            <div class="img-container">
+              <img :src="rec.images.wide1 || rec.images.orig" :alt="rec.showName" />
 
-                <div class="disabled-screen flex-center">
-                  <span>[ ni na voljo ]</span>
-                </div>
+              <div class="disabled-screen flex-center">
+                <span>[ ni na voljo ]</span>
               </div>
-            </a>
-            <div class="title" x-text="rec.title"></div>
+            </div>
           </div>
         </template>
       </div>
 
-      <!-- <hr x-show="loading" /> -->
       <div id="msg-container" class="flex-center" x-show="!!msgText">
-        <span x-text="msgText">nalaganje ..</span>
+        <span x-text="msgText">Nalaganje ...</span>
       </div>
+
+      <template x-if="modalIsOpen">
+        <div id="modal" class="flex-center">
+          <div class="bg" x-on:click="closeModal"></div>
+
+          <div class="content">
+            <div class="image">
+              <img :src="modalRecording.images?.wide1" class="low-res" />
+              <img :src="modalRecording.images?.orig" class="high-res" />
+            </div>
+            <div class="text">
+              <div class="title-container flex-center">
+                <h1 class="title" x-text="modalRecording.title"></h1>
+                <a :href="'stream?id='+modalRecording.id">
+                  <div class="">Predvajaj</div>
+                </a>
+              </div>
+              <h2 class="subtitle" x-text="modalRecording.subTitle"></h2>
+              <p x-text="modalRecording.description"></p>
+            </div>
+          </div>
+        </div>
+      </template>
     </div>
 
     <script src="./js/Store.js"></script>

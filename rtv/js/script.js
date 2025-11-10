@@ -5,9 +5,10 @@ function search() {
     searchUrl: '',
     loading: false,
     ID_REGEX: /\d{7,11}/,
+    isLocal: false,
 
     get msg() {
-      return `[ ${this.loading ? 'nalaganje ..' : 'empty'} ]`;
+      return `[ ${this.loading ? 'Nalaganje ...' : 'empty'} ]`;
     },
 
     get queryC() {
