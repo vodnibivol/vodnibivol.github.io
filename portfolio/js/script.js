@@ -39,6 +39,22 @@ const Main = (function () {
   function renderProjects() {
     const projects = [
       {
+        title: 'Windex Study',
+        description:
+          'A responsive (fictional) company website built in React, modeled after a UI concept as a hands-on way to learn React development',
+        img_src: 'img/thumbs/windex.png',
+        link: '/windex-study-react',
+        github_link: 'https://github.com/vodnibivol/windex-study-react',
+      },
+      {
+        title: 'To-Do List',
+        description:
+          'Another small React learning project — a responsive Todo list app for exploring the basics of reactivity.',
+        img_src: 'img/thumbs/todo.png',
+        link: '/react-todo',
+        github_link: 'https://github.com/vodnibivol/react-todo',
+      },
+      {
         title: 'Tilings',
         description:
           'Designed and developed with p5.js, Tilings is a browser game where players drag Tetris-like shapes to fill a grid. Built using only p5.js graphics library, it works on PC and mobile.',
@@ -70,6 +86,22 @@ const Main = (function () {
         github_link: 'https://github.com/lulekfun/lulekfun.github.io/tree/master/kacica',
       },
       {
+        title: 'Busbus — bus tracker',
+        description:
+          "Ljubljana's bus timetable app with a live tracker map and an option to rate drivers — because sometimes public transport deserves feedback too!",
+        img_src: 'img/thumbs/busbus.png',
+        link: 'https://strojcek.ftp.sh/busbus',
+        github_link: 'https://github.com/vodnibivol/busbus',
+      },
+      {
+        title: 'Knjižarna (Book-store)',
+        description:
+          'A shared lesson material library I made for me and my classmates, featuring file uploads and search to make school resources less chaotic:)',
+        img_src: 'img/thumbs/knjizarna.png',
+        link: 'https://strojcek.ftp.sh/knjizarna',
+        github_link: 'https://github.com/vodnibivol/knjizarna',
+      },
+      {
         title: 'Learn World Flags',
         description:
           'This is a PC-based educational game I built for myself that teaches you world flags, organized by continent.',
@@ -87,7 +119,8 @@ const Main = (function () {
       },
       {
         title: 'Wordle Clone',
-        description: 'A Slovenian-language translation of a famous game, Wordle, using self-compiled word dictionaries. My first PWA that works offline.',
+        description:
+          'A Slovenian-language translation of a famous game, Wordle, using self-compiled word dictionaries. My first PWA that works offline.',
         img_src: 'img/thumbs/besedle.png',
         link: '/besedle',
         github_link: 'https://github.com/vodnibivol/vodnibivol.github.io/tree/master/besedle',

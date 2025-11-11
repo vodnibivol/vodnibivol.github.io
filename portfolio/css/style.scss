@@ -40,6 +40,11 @@ a {
   user-select: none;
 }
 
+.bold-underlined {
+  text-decoration: underline;
+  font-weight: bold;
+}
+
 .noise::after {
   content: '';
   position: absolute;
@@ -56,7 +61,7 @@ a {
   z-index: 2;
 }
 
-// --- CONTENTS
+// --- CONTENT
 
 header {
   // height: 50px;
@@ -315,12 +320,12 @@ section#projects {
             opacity: 0.6;
             display: none;
           }
-          
+
           &:hover {
             img.thumbnail {
               opacity: 0.8;
             }
-            
+
             img.open-icon {
               display: block;
             }
