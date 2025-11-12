@@ -15,14 +15,16 @@ const Main = (function () {
 
     let scrollOffset;
 
-    if (e.target.matches('.logo')) {
+    if (e.target.closest('.logo')) {
       scrollOffset = 50;
-    } else if (e.target.matches('#aboutLink')) {
+    } else if (e.target.closest('#aboutLink')) {
       scrollOffset = Math.floor($('#about-me').offsetTop);
-    } else if (e.target.matches('#projectsLink')) {
+    } else if (e.target.closest('#projectsLink')) {
       scrollOffset = Math.floor($('#projects').offsetTop + 1);
-    } else if (e.target.matches('#contactLink')) {
+    } else if (e.target.closest('#contactLink')) {
       scrollOffset = Math.floor($('footer').offsetTop);
+    } else {
+      return;
     }
 
     scroll2(scrollOffset - 50, 1000);
