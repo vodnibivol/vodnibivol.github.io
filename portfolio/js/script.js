@@ -41,22 +41,6 @@ const Main = (function () {
   function renderProjects() {
     const projects = [
       {
-        title: 'Windex Study',
-        description:
-          'A responsive (fictional) company website built in React, modeled after a UI concept as a hands-on way to learn React development',
-        img_src: 'img/thumbs/windex.png',
-        link: '/windex-study-react',
-        github_link: 'https://github.com/vodnibivol/windex-study-react',
-      },
-      {
-        title: 'To-Do List',
-        description:
-          'Another small React learning project — a responsive Todo list app for exploring the basics of reactivity.',
-        img_src: 'img/thumbs/todo.png',
-        link: '/react-todo',
-        github_link: 'https://github.com/vodnibivol/react-todo',
-      },
-      {
         title: 'Tilings',
         description:
           'Designed and developed with p5.js, Tilings is a browser game where players drag Tetris-like shapes to fill a grid. Built using only p5.js graphics library, it works on PC and mobile.',
@@ -71,6 +55,22 @@ const Main = (function () {
         img_src: 'img/thumbs/skratek.png',
         link: 'https://lulekfun.github.io/skratek',
         github_link: 'https://github.com/lulekfun/lulekfun.github.io/tree/master/skratek',
+      },
+      {
+        title: 'Windex Study',
+        description:
+          'A responsive (fictional) company website built in React, modeled after a UI concept as a hands-on way to learn React development',
+        img_src: 'img/thumbs/windex.png',
+        link: '/windex-study-react',
+        github_link: 'https://github.com/vodnibivol/windex-study-react',
+      },
+      {
+        title: 'To-Do List',
+        description:
+          'Another small React learning project — a responsive Todo list app for exploring the basics of reactivity.',
+        img_src: 'img/thumbs/todo.png',
+        link: '/react-todo',
+        github_link: 'https://github.com/vodnibivol/react-todo',
       },
       {
         title: 'Sine Line',
