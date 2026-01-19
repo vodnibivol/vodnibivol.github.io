@@ -269,9 +269,39 @@ section#hero {
 section#about-me {
   background: #fff;
   min-height: 70vh;
+  padding-bottom: 0;
 
   p {
     margin-bottom: 30px;
+  }
+}
+
+section#tech-stack {
+  background: #fff;
+  padding-top: 3rem;
+
+  .stack-container {
+    flex-wrap: wrap;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+    gap: 10px;
+
+    .stack-item {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 2px solid black;
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      gap: 5px;
+
+      img {
+        width: 15px;
+      }
+    }
   }
 }
 

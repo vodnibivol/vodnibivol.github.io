@@ -7,6 +7,7 @@ const Main = (function () {
 
   // init
   renderProjects();
+  renderTechStack();
 
   // functions
   function navigate(e) {
@@ -38,6 +39,30 @@ const Main = (function () {
     }
   }
 
+  function renderTechStack() {
+    const stack = [
+      { title: 'HTML', icon_src: 'html5.svg' },
+      { title: 'CSS', icon_src: 'css3.svg' },
+      { title: 'SCSS/Sass', icon_src: 'sass.svg' },
+      { title: 'JavaScript', icon_src: 'javascript.svg' },
+      { title: 'TypeScript', icon_src: 'typescript.svg' },
+      { title: 'ReactJS', icon_src: 'react.svg' },
+      { title: 'Vue', icon_src: 'vue.svg' },
+      { title: 'AlpineJS', icon_src: 'alpinejs.svg' },
+      { title: 'NodeJS', icon_src: 'nodejs.svg' },
+      { title: 'Express', icon_src: 'express.svg' },
+      { title: 'PostgreSQL', icon_src: 'postgres.svg' },
+      { title: 'MongoDB', icon_src: 'mongodb-2.svg' },
+      { title: 'Python', icon_src: 'python.svg' },
+      { title: 'Git', icon_src: 'git.svg' },
+      { title: 'p5.js', icon_src: 'p5js.svg' },
+    ];
+
+    const html_template = $('template#stack-item-template').innerHTML;
+    const rendered_html = render(html_template, stack);
+    $('.stack-container').insertAdjacentHTML('beforeend', rendered_html);
+  }
+
   function renderProjects() {
     const projects = [
       {
@@ -59,7 +84,7 @@ const Main = (function () {
       {
         title: 'Windex Study',
         description:
-          'A responsive (fictional) company website built in React, modeled after a UI concept as a hands-on way to learn React development',
+          'A responsive (fictional) company website built in React, modeled after a UI concept as a hands-on way to learn React development.',
         img_src: 'img/thumbs/windex.png',
         link: '/windex-study-react',
         github_link: 'https://github.com/vodnibivol/windex-study-react',
@@ -171,7 +196,6 @@ const Main = (function () {
 
     const html_template = $('template#grid-item-template').innerHTML;
     const rendered_html = render(html_template, projects);
-    // $('template#grid-item-template').remove();
     $('.project-grid').insertAdjacentHTML('beforeend', rendered_html);
   }
 

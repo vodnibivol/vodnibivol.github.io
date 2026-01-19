@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -81,7 +81,7 @@
           projects, games, animations, and useful tools for myself and others.
         </p>
         <p>
-          My background, however, is in the arts. I studied piano for 15 years, completing conservatory training before
+          My background, however, is in the arts. I studied piano for 12 years, completing conservatory training before
           earning a bachelor’s degree in philosophy with a thesis on Zen and Japanese aesthetics. This education
           sharpened my appreciation for creativity, simplicity, and clarity — values that strongly influence both my
           design and my code.
@@ -93,9 +93,25 @@
         </p>
         <p>
           I also gained industry experience as an intern at an IT company, where I built web templates for the
-          telecommunications provider A1 in Slovenia. That role gave me a solid foundation in practical web development
-          while reinforcing my passion for bringing ideas to life through code.
+          <b>telecommunications provider A1</b> in Slovenia. That role gave me a solid foundation in practical web
+          development while reinforcing my passion for bringing ideas to life through code.
         </p>
+      </div>
+    </section>
+
+    <section id="tech-stack">
+      <div class="content">
+        <h2>My Tech Stack</h2>
+        <div class="stack-container">
+          <!-- template -->
+          <template id="stack-item-template">
+            <div class="stack-item">
+              <img src="img/icons/{{ icon_src }}" alt="{{ title }}" />
+              <span>{{ title }}</span>
+            </div>
+          </template>
+          <!-- end template -->
+        </div>
       </div>
     </section>
 
@@ -103,7 +119,7 @@
       <div class="content">
         <h2>My Personal Projects</h2>
         <p>
-          Below you’ll find a selection of my projects. Some are older experiments with rougher edges, while others are
+          Below you can find a selection of my projects. Some are older experiments with rougher edges, while others are
           more recent and polished. I’ve also worked with frameworks like <b class="bold-underlined">React</b>,
           <b class="bold-underlined">Vue</b> and some smaller libraries such as
           <b class="bold-underlined">Alpine.js</b>, and I’m always excited to pick up new tools and technologies. You
@@ -135,7 +151,7 @@
               <p>{{ description }}</p>
             </div>
           </template>
-          <!-- /template  -->
+          <!-- end template  -->
         </div>
       </div>
     </section>
