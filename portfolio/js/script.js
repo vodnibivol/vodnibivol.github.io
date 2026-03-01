@@ -82,6 +82,14 @@ const Main = (function () {
         github_link: 'https://github.com/lulekfun/lulekfun.github.io/tree/master/skratek',
       },
       {
+        title: 'Papertiger Study',
+        description:
+          'Recreation of an Awwwards-winning website, developed as a study of advanced GSAP animation techniques.',
+        img_src: 'img/thumbs/papertiger.png',
+        link: '/papertiger-study',
+        github_link: 'https://github.com/vodnibivol/papertiger-study',
+      },
+      {
         title: 'Windex Study',
         description:
           'A responsive (fictional) company website built in React, modeled after a UI concept as a hands-on way to learn React development.',
