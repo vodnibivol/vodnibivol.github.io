@@ -16,9 +16,9 @@ this.addEventListener('install', (event) => {
         'js/script.js',
         'js/Shortcuts.js',
         'js/vue.global.prod.js',
-        'js/wordlist.min.js',
+        'js/wordlist.js',
       ]);
-    })
+    }),
   );
 });
 
@@ -48,7 +48,7 @@ this.addEventListener('fetch', (event) => {
             });
           }
         });
-      })
+      }),
     );
   }
 });
