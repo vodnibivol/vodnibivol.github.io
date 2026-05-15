@@ -129,7 +129,7 @@ const Besedle = {
         const { value } = el.dataset;
 
         const status = ['correct', 'displaced', 'wrong'].find((status) =>
-          this.guesses.some((g) => g.letters.some((l) => l.value === value && l.status === status))
+          this.guesses.some((g) => g.letters.some((l) => l.value === value && l.status === status)),
         );
 
         el.dataset.status = status || '';
@@ -180,7 +180,7 @@ const Animations = {
             el.style.animation = '';
             resolve();
           },
-          { once: true }
+          { once: true },
         );
         el.style.animation = animation;
       });
@@ -202,19 +202,19 @@ const Animations = {
 
 Vue.createApp(Besedle).mount('#main');
 
-// --- SW
+// --- SW // NOTE: DISABLED
 
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker
-    .register('sw.js', { scope: location.pathname || '/' })
-    .then(function (reg) {
-      // Registration worked
-      console.log('Registration succeeded. Scope is ' + reg.scope);
-      // // Attempt to update
-      reg.update();
-    })
-    .catch(function (error) {
-      // Registration failed
-      console.log('Registration failed with ' + error);
-    });
-}
+// if ('serviceWorker' in navigator) {
+//   navigator.serviceWorker
+//     .register('sw.js', { scope: location.pathname || '/' })
+//     .then(function (reg) {
+//       // Registration worked
+//       console.log('Registration succeeded. Scope is ' + reg.scope);
+//       // // Attempt to update
+//       reg.update();
+//     })
+//     .catch(function (error) {
+//       // Registration failed
+//       console.log('Registration failed with ' + error);
+//     });
+// }
