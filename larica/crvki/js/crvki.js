@@ -6,6 +6,11 @@ const crvki = {
 
     // check for "dead" ones
     this.arr = this.arr.filter((crvek) => !crvek.isFinished);
+
+    // if there are none, make a new one
+    while (this.arr.length < this.maxNumber) {
+      this.newInstance();
+    }
   },
   draw() {
     this.arr.forEach((crvek) => crvek.draw());
@@ -14,28 +19,6 @@ const crvki = {
     this.arr.push(new Crvek());
   },
 };
-
-function setup() {
-  createCanvas(window.innerWidth, window.innerHeight);
-  // createCanvas(300, 300);
-  crvki.newInstance();
-  frameRate(30);
-}
-
-function draw() {
-  blendMode(BLEND);
-  background(255, 150, 250);
-
-  blendMode(MULTIPLY);
-  crvki.update();
-  crvki.draw();
-
-  // if there are none, make a new one
-  // if (random() < 0.1) {
-  if (crvki.arr.length < crvki.maxNumber) {
-    crvki.newInstance();
-  }
-}
 
 class Crvek {
   constructor() {
@@ -132,5 +115,3 @@ class Crvek {
     pop();
   }
 }
-
-const angleBetweenPoints = (x1, y1, x2, y2) => atan2(y2 - y1, x2 - x1);
