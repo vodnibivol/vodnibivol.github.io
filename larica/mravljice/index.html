@@ -2,13 +2,17 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
     <title>mravljica</title>
     <style>
       * {
         box-sizing: border-box;
         margin: 0;
         padding: 0;
+        touch-action: manipulation;
       }
 
       html,
@@ -32,7 +36,7 @@
         color: rgb(255, 50, 70, 0.8);
       }
 
-      @media screen and (min-width: 700px) {
+      @media screen and (min-width: 300px) {
         canvas {
           border-radius: 50%;
         }
@@ -42,5 +46,8 @@
   <body>
     <script src="../p5.min.js"></script>
     <script type="module" src="js/sketch.js"></script>
+    <script>
+      document.addEventListener('touchstart', (e) => e.preventDefault(), { passive: false });
+    </script>
   </body>
 </html>

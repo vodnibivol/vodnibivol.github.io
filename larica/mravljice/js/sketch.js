@@ -7,19 +7,22 @@ const sketch = (p) => {
   const food = new Food(p);
   const ants = new Ants(p, food);
 
+  const isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
   p.setup = () => {
     setCanvasSize();
     p.angleMode(p.DEGREES);
 
-    ants.createNew();
     ants.createNew();
   };
 
   p.draw = () => {
     p.background('ivory');
 
-    cursor.update();
-    cursor.draw();
+    if (!isMobile) {
+      cursor.update();
+      cursor.draw();
+    }
 
     food.update();
     food.draw();
@@ -28,22 +31,43 @@ const sketch = (p) => {
     ants.draw();
   };
 
-  p.mousePressed = () => {
+  p.mousePressed = (e) => {
+    if (isMobile) return;
+    if (cursorIsOffCanvas()) return;
+
     for (let i = 0; i < p.random(1, 5); i++) {
       const offsetPos = p5.Vector.add(cursor.pos, p5.Vector.random2D().mult(p.random(30)));
       food.placeNew(offsetPos);
     }
   };
 
+  p.touchStarted = (e) => {
+    if (!isMobile) return;
+    if (cursorIsOffCanvas()) return;
+
+    for (let i = 0; i < p.random(1, 5); i++) {
+      const cursorPos = p.createVector(p.mouseX, p.mouseY);
+      const offsetPos = p5.Vector.add(cursorPos, p5.Vector.random2D().mult(p.random(30)));
+      food.placeNew(offsetPos);
+    }
+  };
+
   p.windowResized = () => setCanvasSize();
 
-  function setCanvasSize() {
-    if (p.windowWidth < 700) {
-      p.createCanvas(p.windowWidth, p.windowHeight);
+  const setCanvasSize = () => {
+    if (p.windowWidth < 400) {
+      p.createCanvas(300, 300);
+      // p.createCanvas(p.windowWidth, p.windowHeight);
     } else {
       p.createCanvas(400, 400);
     }
-  }
+  };
+
+  const cursorIsOffCanvas = () => {
+    const cursorPos = p.createVector(p.mouseX, p.mouseY);
+    const canvasCenter = p.createVector(p.width / 2, p.height / 2);
+    return p5.Vector.dist(cursorPos, canvasCenter) > p.width / 2;
+  };
 };
 
 new p5(sketch);
