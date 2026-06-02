@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mravljica</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html,
+      body {
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: hsl(225, 73%, 57%);
+      }
+
+      h1 {
+        position: absolute;
+        font-family: 'Georgia', serif;
+        font-style: italic;
+        color: rgb(255, 50, 70, 0.8);
+      }
+
+      @media screen and (min-width: 700px) {
+        canvas {
+          border-radius: 50%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <script src="../p5.min.js"></script>
+    <script type="module" src="js/sketch.js"></script>
+  </body>
+</html>

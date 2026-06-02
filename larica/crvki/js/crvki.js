@@ -39,9 +39,9 @@ class Crvek {
   }
 
   getDirection() {
-    // from the start position to the mouse position
     return radians(random(360));
-    return angleBetweenPoints(this.startPos.x, this.startPos.y, mouseX, mouseY);
+    // from the start position to the mouse position
+    // return angleBetweenPoints(this.startPos.x, this.startPos.y, mouseX, mouseY);
   }
 
   createSegments() {
@@ -70,9 +70,6 @@ class Crvek {
 
   update() {
     this.createSegments();
-    if (this.isFinished) {
-      console.log('finished');
-    }
   }
 
   draw() {
@@ -115,3 +112,7 @@ class Crvek {
     pop();
   }
 }
+
+// --- helpers
+
+const angleBetweenPoints = (x1, y1, x2, y2) => atan2(y2 - y1, x2 - x1);
