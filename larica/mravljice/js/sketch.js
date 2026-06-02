@@ -11,9 +11,10 @@ const sketch = (p) => {
 
   p.setup = () => {
     setCanvasSize();
-    p.angleMode(p.DEGREES);
+    // p.angleMode(p.DEGREES);
 
     ants.createNew();
+    // p.frameRate(30);
   };
 
   p.draw = () => {
@@ -21,7 +22,7 @@ const sketch = (p) => {
 
     if (!isMobile) {
       cursor.update();
-      cursor.draw();
+      if (!cursorIsOffCanvas()) cursor.draw();
     }
 
     food.update();

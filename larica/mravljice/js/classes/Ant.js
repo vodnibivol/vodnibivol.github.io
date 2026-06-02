@@ -29,9 +29,9 @@ class Ant {
     this.vel = this.p5.createVector(0, 0);
     this.acc = this.p5.createVector(0, 0);
 
-    this.maxSpeed = 5; // 5
-    this.maxForce = 0.4; // 0.4
-    this.radius = 3;
+    this.maxSpeed = 6; // 5
+    this.maxForce = 0.5; // 0.4
+    this.radius = 3; // size
 
     this.exitPoint = this.pos.copy();
   }
@@ -102,8 +102,27 @@ class Ant {
     const distance = desiredVel.mag(); // distance to the target
 
     // arrive => slow down
-    const arriveVel = this.p5.map(distance, 50, 0, this.maxSpeed, 0); // 50 => arrival RADIUS
-    desiredVel.setMag(arriveVel).limit(this.maxSpeed);
+    {
+      const arriveVel = this.p5.map(distance, 70, 0, this.maxSpeed, 0, true); // 50 => arrival RADIUS
+      desiredVel.setMag(arriveVel);
+    }
+
+    // smooth the angle transition
+    {
+      const currentAngle = this.vel.heading();
+      const desiredAngle = desiredVel.heading();
+
+      // Calculate the shortest angle difference
+      let angleDiff = desiredAngle - currentAngle;
+      angleDiff = Math.atan2(Math.sin(angleDiff), Math.cos(angleDiff));
+
+      // Limit the max turn angle per frame (in RAD)
+      const maxTurnAngle = 0.15;
+      const clampedAngleDiff = this.p5.constrain(angleDiff, -maxTurnAngle, maxTurnAngle);
+
+      // Apply the smooth angle to current velocity direction
+      desiredVel.setHeading(currentAngle + clampedAngleDiff);
+    }
 
     const correction = p5.Vector.sub(desiredVel, this.vel); // steer === correction
     correction.limit(this.maxForce);
