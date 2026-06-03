@@ -7,11 +7,12 @@ const sketch = (p) => {
   const food = new Food(p);
   const ants = new Ants(p, food);
 
+  window.debug = false;
+
   const isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
   p.setup = () => {
     setCanvasSize();
-    // p.angleMode(p.DEGREES);
 
     ants.createNew();
     // p.frameRate(30);
@@ -38,7 +39,7 @@ const sketch = (p) => {
 
     for (let i = 0; i < p.random(1, 5); i++) {
       const offsetPos = p5.Vector.add(cursor.pos, p5.Vector.random2D().mult(p.random(30)));
-      food.placeNew(offsetPos);
+      setTimeout(() => food.placeNew(offsetPos), i * 100);
     }
   };
 
@@ -49,7 +50,7 @@ const sketch = (p) => {
     for (let i = 0; i < p.random(1, 5); i++) {
       const cursorPos = p.createVector(p.mouseX, p.mouseY);
       const offsetPos = p5.Vector.add(cursorPos, p5.Vector.random2D().mult(p.random(30)));
-      food.placeNew(offsetPos);
+      setTimeout(() => food.placeNew(offsetPos), i * 100);
     }
   };
 

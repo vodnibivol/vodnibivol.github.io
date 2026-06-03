@@ -4,9 +4,32 @@ export default class Food {
     this.arr = [];
   }
 
+  get totalContent() {
+    return this.arr.reduce((acc, cur) => acc + cur.content, 0);
+  }
+
+  closestFreeGrain(ant) {
+    let closestGrain = null;
+    let closestDist = Infinity;
+
+    for (let grain of this.arr) {
+      // TODO: check if other ant has this grain => skip
+      if (grain.ant && grain.ant !== ant && !grain.ant.retired) continue;
+
+      const distToGrain = ant.pos.dist(grain.pos);
+      if (distToGrain < closestDist) {
+        closestGrain = grain;
+        closestDist = distToGrain;
+      }
+    }
+
+    return closestGrain;
+  }
+
   update() {
     // delete eaten food
     this.arr = this.arr.filter((grain) => !grain.isEaten);
+    this.arr.forEach((grain) => grain.update());
   }
 
   placeNew(pos) {
@@ -23,17 +46,22 @@ class Grain {
     this.p5 = p5;
 
     this.pos = pos;
-    this.isFree = true;
+    this.ant = null;
 
     this.content = this.p5.random(3, 40);
+    this.shownSize = 0;
+  }
+
+  get isEaten() {
+    return this.content <= 0;
   }
 
   reduceContent() {
     this.content--;
   }
 
-  get isEaten() {
-    return this.content <= 0;
+  update() {
+    this.shownSize = this.p5.lerp(this.shownSize, this.content, 0.1);
   }
 
   draw() {
@@ -41,7 +69,7 @@ class Grain {
     this.p5.stroke(240, 100, 100);
     this.p5.strokeWeight(1);
     const maxSize = 10;
-    const size = this.p5.map(this.content, 1, 30, 1, maxSize);
+    const size = this.p5.map(this.shownSize, 1, 30, 1, maxSize);
     this.p5.circle(this.pos.x, this.pos.y, size);
   }
 }
