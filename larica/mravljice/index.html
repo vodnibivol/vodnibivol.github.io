@@ -13,6 +13,7 @@
         margin: 0;
         padding: 0;
         touch-action: manipulation;
+        user-select: none !important;
       }
 
       html,
@@ -26,7 +27,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        background: hsl(225, 73%, 57%);
+        background: royalblue;
       }
 
       h1 {
@@ -36,18 +37,45 @@
         color: rgb(255, 50, 70, 0.8);
       }
 
-      @media screen and (min-width: 300px) {
-        canvas {
-          border-radius: 50%;
-        }
+      canvas {
+        border-radius: 50%;
+      }
+
+      .circle {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: lightblue;
+        position: fixed;
+        top: 0;
+        left: 0;
+        margin: 20px;
+        cursor: pointer;
+      }
+
+      .circle.active {
+        background: lightpink;
       }
     </style>
   </head>
   <body>
+    <div class="circle"></div>
     <script src="../p5.min.js"></script>
     <script type="module" src="js/sketch.js"></script>
     <script>
       document.addEventListener('touchstart', (e) => e.preventDefault(), { passive: false });
+
+      const circle = document.querySelector('.circle');
+      const toggleCircle = () => {
+        window.debug = !window.debug;
+        if (window.debug) {
+          circle.classList.add('active');
+        } else {
+          circle.classList.remove('active');
+        }
+      };
+      circle.onclick = toggleCircle;
+      circle.ontouchstart = toggleCircle;
     </script>
   </body>
 </html>

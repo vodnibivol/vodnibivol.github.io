@@ -5,9 +5,12 @@ export default class Cursor {
     this.smoothing = 0.5;
   }
 
+  get mousePos() {
+    return this.p5.createVector(this.p5.mouseX, this.p5.mouseY);
+  }
+
   update() {
-    this.pos.x = this.p5.lerp(this.pos.x, this.p5.mouseX, this.smoothing);
-    this.pos.y = this.p5.lerp(this.pos.y, this.p5.mouseY, this.smoothing);
+    this.pos.lerp(this.mousePos, this.smoothing);
   }
 
   draw() {

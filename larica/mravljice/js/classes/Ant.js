@@ -7,8 +7,8 @@ export default class Ants {
   }
 
   get recommendedAnts() {
-    const foodPerAnt = 90;
-    return this.p5.floor(this.food.totalContent / foodPerAnt);
+    const foodPerAnt = 40;
+    return this.p5.ceil(this.food.totalContent / foodPerAnt);
   }
 
   get activeAnts() {
@@ -24,18 +24,19 @@ export default class Ants {
   }
 
   retireOne() {
-    this.arr.at(-1).retire();
+    this.arr.at(-1).retire(); // retire and that is last added
   }
 
   update() {
     if (this.activeAnts < this.recommendedAnts) {
       this.createNew();
-    } else if (this.activeAnts > 1 && this.allHidden) {
+    } else if (this.activeAnts > this.recommendedAnts && this.allHidden) {
+      // retire one when they are hidden => they keep eating together until empty
       this.retireOne();
     }
 
+    this.arr = this.arr.filter((ant) => ant.isInFrame || !ant.retired); // remove retired ants when they are outside canvas
     this.arr.forEach((ant) => ant.update());
-    this.arr = this.arr.filter((ant) => ant.isInFrame || !ant.retired); // remove retired ants when outside canvas
   }
 
   draw() {
@@ -70,17 +71,8 @@ class Ant {
   randomEdgePos() {
     const margin = 20;
 
-    // Option 1: circle
-    const circleCentre = this.p5.createVector(this.p5.width / 2, this.p5.height / 2);
-    return p5.Vector.add(circleCentre, p5.Vector.random2D().setMag(this.p5.width / 2 + margin));
-
-    // Option 2: edges
-    // return this.p5.random([
-    //   this.p5.createVector(this.p5.random(this.p5.width + margin), -margin), // top border
-    //   this.p5.createVector(this.p5.random(this.p5.width + margin), this.p5.height + margin), // bottom border
-    //   this.p5.createVector(-margin, this.p5.random(this.p5.height + margin)), // left border
-    //   this.p5.createVector(this.p5.width + margin, this.p5.random(this.p5.height + margin)), // right border
-    // ]);
+    const canvasCenter = this.p5.createVector(this.p5.width / 2, this.p5.height / 2);
+    return p5.Vector.add(canvasCenter, p5.Vector.random2D().setMag(this.p5.width / 2 + margin));
   }
 
   retire() {
@@ -88,12 +80,17 @@ class Ant {
   }
 
   update() {
-    // release previous grain
+    /**
+     * RELEASE PREVIOUS GRAIN:
+     * ce si vmes premisli, se vedno ostane njen => to ga
+     * sprosti za druge (drugace na koncu ostane sama da
+     * poje vse kar si je zadala)
+     */
     if (this.grain) {
-      this.grain.ant = null; // TODO: ali je to potrebno?
+      this.grain.ant = null;
     }
 
-    // look for grain
+    // look for new grain
     this.grain = this.food.closestFreeGrain(this);
 
     if (this.grain && !this.retired) {
@@ -101,12 +98,11 @@ class Ant {
       this.seek(this.grain.pos);
 
       // eat when very close
-      const distToGrain = p5.Vector.dist(this.pos, this.grain.pos);
-      if (distToGrain < 3) {
+      if (this.pos.dist(this.grain.pos) < this.grain.shownSize) {
         this.eat();
       }
 
-      // proceed to leave when food eaten
+      // set new exit point when
       if (this.grain.isEaten) {
         this.exitPoint = this.randomEdgePos();
       }
@@ -116,14 +112,14 @@ class Ant {
 
     // update location from calculations
     this.vel.add(this.acc);
-    this.acc.setMag(0);
+    this.acc.setMag(0); // reset acceleration
     this.pos.add(this.vel);
   }
 
   get isInFrame() {
     const margin = 10;
-    const circleCentre = this.p5.createVector(this.p5.width / 2, this.p5.height / 2);
-    return p5.Vector.dist(this.pos, circleCentre) < this.p5.width / 2 + margin;
+    const canvasCenter = this.p5.createVector(this.p5.width / 2, this.p5.height / 2);
+    return p5.Vector.dist(this.pos, canvasCenter) < this.p5.width / 2 + margin;
   }
 
   seek(target) {
@@ -133,7 +129,8 @@ class Ant {
 
     // arrive => slow down
     {
-      const arriveVel = this.p5.map(distance, 70, 0, this.maxSpeed, 0, true); // 50 => arrival RADIUS
+      const arrivalRadius = 70;
+      const arriveVel = this.p5.map(distance, arrivalRadius, 0, this.maxSpeed, 0, true);
       desiredVel.setMag(arriveVel);
     }
 
@@ -184,10 +181,24 @@ class Ant {
   draw() {
     if (window.debug) {
       const target = this.grain?.pos || this.exitPoint;
-      const colors = ['green', 'red', 'blue', 'pink', 'orange', 'violet', 'black'];
+      const COLORS_GORILLASUN = [
+        '#f87186',
+        '#f7d53c',
+        '#5fbaac',
+        '#a74771',
+        '#f6ad2e',
+        '#afb443',
+        '#64afc1',
+        '#f76a46',
+        '#717858',
+        '#773323',
+        '#fedcda',
+      ];
 
       this.p5.strokeWeight(1);
-      this.p5.stroke(colors[this.index % colors.length]);
+
+      // line to target
+      this.p5.stroke(COLORS_GORILLASUN[this.index % COLORS_GORILLASUN.length]);
       this.p5.line(this.pos.x, this.pos.y, target.x, target.y);
     }
 
