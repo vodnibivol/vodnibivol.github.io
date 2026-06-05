@@ -1,3 +1,5 @@
+import { state } from './classes/state.js';
+
 import Ants from './classes/Ant.js';
 import Cursor from './classes/Cursor.js';
 import Food from './classes/Food.js';
@@ -7,18 +9,18 @@ const sketch = (p) => {
   const food = new Food(p);
   const ants = new Ants(p, food);
 
-  window.debug = false;
-
-  const isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  state.initEvents();
 
   p.setup = () => {
     setCanvasSize();
   };
 
   p.draw = () => {
+    state.dt = p.deltaTime / 1000; // speed & timing independent of framerate
+
     p.background('ivory');
 
-    if (!isMobile) {
+    if (!state.isMobile) {
       cursor.update();
       if (!cursorIsOffCanvas()) cursor.draw();
     }
@@ -33,8 +35,10 @@ const sketch = (p) => {
   p.mousePressed = (e) => {
     if (cursorIsOffCanvas()) return;
 
-    const cursorPos = isMobile ? cursor.mousePos : cursor.pos;
+    const cursorPos = state.isMobile ? cursor.mousePos : cursor.pos;
     food.placeNew(cursorPos);
+
+    return false;
   };
 
   p.windowResized = () => setCanvasSize();

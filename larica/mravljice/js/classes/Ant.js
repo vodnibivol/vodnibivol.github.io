@@ -1,3 +1,5 @@
+import { state } from './state.js';
+
 export default class Ants {
   constructor(p5, food) {
     this.p5 = p5;
@@ -30,7 +32,7 @@ export default class Ants {
   update() {
     if (this.activeAnts < this.recommendedAnts) {
       this.createNew();
-    } else if (this.activeAnts > this.recommendedAnts && this.allHidden) {
+    } else if (this.activeAnts > 1 && this.activeAnts > this.recommendedAnts && this.allHidden) {
       // retire one when they are hidden => they keep eating together until empty
       this.retireOne();
     }
@@ -60,7 +62,7 @@ class Ant {
     this.maxForce = 0.5; // 0.5
     this.radius = 3; // size
 
-    this.exitPoint = this.pos.copy();
+    this.exitPoint = this.pos.copy(); // will get changed
     this.retired = false; // goes away and dies
   }
 
@@ -83,7 +85,7 @@ class Ant {
     /**
      * RELEASE PREVIOUS GRAIN:
      * ce si vmes premisli, se vedno ostane njen => to ga
-     * sprosti za druge (drugace na koncu ostane sama da
+     * sprosti za druge (drugace na koncu ostane sama, da
      * poje vse kar si je zadala)
      */
     if (this.grain) {
@@ -113,7 +115,7 @@ class Ant {
     // update location from calculations
     this.vel.add(this.acc);
     this.acc.setMag(0); // reset acceleration
-    this.pos.add(this.vel);
+    this.pos.add(p5.Vector.mult(this.vel, state.dt * 66));
   }
 
   get isInFrame() {
@@ -144,7 +146,7 @@ class Ant {
       angleDiff = Math.atan2(Math.sin(angleDiff), Math.cos(angleDiff));
 
       // Limit the max turn angle per frame (in RAD)
-      const maxTurnAngle = 0.15;
+      const maxTurnAngle = 10 * state.dt;
       const clampedAngleDiff = this.p5.constrain(angleDiff, -maxTurnAngle, maxTurnAngle);
 
       // Apply the smooth angle to current velocity direction
@@ -152,7 +154,7 @@ class Ant {
     }
 
     const correction = p5.Vector.sub(desiredVel, this.vel); // steer === correction
-    correction.limit(this.maxForce);
+    correction.limit(this.maxForce * state.dt * 66);
     this.applyForce(correction);
   }
 
@@ -179,26 +181,13 @@ class Ant {
   }
 
   draw() {
-    if (window.debug) {
+    if (state.isDebug) {
       const target = this.grain?.pos || this.exitPoint;
-      const COLORS_GORILLASUN = [
-        '#f87186',
-        '#f7d53c',
-        '#5fbaac',
-        '#a74771',
-        '#f6ad2e',
-        '#afb443',
-        '#64afc1',
-        '#f76a46',
-        '#717858',
-        '#773323',
-        '#fedcda',
-      ];
 
       this.p5.strokeWeight(1);
 
       // line to target
-      this.p5.stroke(COLORS_GORILLASUN[this.index % COLORS_GORILLASUN.length]);
+      this.p5.stroke(state.colors[this.index % state.colors.length]);
       this.p5.line(this.pos.x, this.pos.y, target.x, target.y);
     }
 

@@ -47,10 +47,20 @@
         border-radius: 50%;
         background: lightblue;
         position: fixed;
-        top: 0;
-        left: 0;
+        bottom: 0;
+        right: 0;
         margin: 20px;
         cursor: pointer;
+      }
+
+      /* to make the hover area larger */
+      .circle:after {
+        position: absolute;
+        content: '';
+        top: -30px;
+        right: -30px;
+        bottom: -30px;
+        left: -30px;
       }
 
       .circle.active {
@@ -62,20 +72,5 @@
     <div class="circle"></div>
     <script src="../p5.min.js"></script>
     <script type="module" src="js/sketch.js"></script>
-    <script>
-      document.addEventListener('touchstart', (e) => e.preventDefault(), { passive: false });
-
-      const circle = document.querySelector('.circle');
-      const toggleCircle = () => {
-        window.debug = !window.debug;
-        if (window.debug) {
-          circle.classList.add('active');
-        } else {
-          circle.classList.remove('active');
-        }
-      };
-      circle.onclick = toggleCircle;
-      circle.ontouchstart = toggleCircle;
-    </script>
   </body>
 </html>

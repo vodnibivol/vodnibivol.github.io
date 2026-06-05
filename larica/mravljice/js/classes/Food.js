@@ -1,3 +1,5 @@
+import { state } from './state.js';
+
 export default class Food {
   constructor(p5) {
     this.p5 = p5;
@@ -41,7 +43,7 @@ export default class Food {
   }
 
   draw() {
-    if (window.debug) {
+    if (state.isDebug) {
       this.arr.forEach((grain) => grain.drawArrivalRadius());
     }
     this.arr.forEach((grain) => grain.draw());
@@ -66,11 +68,11 @@ class Grain {
   }
 
   reduceContent() {
-    this.content -= 0.3;
+    this.content -= state.dt * 10;
   }
 
   update() {
-    this.shownSize = this.p5.lerp(this.shownSize, this.content, 0.1);
+    this.shownSize = this.p5.lerp(this.shownSize, this.content, state.dt * 5);
   }
 
   draw() {
