@@ -31,9 +31,9 @@ export default class Text {
     this.p5.noFill();
     this.p5.strokeWeight(1);
     const c = this.p5.color(state.colors[7]); // 7/9
-    c.setAlpha(60);
+    c.setAlpha(40);
     this.p5.fill(c);
-    c.setAlpha(80);
+    c.setAlpha(60);
     this.p5.stroke(c);
     this.p5.text(string, canvasCenter.x, canvasCenter.y);
   }
