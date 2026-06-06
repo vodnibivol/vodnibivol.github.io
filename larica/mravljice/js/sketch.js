@@ -3,12 +3,15 @@ import { state } from './classes/state.js';
 import Ants from './classes/Ant.js';
 import Cursor from './classes/Cursor.js';
 import Food from './classes/Food.js';
+import Text from './classes/Text.js';
 
 const sketch = (p) => {
   const cursor = new Cursor(p);
   const food = new Food(p);
   const ants = new Ants(p, food);
+  const text = new Text(p);
 
+  state.text = text;
   state.initEvents();
 
   p.setup = () => {
@@ -19,6 +22,8 @@ const sketch = (p) => {
     state.dt = p.deltaTime / 1000; // speed & timing independent of framerate
 
     p.background('ivory');
+
+    text.draw();
 
     if (!state.isMobile) {
       cursor.update();
@@ -37,6 +42,7 @@ const sketch = (p) => {
 
     const cursorPos = state.isMobile ? cursor.mousePos : cursor.pos;
     food.placeNew(cursorPos);
+    state.mouseHasBeenClicked = true;
 
     return false;
   };
