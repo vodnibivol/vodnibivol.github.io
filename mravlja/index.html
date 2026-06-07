@@ -2,10 +2,15 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
-    />
+    <!-- prettier-ignore -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Mravlja" />
+    <meta property="og:url" content="https://www.vodnibivol.org/mravlja/" />
+    <meta property="og:image" content="https://www.vodnibivol.org/mravlja/og-mravlja.png" />
+    <meta property="og:description" content="Nahrani mravljo.." />
+
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
     <title>mravlja</title>
     <style>
@@ -30,13 +35,6 @@
         justify-content: center;
         align-items: center;
         background: royalblue;
-      }
-
-      h1 {
-        position: absolute;
-        font-family: 'Georgia', serif;
-        font-style: italic;
-        color: rgb(255, 50, 70, 0.8);
       }
 
       canvas {
@@ -72,7 +70,8 @@
   </head>
   <body>
     <div class="circle"></div>
-    <script src="../p5.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.13/lib/p5.min.js"></script>
     <script type="module" src="js/sketch.js"></script>
   </body>
 </html>
