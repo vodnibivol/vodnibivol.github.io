@@ -5,9 +5,13 @@ export default class Text {
     this.p5 = p5;
     this.defaultDuration = 3000;
 
-    this.font = this.p5.loadFont('tiny5.ttf');
+    this.font = null; // will be loaded inside preloadFont method
     this.tempText = '';
     this.timeout = null;
+  }
+
+  preloadFont() {
+    this.font = this.p5.loadFont('tiny5.ttf');
   }
 
   draw() {

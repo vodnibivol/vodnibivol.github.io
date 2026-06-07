@@ -14,6 +14,10 @@ const sketch = (p) => {
   state.text = text;
   state.initEvents();
 
+  p.preload = () => {
+    text.preloadFont();
+  };
+
   p.setup = () => {
     setCanvasSize();
   };
@@ -39,6 +43,18 @@ const sketch = (p) => {
 
   p.mousePressed = (e) => {
     if (cursorIsOffCanvas()) return;
+    if (state.isMobile) return;
+
+    const cursorPos = state.isMobile ? cursor.mousePos : cursor.pos;
+    food.placeNew(cursorPos);
+    state.mouseHasBeenClicked = true;
+
+    return false;
+  };
+
+  p.touchStarted = (e) => {
+    if (cursorIsOffCanvas()) return;
+    if (!state.isMobile) return;
 
     const cursorPos = state.isMobile ? cursor.mousePos : cursor.pos;
     food.placeNew(cursorPos);
