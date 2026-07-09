@@ -1,6 +1,6 @@
 const Galerija = {
   loading: false,
-  searchString: '', // ali *
+  searchString: '',
   page: 0,
 
   genre: 15890843, // FILMI
@@ -19,7 +19,7 @@ const Galerija = {
   modalRecording: {},
 
   get msgText() {
-    if (this.results.length === this.maxResults) return 'to je to.';
+    if (this.results.length === this.maxResults) return 'To je to.';
     if (this.loading) return 'Nalaganje ...';
     if (!this.results.length) return 'Ni rezultatov.';
   },
@@ -31,6 +31,7 @@ const Galerija = {
   },
 
   async init() {
+    this.searchFromUrl();
     this.getSearch();
 
     window.onscroll = this.infiniteLoad.bind(this);
@@ -57,28 +58,66 @@ const Galerija = {
 
     urlComponent.searchParams.set('showTypeId', this.genre);
 
-    // TODO: remove
     const searchUrl = urlComponent.toString();
     this.loading = true;
     this.searchResults = await Rtv.getSearch(searchUrl);
 
     this.showResults();
-    // setTimeout(this.showResults.bind(this), 5000);
+    this.openModalFromSearch();
+    this.addSearchToUrl();
   },
 
-  async showResults() {
+  addSearchToUrl() {
+    const urlComponent = new URL(location.href);
+    console.log(this.searchString);
+
+    if (this.searchString) {
+      urlComponent.searchParams.set('search', this.searchString);
+    } else {
+      urlComponent.searchParams.delete('search');
+    }
+
+    const searchUrl = urlComponent.toString();
+    history.pushState({}, '', searchUrl);
+  },
+
+  searchFromUrl() {
+    const urlComponent = new URL(location.href);
+    this.searchString = urlComponent.searchParams.get('search') || '';
+  },
+
+  showResults() {
     const { response } = this.searchResults;
-    console.log(this.results.length);
 
     this.maxResults = response.meta.hits;
 
     if (response.meta.hits > 0) {
       // ok got some results
       this.results = [...this.results, ...response.recordings];
-      console.log({ ...this.results[0] });
     }
 
     this.loading = false;
+  },
+
+  async openModalFromSearch() {
+    const mediaIdInSearch = this.results.find((rec) => rec.id === this.searchMediaId);
+
+    if (mediaIdInSearch) {
+      // show modal with that media data from local storage / search fetch
+      this.openModal(mediaIdInSearch);
+    } else {
+      // find recording data and make an independent search
+      const mediaRecording = await Rtv.getMeta(this.searchMediaId);
+
+      if (mediaRecording.response && mediaRecording.response.title !== 'Error' && mediaRecording.response.description) {
+        // if result is ok
+        console.log(mediaRecording.response);
+        this.openModal(mediaRecording.response);
+      } else {
+        // if result is not ok => remove from search
+        this.addMediaIdToUrl();
+      }
+    }
   },
 
   infiniteLoad() {
@@ -103,11 +142,34 @@ const Galerija = {
     console.log(recording);
     this.modalRecording = recording;
     this.modalIsOpen = true;
+    this.addMediaIdToUrl();
     document.body.classList.add('modal-open');
   },
 
   closeModal() {
     this.modalIsOpen = false;
+    this.modalRecording = null;
+    this.addMediaIdToUrl();
     document.body.classList.remove('modal-open');
+  },
+
+  addMediaIdToUrl() {
+    const urlComponent = new URL(location.href);
+
+    if (this.modalRecording?.id) {
+      urlComponent.searchParams.set('mediaId', this.modalRecording.id);
+      urlComponent.searchParams.delete('search');
+    } else {
+      urlComponent.searchParams.delete('mediaId');
+      if (this.searchString) urlComponent.searchParams.set('search', this.searchString);
+    }
+
+    const searchUrl = urlComponent.toString();
+    history.pushState({}, '', searchUrl);
+  },
+
+  get searchMediaId() {
+    const urlComponent = new URL(location.href);
+    return urlComponent.searchParams.get('mediaId') || '';
   },
 };

@@ -70,6 +70,7 @@ a {
 .boxed {
   border: 1.5px solid black;
   background: white;
+  color: black;
 
   &.black {
     background: black;
@@ -149,7 +150,9 @@ hr {
   .recording {
     position: relative;
 
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition:
+      transform 0.2s,
+      box-shadow 0.2s;
     width: 100%;
     max-width: 400px;
     margin: auto;
