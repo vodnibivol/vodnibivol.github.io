@@ -95,48 +95,6 @@ const Rtv = (function () {
     return jwt;
   }
 
-  // async function _getArchive(recDate) {
-  //   const cached = dstore.get('archive_' + recDate);
-  //   if (!!cached) return cached.data;
-
-  //   for (let i = 0; i <= 5; i++) {
-  //     const startDay = _dayDelta(recDate, -i);
-  //     const endDay = _dayDelta(recDate, i);
-
-  //     // prettier-ignore
-  //     const SEARCH_URL = `https://api.rtvslo.si/ava/getSearch2?client_id=${CLIENT_ID}&from=${startDay}&to=${endDay}&pageSize=${i*12}`;
-  //     const search = await ffetch(SEARCH_URL);
-
-  //     const archives = JSON.stringify(search).match(/archive(\d)+/g);
-  //     if (archives === null) continue;
-  //     const correctArchive = _mostFreq(archives).replace('archive', 'encrypted');
-
-  //     dstore.set('archive_' + recDate, correctArchive, dstore.YEAR);
-  //     return correctArchive;
-  //   }
-
-  //   throw new Error('archive not found.');
-  // }
-
-  // --- utility functions
-
-  function _mostFreq(arr) {
-    const hashmap = arr.reduce((acc, val) => {
-      acc[val] = (acc[val] || 0) + 1;
-      return acc;
-    }, {});
-    return Object.keys(hashmap).reduce((a, b) => (hashmap[a] > hashmap[b] ? a : b));
-  }
-
-  function _dayDelta(date, days = 0) {
-    if (!date) return null;
-    const _1DAY = 24 * 60 * 60 * 1000;
-    const oldDate = new Date(date);
-    const newDate = new Date(oldDate.valueOf() + days * _1DAY);
-    const newDateString = newDate.toISOString().match(/\d{4}-\d{2}-\d{2}/)[0];
-    return newDateString;
-  }
-
   return { getSearch, getMeta, getStream, getDownload, getAudio };
 })();
 
