@@ -54,29 +54,25 @@ const Main = {
     this.easterEgg = false;
 
     // get Kontekst words
-    const res = await postData('https://www.kontekst.io/api', { q: this.input, lang: 'sl' });
+    const res = await fetch('https://strojcek.ftp.sh/api/kontekst?term=' + encodeURIComponent(this.input));
     const responseText = await res.clone().text();
 
     try {
       // try fetching kontekst words
       const data = await res.json();
 
-      if (data.status === 200) {
+      if (res.status === 200) {
         // request SUCCESS
-        const entries = data.result.sims;
-        console.table(entries);
+        const terms = data.data;
 
-        const filteredEntries = entries.filter(({ term }, index) => {
+        const filteredTerms = terms.filter((term, index) => {
           if (index > this.maxEntries) return false;
           if (term.length > 12) return false;
           return WIKIPEDIA_TITLES.includes(term) || FRAN_ENTRIES.includes(term);
         });
 
-        const filteredWords = filteredEntries.map((e) => e.term);
-        console.log(filteredWords);
-
         // SUCCESS: create grid
-        this.create(filteredWords);
+        this.create(filteredTerms);
       }
     } catch (err) {
       // error: show error warning
