@@ -21,12 +21,13 @@ const Morse = (function () {
   }
 
   function morseString(str) {
-    return [...str].map((char) => _morseChar(char)).join(SEPARATOR);
+    // prettier-ignore
+    return str.split('\n').map((line) => [...line].map((char) => _morseChar(char)).join(SEPARATOR)).join('\n');
   }
 
   function plainString(str) {
     // prettier-ignore
-    return str.split(' ').map((char) => _plainChar(char) || '').join('');
+    return str.split('\n').map((line) => line.split(' ').map((char) => _plainChar(char) || '').join('')).join('\n')
   }
 
   function _morseChar(char) {
@@ -47,7 +48,7 @@ const Morse = (function () {
     try {
       return MORSE_DICT.find((pair) => pair[1] === char)[0];
     } catch (error) {
-      console.error(`character ${char} not defined.`);
+      console.error(`character '${char}' not defined.`);
     }
   }
 
